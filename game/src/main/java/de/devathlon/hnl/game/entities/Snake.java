@@ -3,16 +3,16 @@ package de.devathlon.hnl.game.entities;
 import de.devathlon.hnl.core.SnakeModel;
 import de.devathlon.hnl.core.math.Point;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
 public class Snake implements SnakeModel {
 
     private Point headPoint;
-    private HashSet<Point> bodyPoints;
+    private ArrayList<Point> bodyPoints;
 
     public Snake() {
-        bodyPoints = new HashSet<>();
+        bodyPoints = new ArrayList<>();
         // generate snake at 10;10 with 4 body points
         headPoint = Point.of(10, 10);
 
@@ -27,7 +27,7 @@ public class Snake implements SnakeModel {
     }
 
     @Override
-    public Collection<Point> getBodyPoints() {
+    public ArrayList<Point> getBodyPoints() {
         return bodyPoints;
     }
 }
