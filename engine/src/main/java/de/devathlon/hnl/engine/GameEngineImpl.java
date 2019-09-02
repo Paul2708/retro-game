@@ -14,7 +14,7 @@ final class GameEngineImpl implements GameEngine {
 
     private MapModel mapModel;
 
-    private GameEngineImpl() {
+    GameEngineImpl() {
 
     }
 
