@@ -1,4 +1,4 @@
-package de.devathlon.hnl.model;
+package de.devathlon.hnl.core;
 
 /**
  * Class description.
@@ -6,5 +6,5 @@ package de.devathlon.hnl.model;
  * @author Paul2708
  */
 public class Sample {
-
+    
 }
