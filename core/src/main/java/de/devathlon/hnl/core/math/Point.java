@@ -1,10 +1,5 @@
 package de.devathlon.hnl.core.math;
 
-/**
- * Class description.
- *
- * @author Paul2708
- */
 public final class Point {
 
     private int x;
@@ -40,6 +35,36 @@ public final class Point {
 
     public int getY() {
         return y;
+    }
+
+    @Override
+    public String toString() {
+        return "[x=" + x + ", y=" + y + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Point point = (Point) o;
+
+        if (x != point.x) {
+            return false;
+        }
+
+        return y == point.y;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = x;
+        result = 31 * result + y;
+        return result;
     }
 
     /**
