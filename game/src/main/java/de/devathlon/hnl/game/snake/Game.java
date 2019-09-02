@@ -12,6 +12,7 @@ import de.devathlon.hnl.game.util.Direction;
 
 import java.awt.event.KeyEvent;
 import java.util.Collection;
+import java.util.HashSet;
 
 public class Game implements InputListener {
 
@@ -29,7 +30,7 @@ public class Game implements InputListener {
         gameEngine.setModel(new MapModel() {
             @Override
             public Collection<Point> getBorder() {
-                return null;
+                return new HashSet<>();
             }
 
             @Override
@@ -98,6 +99,11 @@ public class Game implements InputListener {
         int x = oldHeadX;
         int y = oldHeadY;
         for (int i = 0; i < snake.getBodyPoints().size(); i++) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             System.out.println("Move to " + x);
             Point point = snake.getBodyPoints().get(i);
             int tempX = point.getX();
@@ -105,11 +111,6 @@ public class Game implements InputListener {
             point.set(x, y);
             x = tempX;
             y = tempY;
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
     }
 
