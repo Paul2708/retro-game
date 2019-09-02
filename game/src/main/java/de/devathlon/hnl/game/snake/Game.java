@@ -32,11 +32,15 @@ public class Game implements InputListener {
     private EngineConfiguration engineConfiguration;
     private MapModel mapModel;
 
+    private List<FoodModel> foodList;
+
     public Game() {
         running = true;
         pause = new AtomicBoolean(true);
         setup();
         updateHeadPosition();
+
+        foodList = new CopyOnWriteArrayList<>();
 
         // Refactor
         GameEngine gameEngine = GameEngine.create();
@@ -53,7 +57,7 @@ public class Game implements InputListener {
 
             @Override
             public Collection<FoodModel> getFood() {
-                return new CopyOnWriteArrayList<>();
+                return foodList;
             }
         };
         gameEngine.setModel(mapModel);
@@ -74,6 +78,7 @@ public class Game implements InputListener {
         Random width = new Random(engineConfiguration.getWidthInBlocks() - 1);
 
         Food food = new Food(height.nextInt(), width.nextInt(), Color.ORANGE);
+        foodList.add(food);
     }
 
     private void updateHeadPosition() {
