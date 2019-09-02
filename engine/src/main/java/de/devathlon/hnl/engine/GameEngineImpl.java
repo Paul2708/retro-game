@@ -7,8 +7,6 @@ import de.devathlon.hnl.engine.loop.GameLoop;
 import de.devathlon.hnl.engine.window.GameCanvas;
 import de.devathlon.hnl.engine.window.GameWindow;
 
-import java.awt.event.WindowEvent;
-
 final class GameEngineImpl implements GameEngine {
 
     private MapModel mapModel;
@@ -58,6 +56,6 @@ final class GameEngineImpl implements GameEngine {
     public void stop() {
         running = false;
 
-        gameWindow.dispatchEvent(new WindowEvent(gameWindow, WindowEvent.WINDOW_CLOSING));
+        gameWindow.dispose();
     }
 }
