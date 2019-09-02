@@ -18,6 +18,7 @@ import java.awt.event.KeyEvent;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Game implements InputListener {
@@ -36,7 +37,14 @@ public class Game implements InputListener {
 
     private List<FoodModel> foodList;
 
+    private long speed;
+
+    private Thread effectTimer;
+    private boolean newEffect;
+
     public Game() {
+        this.speed = 100;
+        this.effectTimer = new Thread();
         running = true;
         pause = new AtomicBoolean(true);
         setup();
@@ -64,7 +72,7 @@ public class Game implements InputListener {
         };
         gameEngine.setModel(mapModel);
         gameEngine.setInputListener(this);
-        engineConfiguration = new EngineConfiguration(50, 50, 120);
+        engineConfiguration = new EngineConfiguration(20, 20, 120);
         gameEngine.setUp(engineConfiguration);
         gameEngine.start();
 
@@ -89,13 +97,39 @@ public class Game implements InputListener {
         int x = random.nextInt(engineConfiguration.getHeightInBlocks() - 2) + 1;
         int y = random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1;
 
-        Food food = new Food(x, y, Color.ORANGE);
+        Food food;
+        Food special = null;
+        if (random.nextInt(3) == 1) {
+            special = new Food(
+                    random.nextInt(engineConfiguration.getHeightInBlocks() - 2) + 1,
+                    random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1,
+                    Color.GREEN);
+        } else if (random.nextInt(3) == 2) {
+            special = new Food(
+                    random.nextInt(engineConfiguration.getHeightInBlocks() - 2) + 1,
+                    random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1,
+                    Color.BLUE);
+        }
+        food = new Food(x, y, Color.ORANGE);
         foodList.add(food);
+        if (special != null) {
+            final Food specialFood = special;
+            foodList.add(specialFood);
+            // remove food after 20 seconds
+            new Timer().schedule(new TimerTask() {
+
+                @Override
+                public void run() {
+                    if (foodList.contains(specialFood))
+                        foodList.remove(specialFood);
+                }
+            },1000 * 20);
+        }
     }
 
     private void updateHeadPosition() {
         new Thread(() -> {
-            while (running) {
+            while (true) {
                 if (!pause.get() && currentDirection != null) {
                     Point headPoint = snake.getHeadPoint();
 
@@ -122,15 +156,19 @@ public class Game implements InputListener {
                     // updated head, now update body
                     updateBody(oldX, oldY);
                     // check if
-                    if(contactWithFood() != null) {
+                    if (contactWithFood() != null) {
                         FoodModel food = contactWithFood();
                         foodList.remove(food);
-                        snake.getBodyPoints().add(Point.of(oldX, oldY));
+                        if (food.getColor() != Color.ORANGE) {
+                            proccessFoodEffect(food);
+                        } else {
+                            snake.getBodyPoints().add(Point.of(oldX, oldY));
+                        }
                         generateNewFood();
                     }
                     // sleep
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(speed);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -153,11 +191,39 @@ public class Game implements InputListener {
     }
 
     private FoodModel contactWithFood() {
-        for(FoodModel food : foodList) {
-            if(food.getLocation().getX() == snake.getHeadPoint().getX() && food.getLocation().getY() == snake.getHeadPoint().getY()) return food;
+        for (FoodModel food : foodList) {
+            if (food.getLocation().getX() == snake.getHeadPoint().getX() && food.getLocation().getY() == snake.getHeadPoint().getY())
+                return food;
         }
 
         return null;
+    }
+
+    private void proccessFoodEffect(FoodModel foodModel) {
+        if(effectTimer != null && effectTimer.isAlive()) {
+            effectTimer.interrupt();
+            effectTimer = null;
+            newEffect = true;
+        }
+        if (foodModel.getColor() == Color.GREEN) {
+            this.speed = 50;
+        } else if (foodModel.getColor() == Color.BLUE) {
+            this.speed = 300;
+        }
+        effectTimer = new Thread(() -> {
+            try {
+                Thread.sleep(1000 * 10);
+            } catch (InterruptedException e) {
+            }
+            if(!newEffect) this.speed = 100;
+            System.out.println("Debug:  " + 100);
+        });
+        newEffect = false;
+        effectTimer.start();
+    }
+
+    private void removeAllEffects() {
+        speed = 100;
     }
 
     private boolean collisionWithSnakeBody() {
@@ -181,11 +247,24 @@ public class Game implements InputListener {
 
     private void endGame() {
         running = false;
+        pause = new AtomicBoolean(true);
     }
 
     private void reset() {
-        gameEngine.stop();
-        Launcher.setGame(new Game());
+        this.snake = new Snake();
+
+        foodList.clear();
+        generateNewFood();
+
+        running = true;
+
+        removeAllEffects();
+        if(effectTimer != null & effectTimer.isAlive()) {
+            effectTimer.interrupt();
+            effectTimer = null;
+        }
+
+        currentDirection = Direction.LEFT;
     }
 
     @Override
@@ -200,7 +279,7 @@ public class Game implements InputListener {
                 currentDirection = direction;
             }
         } else {
-            if(!running) {
+            if (!running) {
                 reset();
                 return;
             }
