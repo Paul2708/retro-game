@@ -1,5 +1,6 @@
 package de.devathlon.hnl.engine.window;
 
+import de.devathlon.hnl.core.FoodModel;
 import de.devathlon.hnl.core.MapModel;
 import de.devathlon.hnl.core.SnakeModel;
 import de.devathlon.hnl.core.math.Point;
@@ -60,6 +61,14 @@ public final class GameCanvas extends Canvas {
         for (Point point : snakeModel.getBodyPoints()) {
             Point transform = transform(point);
 
+            graphics.fillRect(transform.getX(), transform.getY(), BLOCK_SIZE, BLOCK_SIZE);
+        }
+
+        // Draw food
+        for (FoodModel foodModel : mapModel.getFood()) {
+            Point transform = transform(foodModel.getLocation());
+
+            graphics.setColor(foodModel.getColor());
             graphics.fillRect(transform.getX(), transform.getY(), BLOCK_SIZE, BLOCK_SIZE);
         }
 
