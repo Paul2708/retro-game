@@ -30,7 +30,7 @@ public class Game implements InputListener {
 
     @Override
     public void onInput(int keyCode) {
-        if (keyCode != KeyEvent.VK_SPACE || keyCode != KeyEvent.VK_ESCAPE) {
+        if (keyCode != KeyEvent.VK_SPACE && keyCode != KeyEvent.VK_ESCAPE) {
             Direction direction = Direction.getDirectionByKey(keyCode);
             if (direction != null) {
                 currentDirection = direction;

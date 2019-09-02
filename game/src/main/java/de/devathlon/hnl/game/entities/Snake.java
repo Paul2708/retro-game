@@ -12,6 +12,7 @@ public class Snake implements SnakeModel {
     private HashSet<Point> bodyPoints;
 
     public Snake() {
+        bodyPoints = new HashSet<>();
         // generate snake at 10;10 with 4 body points
         headPoint = Point.of(10, 10);
 
