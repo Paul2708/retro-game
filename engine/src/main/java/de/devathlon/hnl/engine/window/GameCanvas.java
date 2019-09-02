@@ -25,6 +25,7 @@ public final class GameCanvas extends Canvas {
         this.mapModel = mapModel;
 
         addKeyListener(new CanvasKeyListener(inputListener));
+        setFocusable(true);
     }
 
     public void render() {
