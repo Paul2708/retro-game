@@ -73,15 +73,14 @@ public class Game implements InputListener {
                 int x = snake.getHeadPoint().getX();
                 int y = snake.getHeadPoint().getY();
 
-                for (Point point : snake.getBodyPoints()) {
-                    point.updateX(-1);
-                    /**
+                for (int i = 0; i < snake.getBodyPoints().size(); i++) {
+                    System.out.println("Move to " + x);
+                    Point point = snake.getBodyPoints().get(i);
                     int tempX = point.getX();
                     int tempY = point.getY();
                     point.update(x, y);
                     x = tempX;
                     y = tempY;
-                     **/
                 }
                 // after updating -> check for collision
                 if (collisionWithSnakeBody() || collisionWithBorder()) {
