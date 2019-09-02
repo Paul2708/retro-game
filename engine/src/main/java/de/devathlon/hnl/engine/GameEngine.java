@@ -6,9 +6,11 @@ import de.devathlon.hnl.engine.listener.InputListener;
 
 public interface GameEngine {
 
-    void setUp(EngineConfiguration configuration, MapModel mapModel);
+    void setModel(MapModel model);
 
     void setInputListener(InputListener listener);
+
+    void setUp(EngineConfiguration configuration);
 
     void start();
 
