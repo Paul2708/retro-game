@@ -31,56 +31,26 @@ public class Game implements InputListener {
             switch (currentDirection) {
                 case UP:
                     snake.getHeadPoint().update(0, 1);
-                    x = snake.getHeadPoint().getX();
-                    y = snake.getHeadPoint().getY();
-
-                    for (Point point : snake.getBodyPoints()) {
-                        int tempX = point.getX();
-                        int tempY = point.getY();
-                        point.update(x, y);
-                        x = tempX;
-                        y = tempY;
-                    }
                     break;
                 case DOWN:
                     snake.getHeadPoint().update(0, -1);
-                    x = snake.getHeadPoint().getX();
-                    y = snake.getHeadPoint().getY();
-
-                    for (Point point : snake.getBodyPoints()) {
-                        int tempX = point.getX();
-                        int tempY = point.getY();
-                        point.update(x, y);
-                        x = tempX;
-                        y = tempY;
-                    }
                     break;
                 case LEFT:
                     snake.getHeadPoint().update(-1, 0);
-                    x = snake.getHeadPoint().getX();
-                    y = snake.getHeadPoint().getY();
-
-                    for (Point point : snake.getBodyPoints()) {
-                        int tempX = point.getX();
-                        int tempY = point.getY();
-                        point.update(x, y);
-                        x = tempX;
-                        y = tempY;
-                    }
                     break;
                 case RIGHT:
                     snake.getHeadPoint().update(1, 0);
-                    x = snake.getHeadPoint().getX();
-                    y = snake.getHeadPoint().getY();
-
-                    for (Point point : snake.getBodyPoints()) {
-                        int tempX = point.getX();
-                        int tempY = point.getY();
-                        point.update(x, y);
-                        x = tempX;
-                        y = tempY;
-                    }
                     break;
+            }
+            x = snake.getHeadPoint().getX();
+            y = snake.getHeadPoint().getY();
+
+            for (Point point : snake.getBodyPoints()) {
+                int tempX = point.getX();
+                int tempY = point.getY();
+                point.update(x, y);
+                x = tempX;
+                y = tempY;
             }
 
             // after updating -> check for collision
