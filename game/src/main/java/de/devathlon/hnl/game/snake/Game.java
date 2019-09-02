@@ -96,16 +96,16 @@ public class Game implements InputListener {
     private void updateBody() {
         int x = snake.getHeadPoint().getX();
         int y = snake.getHeadPoint().getY();
-        for (int i = snake.getBodyPoints().size()-1; i >= 0; i--) {
+        for (int i = 0; i < snake.getBodyPoints().size(); i++) {
             System.out.println("Move to " + x);
             Point point = snake.getBodyPoints().get(i);
             int tempX = point.getX();
             int tempY = point.getY();
-            point.update(x, y);
+            point.set(x, y);
             x = tempX;
             y = tempY;
             try {
-                Thread.sleep(2000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
