@@ -16,6 +16,19 @@ public final class Point {
         this.y = y;
     }
 
+    public void setX(int newX) {
+        this.x = newX;
+    }
+
+    public void setY(int newY) {
+        this.y = newY;
+    }
+
+    public void set(int newX, int newY) {
+        setX(newX);
+        setY(newY);
+    }
+
     public void updateX(int deltaX) {
         this.x +=  deltaX;
     }
