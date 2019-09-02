@@ -1,6 +1,5 @@
 package de.devathlon.hnl.game.util;
 
-import java.awt.event.KeyEvent;
 
 public enum Direction {
 
