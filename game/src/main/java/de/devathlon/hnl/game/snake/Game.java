@@ -6,13 +6,18 @@ import de.devathlon.hnl.core.SnakeModel;
 import de.devathlon.hnl.core.math.Point;
 import de.devathlon.hnl.engine.GameEngine;
 import de.devathlon.hnl.engine.configuration.DefaultEngineConfiguration;
+import de.devathlon.hnl.engine.configuration.EngineConfiguration;
 import de.devathlon.hnl.engine.listener.InputListener;
+import de.devathlon.hnl.game.entities.Food;
 import de.devathlon.hnl.game.entities.Snake;
 import de.devathlon.hnl.game.util.Direction;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.Collection;
-import java.util.HashSet;
+import java.nio.channels.FileChannel;
+import java.util.*;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Game implements InputListener {
@@ -24,15 +29,18 @@ public class Game implements InputListener {
     private boolean running;
     private AtomicBoolean pause;
 
+    private EngineConfiguration engineConfiguration;
+    private MapModel mapModel;
+
     public Game() {
         running = true;
-        pause = new AtomicBoolean(false);
+        pause = new AtomicBoolean(true);
         setup();
         updateHeadPosition();
 
         // Refactor
         GameEngine gameEngine = GameEngine.create();
-        gameEngine.setModel(new MapModel() {
+        this.mapModel = new MapModel() {
             @Override
             public Collection<Point> getBorder() {
                 return new HashSet<>();
@@ -45,11 +53,13 @@ public class Game implements InputListener {
 
             @Override
             public Collection<FoodModel> getFood() {
-                return null;
+                return new CopyOnWriteArrayList<>();
             }
-        });
+        };
+        gameEngine.setModel(mapModel);
         gameEngine.setInputListener(this);
-        gameEngine.setUp(new DefaultEngineConfiguration());
+        engineConfiguration = new EngineConfiguration(50, 50, 120);
+        gameEngine.setUp(engineConfiguration);
         gameEngine.start();
     }
 
@@ -59,8 +69,15 @@ public class Game implements InputListener {
         this.currentDirection = Direction.LEFT;
     }
 
+    private void generateNewFood() {
+        Random height = new Random(engineConfiguration.getHeightInBlocks() - 1);
+        Random width = new Random(engineConfiguration.getWidthInBlocks() - 1);
+
+        Food food = new Food(height.nextInt(), width.nextInt(), Color.ORANGE);
+    }
+
     private void updateHeadPosition() {
-       new Thread(() -> {
+        new Thread(() -> {
             while (running) {
                 if (!pause.get() && currentDirection != null) {
                     Point headPoint = snake.getHeadPoint();
@@ -123,12 +140,10 @@ public class Game implements InputListener {
     }
 
     private void pauseGame() {
-        System.out.println("Pause:  " + pause);
         pause.set(!pause.get());
     }
 
     private void endGame() {
-        System.out.println("ending game.");
         running = false;
     }
 
@@ -137,10 +152,18 @@ public class Game implements InputListener {
         if (keyCode != KeyEvent.VK_SPACE && keyCode != KeyEvent.VK_ESCAPE) {
             Direction direction = Direction.getDirectionByKey(keyCode);
             if (direction != null) {
+                if (currentDirection == Direction.UP && direction == Direction.DOWN) return;
+                if (currentDirection == Direction.DOWN && direction == Direction.UP) return;
+                if (currentDirection == Direction.LEFT && direction == Direction.RIGHT) return;
+                if (currentDirection == Direction.RIGHT && direction == Direction.LEFT) return;
                 currentDirection = direction;
             }
         } else {
             pauseGame();
         }
+    }
+
+    public EngineConfiguration getEngineConfiguration() {
+        return engineConfiguration;
     }
 }

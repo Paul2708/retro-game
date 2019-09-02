@@ -4,7 +4,6 @@ import de.devathlon.hnl.core.SnakeModel;
 import de.devathlon.hnl.core.math.Point;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class Snake implements SnakeModel {
 
