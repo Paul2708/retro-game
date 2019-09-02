@@ -11,5 +11,11 @@
 
     <artifactId>retro-game-engine</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>de.devathlon-hnl</groupId>
+            <artifactId>retro-game-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
