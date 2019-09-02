@@ -13,6 +13,7 @@ import de.devathlon.hnl.game.util.Direction;
 import java.awt.event.KeyEvent;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Game implements InputListener {
 
@@ -21,10 +22,11 @@ public class Game implements InputListener {
     private Direction currentDirection;
 
     private boolean running;
-    private boolean pause;
+    private AtomicBoolean pause;
 
     public Game() {
         running = true;
+        pause = new AtomicBoolean(false);
         setup();
         updateHeadPosition();
 
@@ -49,8 +51,6 @@ public class Game implements InputListener {
         gameEngine.setInputListener(this);
         gameEngine.setUp(new DefaultEngineConfiguration());
         gameEngine.start();
-
-        this.pause = false;
     }
 
     private void setup() {
@@ -62,38 +62,36 @@ public class Game implements InputListener {
     private void updateHeadPosition() {
        new Thread(() -> {
             while (running) {
-                if (!pause) {
-                    if (currentDirection != null) {
-                        Point headPoint = snake.getHeadPoint();
+                if (!pause.get() && currentDirection != null) {
+                    Point headPoint = snake.getHeadPoint();
 
-                        int oldX = headPoint.getX();
-                        int oldY = headPoint.getY();
-                        switch (currentDirection) {
-                            case UP:
-                                headPoint.update(0, 1);
-                                break;
-                            case DOWN:
-                                headPoint.update(0, -1);
-                                break;
-                            case LEFT:
-                                headPoint.update(-1, 0);
-                                break;
-                            case RIGHT:
-                                headPoint.update(1, 0);
-                                break;
-                        }
-                        // after updating -> check for collision
-                        if (collisionWithSnakeBody() || collisionWithBorder()) {
-                            endGame();
-                        }
-                        // updated head, now update body
-                        updateBody(oldX, oldY);
-                        // sleep
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                    int oldX = headPoint.getX();
+                    int oldY = headPoint.getY();
+                    switch (currentDirection) {
+                        case UP:
+                            headPoint.update(0, 1);
+                            break;
+                        case DOWN:
+                            headPoint.update(0, -1);
+                            break;
+                        case LEFT:
+                            headPoint.update(-1, 0);
+                            break;
+                        case RIGHT:
+                            headPoint.update(1, 0);
+                            break;
+                    }
+                    // after updating -> check for collision
+                    if (collisionWithSnakeBody() || collisionWithBorder()) {
+                        endGame();
+                    }
+                    // updated head, now update body
+                    updateBody(oldX, oldY);
+                    // sleep
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -126,11 +124,7 @@ public class Game implements InputListener {
 
     private void pauseGame() {
         System.out.println("Pause:  " + pause);
-        if (pause) {
-            pause = false;
-        } else {
-            pause = true;
-        }
+        pause.set(!pause.get());
     }
 
     private void endGame() {
