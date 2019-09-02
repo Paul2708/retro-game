@@ -13,4 +13,8 @@ public interface GameEngine {
     void start();
 
     void stop();
+
+    static GameEngine create() {
+        return new GameEngineImpl();
+    }
 }
