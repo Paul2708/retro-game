@@ -13,14 +13,16 @@ final class GameEngineImpl implements GameEngine {
 
     private MapModel mapModel;
     private InputListener inputListener;
+    private EngineConfiguration configuration;
 
     private GameWindow gameWindow;
     private GameCanvas gameCanvas;
 
-    private Thread loopThread;
+    private Boolean running;
+
 
     GameEngineImpl() {
-
+        this.running = false;
     }
 
     @Override
@@ -35,21 +37,26 @@ final class GameEngineImpl implements GameEngine {
 
     @Override
     public void setUp(EngineConfiguration configuration) {
+        this.configuration = configuration;
+
         this.gameCanvas = new GameCanvas(mapModel, inputListener);
         this.gameWindow = new GameWindow(configuration.getDimension(), "Snake", gameCanvas);
     }
 
     @Override
     public void start() {
+        running = true;
+
         gameWindow.setVisible(true);
 
-        this.loopThread = new Thread(new GameLoop(gameCanvas, true, 30));
+        Thread loopThread = new Thread(new GameLoop(gameCanvas, running, configuration.getFps()));
         loopThread.start();
     }
 
     @Override
     public void stop() {
-        loopThread.interrupt();
+        running = false;
+
         gameWindow.dispatchEvent(new WindowEvent(gameWindow, WindowEvent.WINDOW_CLOSING));
     }
 }
