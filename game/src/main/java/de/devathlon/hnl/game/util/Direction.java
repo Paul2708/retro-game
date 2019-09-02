@@ -13,6 +13,7 @@ public enum Direction {
     private Integer[] keys;
 
     Direction(Integer[] keys) {
+        this.keys = keys;
     }
 
     public Integer[] getKeys() {

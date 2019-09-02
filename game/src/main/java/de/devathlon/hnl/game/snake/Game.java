@@ -85,7 +85,7 @@ public class Game implements InputListener {
                     }
                     // sleep
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -99,11 +99,6 @@ public class Game implements InputListener {
         int x = oldHeadX;
         int y = oldHeadY;
         for (int i = 0; i < snake.getBodyPoints().size(); i++) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             System.out.println("Move to " + x);
             Point point = snake.getBodyPoints().get(i);
             int tempX = point.getX();
