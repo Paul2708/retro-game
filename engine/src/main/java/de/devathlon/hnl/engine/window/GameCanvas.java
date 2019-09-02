@@ -8,6 +8,8 @@ import de.devathlon.hnl.engine.listener.InputListener;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class GameCanvas extends Canvas {
 
@@ -43,7 +45,7 @@ public final class GameCanvas extends Canvas {
         // Draw border
         graphics.setColor(Color.BLUE);
 
-        for (Point point : mapModel.getBorder()) {
+        for (Point point : createBorder(mapModel.getBorder())) {
             Point transform = transform(point);
 
             graphics.fillRect(transform.getX(), transform.getY(), BLOCK_SIZE, BLOCK_SIZE);
@@ -76,6 +78,23 @@ public final class GameCanvas extends Canvas {
 
         graphics.dispose();
         bufferStrategy.show();
+    }
+
+    private List<Point> createBorder(List<Point> corners) {
+        List<Point> border = new ArrayList<>();
+
+        for (int i = 0; i < corners.size() - 1; i++) {
+            Point point = corners.get(i);
+            Point nextPoint = corners.get(i + 1);
+
+            for (int x = point.getX(); x < nextPoint.getX(); x++) {
+                for (int y = point.getY(); y < nextPoint.getY(); y++) {
+                    border.add(Point.of(x, y));
+                }
+            }
+        }
+
+        return border;
     }
 
     private Point transform(Point point) {
