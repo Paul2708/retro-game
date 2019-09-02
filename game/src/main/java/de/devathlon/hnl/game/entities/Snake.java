@@ -16,8 +16,8 @@ public class Snake implements SnakeModel {
         // generate snake at 10;10 with 4 body points
         headPoint = Point.of(10, 10);
 
-        for (int i = 0; i < 4; i++) {
-            bodyPoints.add(Point.of(10 + 1, 10));
+        for (int i = 1; i <= 4; i++) {
+            bodyPoints.add(Point.of(10 + i, 10));
         }
     }
 
