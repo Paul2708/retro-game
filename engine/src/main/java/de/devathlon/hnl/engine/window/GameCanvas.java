@@ -3,10 +3,9 @@ package de.devathlon.hnl.engine.window;
 import de.devathlon.hnl.core.MapModel;
 import de.devathlon.hnl.core.SnakeModel;
 import de.devathlon.hnl.core.math.Point;
+import de.devathlon.hnl.engine.listener.InputListener;
 
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferStrategy;
 
 public final class GameCanvas extends Canvas {
@@ -22,8 +21,10 @@ public final class GameCanvas extends Canvas {
 
     private MapModel mapModel;
 
-    public GameCanvas(MapModel mapModel) {
+    public GameCanvas(MapModel mapModel, InputListener inputListener) {
         this.mapModel = mapModel;
+
+        addKeyListener(new CanvasKeyListener(inputListener));
     }
 
     public void render() {
