@@ -8,13 +8,13 @@ import de.devathlon.hnl.engine.GameEngine;
 import de.devathlon.hnl.engine.configuration.DefaultEngineConfiguration;
 import de.devathlon.hnl.engine.configuration.EngineConfiguration;
 import de.devathlon.hnl.engine.listener.InputListener;
+import de.devathlon.hnl.game.Launcher;
 import de.devathlon.hnl.game.entities.Food;
 import de.devathlon.hnl.game.entities.Snake;
 import de.devathlon.hnl.game.util.Direction;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.nio.channels.FileChannel;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -29,8 +29,10 @@ public class Game implements InputListener {
     private boolean running;
     private AtomicBoolean pause;
 
+    private GameEngine gameEngine;
     private EngineConfiguration engineConfiguration;
     private MapModel mapModel;
+    private List<Point> borderPoints = new ArrayList<>();
 
     private List<FoodModel> foodList;
 
@@ -43,11 +45,11 @@ public class Game implements InputListener {
         foodList = new CopyOnWriteArrayList<>();
 
         // Refactor
-        GameEngine gameEngine = GameEngine.create();
+        gameEngine = GameEngine.create();
         this.mapModel = new MapModel() {
             @Override
-            public Collection<Point> getBorder() {
-                return new HashSet<>();
+            public List<Point> getBorder() {
+                return borderPoints;
             }
 
             @Override
@@ -65,6 +67,14 @@ public class Game implements InputListener {
         engineConfiguration = new EngineConfiguration(50, 50, 120);
         gameEngine.setUp(engineConfiguration);
         gameEngine.start();
+
+        // generate food AFTER game engine is setup
+        generateNewFood();
+        // setup border
+        borderPoints.add(Point.of(0, 0));
+        borderPoints.add(Point.of(0, engineConfiguration.getHeightInBlocks()));
+        borderPoints.add(Point.of(engineConfiguration.getWidthInBlocks(), 0));
+        borderPoints.add(Point.of(engineConfiguration.getWidthInBlocks(), engineConfiguration.getHeightInBlocks()));
     }
 
     private void setup() {
@@ -74,10 +84,12 @@ public class Game implements InputListener {
     }
 
     private void generateNewFood() {
-        Random height = new Random(engineConfiguration.getHeightInBlocks() - 1);
-        Random width = new Random(engineConfiguration.getWidthInBlocks() - 1);
+        Random random = new Random();
 
-        Food food = new Food(height.nextInt(), width.nextInt(), Color.ORANGE);
+        int x = random.nextInt(engineConfiguration.getHeightInBlocks() - 2) + 1;
+        int y = random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1;
+
+        Food food = new Food(x, y, Color.ORANGE);
         foodList.add(food);
     }
 
@@ -109,6 +121,13 @@ public class Game implements InputListener {
                     }
                     // updated head, now update body
                     updateBody(oldX, oldY);
+                    // check if
+                    if(contactWithFood() != null) {
+                        FoodModel food = contactWithFood();
+                        foodList.remove(food);
+                        snake.getBodyPoints().add(Point.of(oldX, oldY));
+                        generateNewFood();
+                    }
                     // sleep
                     try {
                         Thread.sleep(100);
@@ -133,6 +152,14 @@ public class Game implements InputListener {
         }
     }
 
+    private FoodModel contactWithFood() {
+        for(FoodModel food : foodList) {
+            if(food.getLocation().getX() == snake.getHeadPoint().getX() && food.getLocation().getY() == snake.getHeadPoint().getY()) return food;
+        }
+
+        return null;
+    }
+
     private boolean collisionWithSnakeBody() {
         for (Point point : snake.getBodyPoints()) {
             if (point.getX() == snake.getHeadPoint().getX() && point.getY() == snake.getHeadPoint().getY()) return true;
@@ -141,6 +168,10 @@ public class Game implements InputListener {
     }
 
     private boolean collisionWithBorder() {
+        if (snake.getHeadPoint().getX() >= engineConfiguration.getWidthInBlocks()
+                || snake.getHeadPoint().getX() <= 0
+                || snake.getHeadPoint().getY() >= engineConfiguration.getHeightInBlocks()
+                || snake.getHeadPoint().getY() <= 0) return true;
         return false;
     }
 
@@ -150,6 +181,11 @@ public class Game implements InputListener {
 
     private void endGame() {
         running = false;
+    }
+
+    private void reset() {
+        gameEngine.stop();
+        Launcher.setGame(new Game());
     }
 
     @Override
@@ -164,6 +200,10 @@ public class Game implements InputListener {
                 currentDirection = direction;
             }
         } else {
+            if(!running) {
+                reset();
+                return;
+            }
             pauseGame();
         }
     }
