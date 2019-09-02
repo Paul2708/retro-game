@@ -12,19 +12,16 @@ final class GameEngineImpl implements GameEngine {
     private GameWindow gameWindow;
     private GameCanvas gameCanvas;
 
+    private MapModel mapModel;
+
     private GameEngineImpl() {
 
     }
 
     @Override
-    public void setUp(EngineConfiguration configuration) {
-        this.gameCanvas = new GameCanvas();
+    public void setUp(EngineConfiguration configuration, MapModel mapModel) {
+        this.gameCanvas = new GameCanvas(mapModel);
         this.gameWindow = new GameWindow(configuration.getDimension(), "Snake", gameCanvas);
-    }
-
-    @Override
-    public void setModel(MapModel model) {
-
     }
 
     @Override
