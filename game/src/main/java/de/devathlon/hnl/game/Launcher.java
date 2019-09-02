@@ -18,4 +18,8 @@ public class Launcher {
     public static Game getGame() {
         return game;
     }
+
+    public static void setGame(Game game) {
+        Launcher.game = game;
+    }
 }
