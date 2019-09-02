@@ -19,9 +19,12 @@ public class Game implements InputListener {
     private Snake snake;
 
     private Direction currentDirection;
-    private Thread updateThread;
+
+    private boolean running;
+    private boolean pause;
 
     public Game() {
+        running = true;
         setup();
         updateHeadPosition();
 
@@ -46,6 +49,8 @@ public class Game implements InputListener {
         gameEngine.setInputListener(this);
         gameEngine.setUp(new DefaultEngineConfiguration());
         gameEngine.start();
+
+        this.pause = false;
     }
 
     private void setup() {
@@ -55,51 +60,50 @@ public class Game implements InputListener {
     }
 
     private void updateHeadPosition() {
-        updateThread = new Thread(() -> {
-            while (true) {
-                if(currentDirection != null) {
-                    Point headPoint = snake.getHeadPoint();
+       new Thread(() -> {
+            while (running) {
+                if (!pause) {
+                    if (currentDirection != null) {
+                        Point headPoint = snake.getHeadPoint();
 
-                    int oldX = headPoint.getX();
-                    int oldY = headPoint.getY();
-                    switch (currentDirection) {
-                        case UP:
-                            headPoint.update(0, 1);
-                            break;
-                        case DOWN:
-                            headPoint.update(0, -1);
-                            break;
-                        case LEFT:
-                            headPoint.update(-1, 0);
-                            break;
-                        case RIGHT:
-                            headPoint.update(1, 0);
-                            break;
-                    }
-                    // updated head, now update body
-                    updateBody(oldX, oldY);
-                    // after updating -> check for collision
-                    if (collisionWithSnakeBody() || collisionWithBorder()) {
-                        System.out.println("collision!");
-                        endGame();
-                    }
-                    // sleep
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        int oldX = headPoint.getX();
+                        int oldY = headPoint.getY();
+                        switch (currentDirection) {
+                            case UP:
+                                headPoint.update(0, 1);
+                                break;
+                            case DOWN:
+                                headPoint.update(0, -1);
+                                break;
+                            case LEFT:
+                                headPoint.update(-1, 0);
+                                break;
+                            case RIGHT:
+                                headPoint.update(1, 0);
+                                break;
+                        }
+                        // after updating -> check for collision
+                        if (collisionWithSnakeBody() || collisionWithBorder()) {
+                            endGame();
+                        }
+                        // updated head, now update body
+                        updateBody(oldX, oldY);
+                        // sleep
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
-        });
-        updateThread.start();
+        }).start();
     }
 
     private void updateBody(int oldHeadX, int oldHeadY) {
         int x = oldHeadX;
         int y = oldHeadY;
         for (int i = 0; i < snake.getBodyPoints().size(); i++) {
-            System.out.println("Move to " + x);
             Point point = snake.getBodyPoints().get(i);
             int tempX = point.getX();
             int tempY = point.getY();
@@ -121,20 +125,21 @@ public class Game implements InputListener {
     }
 
     private void pauseGame() {
-        if (updateThread.isAlive()) {
-            updateThread.interrupt();
+        System.out.println("Pause:  " + pause);
+        if (pause) {
+            pause = false;
         } else {
-            updateThread.start();
+            pause = true;
         }
     }
 
     private void endGame() {
-        updateThread.interrupt();
+        System.out.println("ending game.");
+        running = false;
     }
 
     @Override
     public void onInput(int keyCode) {
-        System.out.println("INPUT");
         if (keyCode != KeyEvent.VK_SPACE && keyCode != KeyEvent.VK_ESCAPE) {
             Direction direction = Direction.getDirectionByKey(keyCode);
             if (direction != null) {

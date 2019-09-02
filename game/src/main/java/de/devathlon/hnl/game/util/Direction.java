@@ -7,7 +7,7 @@ public enum Direction {
 
     UP(new Integer[]{KeyEvent.VK_W, KeyEvent.VK_UP}),
     DOWN(new Integer[]{KeyEvent.VK_S, KeyEvent.VK_DOWN}),
-    LEFT(new Integer[]{KeyEvent.VK_A, KeyEvent.VK_DOWN}),
+    LEFT(new Integer[]{KeyEvent.VK_A, KeyEvent.VK_LEFT}),
     RIGHT(new Integer[]{KeyEvent.VK_D, KeyEvent.VK_RIGHT});
 
     private Integer[] keys;
