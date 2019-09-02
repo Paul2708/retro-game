@@ -12,7 +12,6 @@ import de.devathlon.hnl.game.util.Direction;
 
 import java.awt.event.KeyEvent;
 import java.util.Collection;
-import java.util.HashSet;
 
 public class Game implements InputListener {
 
@@ -27,11 +26,10 @@ public class Game implements InputListener {
 
         // Refactor
         GameEngine gameEngine = GameEngine.create();
-        gameEngine.setUp(new DefaultEngineConfiguration(), new MapModel() {
-
+        gameEngine.setModel(new MapModel() {
             @Override
             public Collection<Point> getBorder() {
-                return new HashSet<>();
+                return null;
             }
 
             @Override
@@ -41,9 +39,11 @@ public class Game implements InputListener {
 
             @Override
             public Collection<FoodModel> getFood() {
-                return new HashSet<>();
+                return null;
             }
         });
+        gameEngine.setInputListener(this);
+        gameEngine.setUp(new DefaultEngineConfiguration());
         gameEngine.start();
     }
 
@@ -55,47 +55,48 @@ public class Game implements InputListener {
 
     private void updateHeadPosition() {
         updateThread = new Thread(() -> {
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             while (true) {
-                switch (currentDirection) {
-                    case UP:
-                        snake.getHeadPoint().update(0, 1);
-                        break;
-                    case DOWN:
-                        snake.getHeadPoint().update(0, -1);
-                        break;
-                    case LEFT:
-                        snake.getHeadPoint().update(-1, 0);
-                        break;
-                    case RIGHT:
-                        snake.getHeadPoint().update(1, 0);
-                        break;
-                }
-                // updated head, now update body
-                updateBody();
-                // after updating -> check for collision
-                if (collisionWithSnakeBody() || collisionWithBorder()) {
-                    System.out.println("collision!");
-                    endGame();
-                }
-                // sleep
-                try {
-                    Thread.sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                if(currentDirection != null) {
+                    Point headPoint = snake.getHeadPoint();
+
+                    int oldX = headPoint.getX();
+                    int oldY = headPoint.getY();
+                    switch (currentDirection) {
+                        case UP:
+                            headPoint.update(0, 1);
+                            break;
+                        case DOWN:
+                            headPoint.update(0, -1);
+                            break;
+                        case LEFT:
+                            headPoint.update(-1, 0);
+                            break;
+                        case RIGHT:
+                            headPoint.update(1, 0);
+                            break;
+                    }
+                    // updated head, now update body
+                    updateBody(oldX, oldY);
+                    // after updating -> check for collision
+                    if (collisionWithSnakeBody() || collisionWithBorder()) {
+                        System.out.println("collision!");
+                        endGame();
+                    }
+                    // sleep
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
         updateThread.start();
     }
 
-    private void updateBody() {
-        int x = snake.getHeadPoint().getX();
-        int y = snake.getHeadPoint().getY();
+    private void updateBody(int oldHeadX, int oldHeadY) {
+        int x = oldHeadX;
+        int y = oldHeadY;
         for (int i = 0; i < snake.getBodyPoints().size(); i++) {
             System.out.println("Move to " + x);
             Point point = snake.getBodyPoints().get(i);
