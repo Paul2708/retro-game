@@ -1,11 +1,18 @@
 package de.devathlon.hnl.game.snake;
 
+import de.devathlon.hnl.core.FoodModel;
+import de.devathlon.hnl.core.MapModel;
+import de.devathlon.hnl.core.SnakeModel;
 import de.devathlon.hnl.core.math.Point;
+import de.devathlon.hnl.engine.GameEngine;
+import de.devathlon.hnl.engine.configuration.DefaultEngineConfiguration;
 import de.devathlon.hnl.engine.listener.InputListener;
 import de.devathlon.hnl.game.entities.Snake;
 import de.devathlon.hnl.game.util.Direction;
 
 import java.awt.event.KeyEvent;
+import java.util.Collection;
+import java.util.HashSet;
 
 public class Game implements InputListener {
 
@@ -17,6 +24,27 @@ public class Game implements InputListener {
     public Game() {
         setup();
         updateSnakePosition();
+
+        // Refactor
+        GameEngine gameEngine = GameEngine.create();
+        gameEngine.setUp(new DefaultEngineConfiguration(), new MapModel() {
+
+            @Override
+            public Collection<Point> getBorder() {
+                return new HashSet<>();
+            }
+
+            @Override
+            public SnakeModel getSnake() {
+                return snake;
+            }
+
+            @Override
+            public Collection<FoodModel> getFood() {
+                return new HashSet<>();
+            }
+        });
+        gameEngine.start();
     }
 
     private void setup() {
@@ -65,6 +93,7 @@ public class Game implements InputListener {
                 e.printStackTrace();
             }
         });
+        updateThread.start();
     }
 
     private boolean collisionWithSnakeBody() {
