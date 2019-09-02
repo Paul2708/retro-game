@@ -1,12 +1,14 @@
 package de.devathlon.hnl.game.util;
 
 
+import java.awt.event.KeyEvent;
+
 public enum Direction {
 
-    UP(new Integer[]{1, 2}),
-    DOWN(new Integer[]{1, 2}),
-    LEFT(new Integer[]{1, 2}),
-    RIGHT(new Integer[]{1, 2});
+    UP(new Integer[]{KeyEvent.VK_W, KeyEvent.VK_UP}),
+    DOWN(new Integer[]{KeyEvent.VK_S, KeyEvent.VK_DOWN}),
+    LEFT(new Integer[]{KeyEvent.VK_A, KeyEvent.VK_DOWN}),
+    RIGHT(new Integer[]{KeyEvent.VK_D, KeyEvent.VK_RIGHT});
 
     private Integer[] keys;
 
