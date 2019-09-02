@@ -4,7 +4,6 @@ import de.devathlon.hnl.core.FoodModel;
 import de.devathlon.hnl.core.math.Point;
 
 import java.awt.*;
-import java.util.Random;
 
 public class Food implements FoodModel {
 
@@ -12,8 +11,7 @@ public class Food implements FoodModel {
     private Color color;
 
     public Food(int x, int y, Color color) {
-        location.setX(x);
-        location.setY(y);
+        location = Point.of(x, y);
         this.color = color;
     }
 
