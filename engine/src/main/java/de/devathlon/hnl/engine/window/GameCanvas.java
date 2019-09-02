@@ -81,16 +81,39 @@ public final class GameCanvas extends Canvas {
     }
 
     private List<Point> createBorder(List<Point> corners) {
+        // TODO: Refactor me
+
         List<Point> border = new ArrayList<>();
 
         for (int i = 0; i < corners.size() - 1; i++) {
             Point point = corners.get(i);
             Point nextPoint = corners.get(i + 1);
 
-            for (int x = point.getX(); x < nextPoint.getX(); x++) {
-                for (int y = point.getY(); y < nextPoint.getY(); y++) {
-                    border.add(Point.of(x, y));
+            if (point.getX() == nextPoint.getX()) {
+                // Increase y
+                for (int y = Math.min(point.getY(), nextPoint.getY()); y < Math.max(point.getY(), nextPoint.getY()); y++) {
+                    border.add(Point.of(point.getX(), y));
                 }
+            } else if (point.getY() == nextPoint.getY()) {
+                // Increase x
+                for (int x = Math.min(point.getX(), nextPoint.getX()); x < Math.max(point.getX(), nextPoint.getX()); x++) {
+                    border.add(Point.of(x, point.getY()));
+                }
+            }
+        }
+
+        Point last = corners.get(corners.size() - 1);
+        Point first = corners.get(0);
+
+        if (last.getX() == first.getX()) {
+            // Increase y
+            for (int y = Math.min(last.getY(), first.getY()); y < Math.max(last.getY(), first.getY()); y++) {
+                border.add(Point.of(last.getX(), y));
+            }
+        } else if (last.getY() == first.getY()) {
+            // Increase x
+            for (int x = Math.min(last.getX(), first.getX()); x < Math.max(last.getX(), first.getX()); x++) {
+                border.add(Point.of(x, last.getY()));
             }
         }
 
