@@ -48,6 +48,7 @@ final class GameEngineImpl implements GameEngine {
         running = true;
 
         gameWindow.setVisible(true);
+        gameCanvas.requestFocus();
 
         Thread loopThread = new Thread(new GameLoop(gameCanvas, running, configuration.getFps()));
         loopThread.start();
