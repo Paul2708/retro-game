@@ -40,7 +40,7 @@ final class GameEngineImpl implements GameEngine {
 
     @Override
     public void setUp(EngineConfiguration configuration) {
-        this.gameCanvas = new GameCanvas(inputListener, mapModel);
+        this.gameCanvas = new GameCanvas(mapModel, inputListener);
         this.gameWindow = new GameWindow(configuration.getDimension(), "Snake", gameCanvas);
     }
 
