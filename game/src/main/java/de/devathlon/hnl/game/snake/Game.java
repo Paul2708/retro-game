@@ -23,7 +23,7 @@ public class Game implements InputListener {
 
     public Game() {
         setup();
-        updateSnakePosition();
+        updateHeadPosition();
 
         // Refactor
         GameEngine gameEngine = GameEngine.create();
@@ -53,8 +53,13 @@ public class Game implements InputListener {
         this.currentDirection = Direction.LEFT;
     }
 
-    private void updateSnakePosition() {
+    private void updateHeadPosition() {
         updateThread = new Thread(() -> {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             while (true) {
                 switch (currentDirection) {
                     case UP:
@@ -70,18 +75,8 @@ public class Game implements InputListener {
                         snake.getHeadPoint().update(1, 0);
                         break;
                 }
-                int x = snake.getHeadPoint().getX();
-                int y = snake.getHeadPoint().getY();
-
-                for (int i = 0; i < snake.getBodyPoints().size(); i++) {
-                    System.out.println("Move to " + x);
-                    Point point = snake.getBodyPoints().get(i);
-                    int tempX = point.getX();
-                    int tempY = point.getY();
-                    point.update(x, y);
-                    x = tempX;
-                    y = tempY;
-                }
+                // updated head, now update body
+                updateBody();
                 // after updating -> check for collision
                 if (collisionWithSnakeBody() || collisionWithBorder()) {
                     System.out.println("collision!");
@@ -89,13 +84,32 @@ public class Game implements InputListener {
                 }
                 // sleep
                 try {
-                    Thread.sleep(300);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         });
         updateThread.start();
+    }
+
+    private void updateBody() {
+        int x = snake.getHeadPoint().getX();
+        int y = snake.getHeadPoint().getY();
+        for (int i = snake.getBodyPoints().size()-1; i >= 0; i--) {
+            System.out.println("Move to " + x);
+            Point point = snake.getBodyPoints().get(i);
+            int tempX = point.getX();
+            int tempY = point.getY();
+            point.update(x, y);
+            x = tempX;
+            y = tempY;
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private boolean collisionWithSnakeBody() {
