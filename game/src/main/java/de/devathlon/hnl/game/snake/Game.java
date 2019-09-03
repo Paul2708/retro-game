@@ -4,9 +4,11 @@ import de.devathlon.hnl.core.FoodModel;
 import de.devathlon.hnl.core.MapModel;
 import de.devathlon.hnl.core.SnakeModel;
 import de.devathlon.hnl.core.math.Point;
+import de.devathlon.hnl.core.update.EngineUpdate;
 import de.devathlon.hnl.engine.GameEngine;
 import de.devathlon.hnl.engine.configuration.EngineConfiguration;
 import de.devathlon.hnl.engine.listener.InputListener;
+import de.devathlon.hnl.game.Launcher;
 import de.devathlon.hnl.game.animation.Border;
 import de.devathlon.hnl.game.animation.Effect;
 import de.devathlon.hnl.game.food.Food;
@@ -30,6 +32,7 @@ public class Game implements InputListener {
     private boolean running;
     private AtomicBoolean pause;
 
+    private GameEngine gameEngine;
     private EngineConfiguration engineConfiguration;
     private List<Point> borderPoints = new CopyOnWriteArrayList<>();
 
@@ -53,7 +56,7 @@ public class Game implements InputListener {
         setup();
 
         // Refactor
-        GameEngine gameEngine = GameEngine.create();
+        gameEngine = GameEngine.create();
         MapModel mapModel = new MapModel() {
             @Override
             public List<Point> getBorder() {
@@ -79,9 +82,9 @@ public class Game implements InputListener {
         for (int i = 0; i < 4; i++) {
             for (int x = 0; x < engineConfiguration.getWidthInBlocks(); x++) {
                 this.borderPoints.add(Point.of(x, 0));
-                this.borderPoints.add(Point.of(x, engineConfiguration.getHeightInBlocks() - 1));
+                this.borderPoints.add(Point.of(x, engineConfiguration.getHeightInBlocks() - 4));
             }
-            for (int y = 0; y < engineConfiguration.getHeightInBlocks(); y++) {
+            for (int y = 0; y < engineConfiguration.getHeightInBlocks() - 4; y++) {
                 this.borderPoints.add(Point.of(0, y));
                 this.borderPoints.add(Point.of(engineConfiguration.getWidthInBlocks() - 1, y));
             }
@@ -123,7 +126,8 @@ public class Game implements InputListener {
             @Override
             public void run() {
                 if (effectGiven != 0) {
-                    Effect.animateTimer(2);
+                    long secondsLeft = ((System.currentTimeMillis() - effectGiven) / 1000);
+                    Effect.animateTimer(Launcher.getGame(), (int) secondsLeft);
                     if (((System.currentTimeMillis() - effectGiven) / 1000) >= effectTime) {
                         removeAllEffects();
                     }
@@ -135,16 +139,16 @@ public class Game implements InputListener {
     private void generateNewFood() {
         Random random = new Random();
 
-        int x = random.nextInt(engineConfiguration.getHeightInBlocks() - 2) + 1;
-        int y = random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1;
+        int x = random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1;
+        int y = random.nextInt(engineConfiguration.getHeightInBlocks() - 5) + 1;
 
-        int specialX = random.nextInt(engineConfiguration.getHeightInBlocks() - 2) + 1;
-        int specialY = random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1;
+        int specialX = random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1;
+        int specialY = random.nextInt(engineConfiguration.getHeightInBlocks() - 5) + 1;
         Food food;
         SpecialFood special = null;
         // special food
 
-        switch (random.nextInt(20)) {
+        switch (random.nextInt(6)) {
             case 1:
                 special = new SpecialFood(specialX, specialY, Color.GREEN); // green (speed)
                 break;
@@ -217,8 +221,8 @@ public class Game implements InputListener {
                             } else if (headPoint.getX() == engineConfiguration.getWidthInBlocks() - 1) {
                                 headPoint.setX(1);
                             } else if (headPoint.getY() == 0) {
-                                headPoint.setY(engineConfiguration.getHeightInBlocks() - 1);
-                            } else if (headPoint.getY() == engineConfiguration.getHeightInBlocks() - 1) {
+                                headPoint.setY(engineConfiguration.getHeightInBlocks() - 4);
+                            } else if (headPoint.getY() == engineConfiguration.getHeightInBlocks() - 4) {
                                 headPoint.setY(1);
                             }
                         } else {
@@ -248,6 +252,10 @@ public class Game implements InputListener {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+
+                    // update score
+
+                    gameEngine.update(EngineUpdate.SCORE_UPDATE, "Dein neuer Score", snake.getBodyPoints().size() + 1);
                 }
             }
         }).start();
@@ -322,5 +330,9 @@ public class Game implements InputListener {
 
     public AtomicBoolean getPause() {
         return pause;
+    }
+
+    public int getEffectTime() {
+        return effectTime;
     }
 }
