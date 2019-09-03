@@ -5,10 +5,9 @@ import de.devathlon.hnl.core.MapModel;
 import de.devathlon.hnl.core.SnakeModel;
 import de.devathlon.hnl.core.math.Point;
 import de.devathlon.hnl.engine.GameEngine;
-import de.devathlon.hnl.engine.configuration.DefaultEngineConfiguration;
 import de.devathlon.hnl.engine.configuration.EngineConfiguration;
 import de.devathlon.hnl.engine.listener.InputListener;
-import de.devathlon.hnl.game.Launcher;
+import de.devathlon.hnl.game.animation.Effect;
 import de.devathlon.hnl.game.entities.Food;
 import de.devathlon.hnl.game.entities.Snake;
 import de.devathlon.hnl.game.util.Direction;
@@ -18,7 +17,6 @@ import java.awt.event.KeyEvent;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Game implements InputListener {
@@ -37,23 +35,27 @@ public class Game implements InputListener {
 
     private List<FoodModel> foodList;
 
+    // effect variables
+    private long effectGiven;
+    private int effectTime;
     private long speed;
-
-    private Thread effectTimer;
-    private boolean newEffect;
+    private boolean invincible;
+    private boolean doublePoints;
 
     public Game() {
+        // initialize effect variables
         this.speed = 100;
-        this.effectTimer = new Thread();
-        running = true;
-        pause = new AtomicBoolean(true);
-        setup();
-        updateHeadPosition();
+        this.effectGiven = 0;
+        this.effectTime = 10;
+        this.doublePoints = false;
+        this.invincible = false;
 
-        foodList = new CopyOnWriteArrayList<>();
+        this.running = true;
+        this.pause = new AtomicBoolean(true);
+        setup();
 
         // Refactor
-        gameEngine = GameEngine.create();
+        this.gameEngine = GameEngine.create();
         this.mapModel = new MapModel() {
             @Override
             public List<Point> getBorder() {
@@ -70,25 +72,46 @@ public class Game implements InputListener {
                 return foodList;
             }
         };
-        gameEngine.setModel(mapModel);
-        gameEngine.setInputListener(this);
-        engineConfiguration = new EngineConfiguration(20, 20, 120);
-        gameEngine.setUp(engineConfiguration);
-        gameEngine.start();
-
-        // generate food AFTER game engine is setup
-        generateNewFood();
+        this.gameEngine.setModel(mapModel);
+        this.gameEngine.setInputListener(this);
+        this.engineConfiguration = new EngineConfiguration(35, 35, 120);
+        this.gameEngine.setUp(engineConfiguration);
+        this.gameEngine.start();
         // setup border
-        borderPoints.add(Point.of(0, 0));
-        borderPoints.add(Point.of(0, engineConfiguration.getHeightInBlocks()));
-        borderPoints.add(Point.of(engineConfiguration.getWidthInBlocks(), 0));
-        borderPoints.add(Point.of(engineConfiguration.getWidthInBlocks(), engineConfiguration.getHeightInBlocks()));
+        this.borderPoints.add(Point.of(0, 0));
+        this.borderPoints.add(Point.of(0, engineConfiguration.getHeightInBlocks()));
+        this.borderPoints.add(Point.of(engineConfiguration.getWidthInBlocks(), 0));
+        this.borderPoints.add(Point.of(engineConfiguration.getWidthInBlocks(), engineConfiguration.getHeightInBlocks()));
+
+        // map design
+        this.borderPoints.add(Point.of(10, 15));
+        this.borderPoints.add(Point.of(10, 20));
+        this.borderPoints.add(Point.of(20, 20));
+        this.borderPoints.add(Point.of(20, 15));
+
+        // generate new food model
+        generateNewFood();
     }
 
     private void setup() {
         // initialize snake
         this.snake = new Snake();
         this.currentDirection = Direction.LEFT;
+        updateHeadPosition();
+        // initialize food
+        this.foodList = new CopyOnWriteArrayList<>();
+
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (effectGiven != 0) {
+                    Effect.animateTimer(2);
+                    if (((System.currentTimeMillis() - effectGiven) / 1000) >= effectTime) {
+                        removeAllEffects();
+                    }
+                }
+            }
+        }, 1000, 1000);
     }
 
     private void generateNewFood() {
@@ -99,16 +122,43 @@ public class Game implements InputListener {
 
         Food food;
         Food special = null;
-        if (random.nextInt(3) == 1) {
+        // special food
+        if (random.nextInt(4) == 1) {
             special = new Food(
                     random.nextInt(engineConfiguration.getHeightInBlocks() - 2) + 1,
                     random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1,
-                    Color.GREEN);
-        } else if (random.nextInt(3) == 2) {
+                    Color.GREEN); // green (speed)
+        } else if (random.nextInt(4) == 2) {
             special = new Food(
                     random.nextInt(engineConfiguration.getHeightInBlocks() - 2) + 1,
                     random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1,
-                    Color.BLUE);
+                    Color.BLUE); // blue (slowness)
+        } else if (random.nextInt(4) == 0) {
+            special = new Food(
+                    random.nextInt(engineConfiguration.getHeightInBlocks() - 2) + 1,
+                    random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1,
+                    Color.RED); // blue (slowness)
+        } else if (random.nextInt(4) == 3) {
+            special = new Food(
+                    random.nextInt(engineConfiguration.getHeightInBlocks() - 2) + 1,
+                    random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1,
+                    Color.GRAY); // gray (half snake disappears)
+        } else if (random.nextInt(4) == 0) {
+            special = new Food(
+                    random.nextInt(engineConfiguration.getHeightInBlocks() - 2) + 1,
+                    random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1,
+                    Color.YELLOW); // yellow (double points)
+        }
+        for (int i = 0; i < borderPoints.size(); i++) {
+            if (x == borderPoints.get(i).getX() && y == borderPoints.get(i).getY()) {
+                generateNewFood();
+                return;
+            }
+            if (special != null) {
+                if (special.getLocation().getX() == borderPoints.get(i).getX() && special.getLocation().getY() == borderPoints.get(i).getY()) {
+                    return;
+                }
+            }
         }
         food = new Food(x, y, Color.ORANGE);
         foodList.add(food);
@@ -117,13 +167,12 @@ public class Game implements InputListener {
             foodList.add(specialFood);
             // remove food after 20 seconds
             new Timer().schedule(new TimerTask() {
-
                 @Override
                 public void run() {
                     if (foodList.contains(specialFood))
                         foodList.remove(specialFood);
                 }
-            },1000 * 20);
+            }, 1000 * 20);
         }
     }
 
@@ -151,7 +200,19 @@ public class Game implements InputListener {
                     }
                     // after updating -> check for collision
                     if (collisionWithSnakeBody() || collisionWithBorder()) {
-                        endGame();
+                        if (collisionWithBorder() && invincible) {
+                            if (headPoint.getX() == 0) {
+                                headPoint.setX(engineConfiguration.getWidthInBlocks() - 1);
+                            } else if (headPoint.getX() == engineConfiguration.getWidthInBlocks()) {
+                                headPoint.setX(1);
+                            } else if (headPoint.getY() == 0) {
+                                headPoint.setY(engineConfiguration.getHeightInBlocks() - 1);
+                            } else if (headPoint.getY() == engineConfiguration.getHeightInBlocks()) {
+                                headPoint.setY(1);
+                            }
+                        } else {
+                            endGame();
+                        }
                     }
                     // updated head, now update body
                     updateBody(oldX, oldY);
@@ -162,6 +223,9 @@ public class Game implements InputListener {
                         if (food.getColor() != Color.ORANGE) {
                             proccessFoodEffect(food);
                         } else {
+                            if (doublePoints)
+                                snake.getBodyPoints().add(Point.of(oldX, oldY));
+
                             snake.getBodyPoints().add(Point.of(oldX, oldY));
                         }
                         generateNewFood();
@@ -200,33 +264,33 @@ public class Game implements InputListener {
     }
 
     private void proccessFoodEffect(FoodModel foodModel) {
-        if(effectTimer != null && effectTimer.isAlive()) {
-            effectTimer.interrupt();
-            effectTimer = null;
-            newEffect = true;
-        }
+        removeAllEffects();
         if (foodModel.getColor() == Color.GREEN) {
             this.speed = 50;
         } else if (foodModel.getColor() == Color.BLUE) {
             this.speed = 300;
-        }
-        effectTimer = new Thread(() -> {
-            try {
-                Thread.sleep(1000 * 10);
-            } catch (InterruptedException e) {
+        } else if (foodModel.getColor() == Color.RED) {
+            this.invincible = true;
+        } else if (foodModel.getColor() == Color.GRAY) {
+            for (int i = 0; i < snake.getBodyPoints().size() / 2; i++) {
+                snake.getBodyPoints().remove(i);
             }
-            if(!newEffect) this.speed = 100;
-            System.out.println("Debug:  " + 100);
-        });
-        newEffect = false;
-        effectTimer.start();
+            return; // return if no timer is needed
+        } else if (foodModel.getColor() == Color.YELLOW) {
+            this.doublePoints = true;
+        }
+        this.effectGiven = System.currentTimeMillis();
     }
 
     private void removeAllEffects() {
-        speed = 100;
+        this.speed = 100;
+        this.invincible = false;
+        this.effectGiven = 0;
+        this.doublePoints = false;
     }
 
     private boolean collisionWithSnakeBody() {
+        if (invincible) return false;
         for (Point point : snake.getBodyPoints()) {
             if (point.getX() == snake.getHeadPoint().getX() && point.getY() == snake.getHeadPoint().getY()) return true;
         }
@@ -234,10 +298,10 @@ public class Game implements InputListener {
     }
 
     private boolean collisionWithBorder() {
-        if (snake.getHeadPoint().getX() >= engineConfiguration.getWidthInBlocks()
-                || snake.getHeadPoint().getX() <= 0
-                || snake.getHeadPoint().getY() >= engineConfiguration.getHeightInBlocks()
-                || snake.getHeadPoint().getY() <= 0) return true;
+        for (int i = 0; i < borderPoints.size(); i++) {
+            if (snake.getHeadPoint().getX() == borderPoints.get(i).getX() && snake.getHeadPoint().getY() == borderPoints.get(i).getY())
+                return true;
+        }
         return false;
     }
 
@@ -253,18 +317,15 @@ public class Game implements InputListener {
     private void reset() {
         this.snake = new Snake();
 
-        foodList.clear();
+        this.foodList.clear();
         generateNewFood();
 
-        running = true;
+        this.running = true;
 
         removeAllEffects();
-        if(effectTimer != null & effectTimer.isAlive()) {
-            effectTimer.interrupt();
-            effectTimer = null;
-        }
+        this.effectGiven = 0;
 
-        currentDirection = Direction.LEFT;
+        this.currentDirection = Direction.LEFT;
     }
 
     @Override
