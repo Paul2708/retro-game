@@ -1,5 +1,6 @@
 package de.devathlon.hnl.engine.window;
 
+import de.devathlon.hnl.core.EffectBarModel;
 import de.devathlon.hnl.core.FoodModel;
 import de.devathlon.hnl.core.MapModel;
 import de.devathlon.hnl.core.SnakeModel;
@@ -119,8 +120,15 @@ public final class GameCanvas extends Canvas {
             graphics.setColor(foodModel.getColor());
             graphics.fillRect(transform.getX(), transform.getY(), BLOCK_SIZE, BLOCK_SIZE);
         }
+        
+        // Draw effect bar
+        EffectBarModel effectBarModel = mapModel.getEffectBar();
+        graphics.setColor(effectBarModel.getColor());
 
-        graphics.drawString("It works!", 100, 100);
+        for (Point point : effectBarModel.getBar()) {
+            Point transform = transform(point);
+            graphics.fillRect(transform.getX(), transform.getY(), BLOCK_SIZE, BLOCK_SIZE);
+        }
 
         graphics.dispose();
         bufferStrategy.show();

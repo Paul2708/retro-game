@@ -12,4 +12,6 @@ public interface MapModel {
     SnakeModel getSnake();
 
     Collection<FoodModel> getFood();
+
+    EffectBarModel getEffectBar();
 }
