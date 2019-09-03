@@ -7,9 +7,11 @@ import de.devathlon.hnl.core.math.Point;
 import de.devathlon.hnl.engine.GameEngine;
 import de.devathlon.hnl.engine.configuration.EngineConfiguration;
 import de.devathlon.hnl.engine.listener.InputListener;
+import de.devathlon.hnl.game.animation.Border;
 import de.devathlon.hnl.game.animation.Effect;
-import de.devathlon.hnl.game.entities.Food;
+import de.devathlon.hnl.game.food.Food;
 import de.devathlon.hnl.game.entities.Snake;
+import de.devathlon.hnl.game.food.SpecialFood;
 import de.devathlon.hnl.game.util.Direction;
 
 import java.awt.*;
@@ -28,47 +30,31 @@ public class Game implements InputListener {
     private boolean running;
     private AtomicBoolean pause;
 
-    private GameEngine gameEngine;
     private EngineConfiguration engineConfiguration;
-    private MapModel mapModel;
-    private List<Point> borderPoints = new ArrayList<>();
+    private List<Point> borderPoints = new CopyOnWriteArrayList<>();
 
     private List<FoodModel> foodList;
 
     // effect variables
     private long effectGiven;
     private int effectTime;
-    private long speed;
-    private boolean invincible;
     private boolean doublePoints;
 
     public Game() {
         // initialize effect variables
-        this.speed = 100;
         this.effectGiven = 0;
         this.effectTime = 10;
         this.doublePoints = false;
-        this.invincible = false;
 
-        // map
-        for(int x = 15; x < 20; x++) {
-            for(int y = 15; y < 20; y++) {
-                this.borderPoints.add(Point.of(x, y));
-            }
-        }
-        for(int x = 25; x < 30; x++) {
-            for(int y = 15; y < 20; y++) {
-                this.borderPoints.add(Point.of(x, y));
-            }
-        }
+        // map end
 
         this.running = true;
         this.pause = new AtomicBoolean(true);
         setup();
 
         // Refactor
-        this.gameEngine = GameEngine.create();
-        this.mapModel = new MapModel() {
+        GameEngine gameEngine = GameEngine.create();
+        MapModel mapModel = new MapModel() {
             @Override
             public List<Point> getBorder() {
                 return borderPoints;
@@ -84,22 +70,38 @@ public class Game implements InputListener {
                 return foodList;
             }
         };
-        this.gameEngine.setModel(mapModel);
-        this.gameEngine.setInputListener(this);
+        gameEngine.setModel(mapModel);
+        gameEngine.setInputListener(this);
         this.engineConfiguration = new EngineConfiguration(35, 35, 120);
-        this.gameEngine.setUp(engineConfiguration);
-        this.gameEngine.start();
+        gameEngine.setUp(engineConfiguration);
+        gameEngine.start();
         // setup border
-        for(int i = 0; i < 4; i++) {
-            for(int x = 0; x < engineConfiguration.getWidthInBlocks(); x++) {
+        for (int i = 0; i < 4; i++) {
+            for (int x = 0; x < engineConfiguration.getWidthInBlocks(); x++) {
                 this.borderPoints.add(Point.of(x, 0));
-                this.borderPoints.add(Point.of(x, engineConfiguration.getHeightInBlocks() -1));
+                this.borderPoints.add(Point.of(x, engineConfiguration.getHeightInBlocks() - 1));
             }
-            for(int y = 0; y < engineConfiguration.getHeightInBlocks(); y++) {
+            for (int y = 0; y < engineConfiguration.getHeightInBlocks(); y++) {
                 this.borderPoints.add(Point.of(0, y));
-                this.borderPoints.add(Point.of(engineConfiguration.getWidthInBlocks() -1, y));
+                this.borderPoints.add(Point.of(engineConfiguration.getWidthInBlocks() - 1, y));
             }
         }
+
+        // map
+        for (int x = 15; x < 20; x++) {
+            for (int y = 15; y < 20; y++) {
+                this.borderPoints.add(Point.of(x, y));
+            }
+        }
+        for (int x = 25; x < 30; x++) {
+            for (int y = 15; y < 20; y++) {
+                this.borderPoints.add(Point.of(x, y));
+            }
+        }
+
+        Border.animateMovingBorder(0, 1000, this, 25, 30);
+        Border.animateMovingBorder(5500, 1500, this, 25, 30);
+
         // generate new food model
         generateNewFood();
     }
@@ -131,43 +133,37 @@ public class Game implements InputListener {
         int x = random.nextInt(engineConfiguration.getHeightInBlocks() - 2) + 1;
         int y = random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1;
 
+        int specialX = random.nextInt(engineConfiguration.getHeightInBlocks() - 2) + 1;
+        int specialY = random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1;
         Food food;
-        Food special = null;
+        SpecialFood special = null;
         // special food
-        if (random.nextInt(4) == 1) {
-            special = new Food(
-                    random.nextInt(engineConfiguration.getHeightInBlocks() - 2) + 1,
-                    random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1,
-                    Color.GREEN); // green (speed)
-        } else if (random.nextInt(4) == 2) {
-            special = new Food(
-                    random.nextInt(engineConfiguration.getHeightInBlocks() - 2) + 1,
-                    random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1,
-                    Color.BLUE); // blue (slowness)
-        } else if (random.nextInt(4) == 0) {
-            special = new Food(
-                    random.nextInt(engineConfiguration.getHeightInBlocks() - 2) + 1,
-                    random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1,
-                    Color.RED); // blue (slowness)
-        } else if (random.nextInt(4) == 3) {
-            special = new Food(
-                    random.nextInt(engineConfiguration.getHeightInBlocks() - 2) + 1,
-                    random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1,
-                    Color.GRAY); // gray (half snake disappears)
-        } else if (random.nextInt(4) == 0) {
-            special = new Food(
-                    random.nextInt(engineConfiguration.getHeightInBlocks() - 2) + 1,
-                    random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1,
-                    Color.YELLOW); // yellow (double points)
+
+        switch (random.nextInt(20)) {
+            case 1:
+                special = new SpecialFood(specialX, specialY, Color.GREEN); // green (speed)
+                break;
+            case 2:
+                special = new SpecialFood(specialX, specialY, Color.BLUE); // blue (slowness)
+                break;
+            case 3:
+                special = new SpecialFood(specialX, specialY, Color.RED); // blue (slowness)
+                break;
+            case 4:
+                special = new SpecialFood(specialX, specialY, Color.GRAY); // gray (half snake disappears)
+                break;
+            case 5:
+                special = new SpecialFood(specialX, specialY, Color.YELLOW); // yellow (double points)
+                break;
         }
-        for (int i = 0; i < borderPoints.size(); i++) {
-            if (x == borderPoints.get(i).getX() && y == borderPoints.get(i).getY()) {
+        for (Point borderPoint : borderPoints) {
+            if (x == borderPoint.getX() && y == borderPoint.getY()) {
                 generateNewFood();
                 return;
             }
             if (special != null) {
-                if (special.getLocation().getX() == borderPoints.get(i).getX() && special.getLocation().getY() == borderPoints.get(i).getY()) {
-                    return;
+                if (special.getLocation().getX() == borderPoint.getX() && special.getLocation().getY() == borderPoint.getY()) {
+                    special = null;
                 }
             }
         }
@@ -180,8 +176,7 @@ public class Game implements InputListener {
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if (foodList.contains(specialFood))
-                        foodList.remove(specialFood);
+                    foodList.remove(specialFood);
                 }
             }, 1000 * 20);
         }
@@ -210,8 +205,8 @@ public class Game implements InputListener {
                             break;
                     }
                     // after updating -> check for collision
-                    if (collisionWithSnakeBody() || collisionWithBorder()) {
-                        if (collisionWithBorder() && invincible) {
+                    if (snake.collisionWithBody() || snake.collisionWithBorder(borderPoints)) {
+                        if (snake.collisionWithBorder(borderPoints) && snake.isInvincible()) {
                             if (headPoint.getX() == 0) {
                                 headPoint.setX(engineConfiguration.getWidthInBlocks() - 1);
                             } else if (headPoint.getX() == engineConfiguration.getWidthInBlocks() - 1) {
@@ -226,13 +221,14 @@ public class Game implements InputListener {
                         }
                     }
                     // updated head, now update body
-                    updateBody(oldX, oldY);
+                    snake.updateBody(oldX, oldY);
                     // check if
-                    if (contactWithFood() != null) {
-                        FoodModel food = contactWithFood();
+                    if (snake.contactWithFood(foodList) != null) {
+                        FoodModel food = snake.contactWithFood(foodList);
                         foodList.remove(food);
-                        if (food.getColor() != Color.ORANGE) {
-                            proccessFoodEffect(food);
+                        if (food instanceof SpecialFood) {
+                            SpecialFood specialFood = (SpecialFood) food;
+                            specialFood.activateEffect(this, snake);
                         } else {
                             if (doublePoints)
                                 snake.getBodyPoints().add(Point.of(oldX, oldY));
@@ -243,7 +239,7 @@ public class Game implements InputListener {
                     }
                     // sleep
                     try {
-                        Thread.sleep(speed);
+                        Thread.sleep(snake.getSpeed());
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -252,68 +248,12 @@ public class Game implements InputListener {
         }).start();
     }
 
-    private void updateBody(int oldHeadX, int oldHeadY) {
-        int x = oldHeadX;
-        int y = oldHeadY;
-        for (int i = 0; i < snake.getBodyPoints().size(); i++) {
-            Point point = snake.getBodyPoints().get(i);
-            int tempX = point.getX();
-            int tempY = point.getY();
-            point.set(x, y);
-            x = tempX;
-            y = tempY;
-        }
-    }
+    public void removeAllEffects() {
+        this.snake.setSpeed(100);
+        this.snake.setInvincible(false);
 
-    private FoodModel contactWithFood() {
-        for (FoodModel food : foodList) {
-            if (food.getLocation().getX() == snake.getHeadPoint().getX() && food.getLocation().getY() == snake.getHeadPoint().getY())
-                return food;
-        }
-
-        return null;
-    }
-
-    private void proccessFoodEffect(FoodModel foodModel) {
-        removeAllEffects();
-        if (foodModel.getColor() == Color.GREEN) {
-            this.speed = 50;
-        } else if (foodModel.getColor() == Color.BLUE) {
-            this.speed = 300;
-        } else if (foodModel.getColor() == Color.RED) {
-            this.invincible = true;
-        } else if (foodModel.getColor() == Color.GRAY) {
-            for (int i = 0; i < snake.getBodyPoints().size() / 2; i++) {
-                snake.getBodyPoints().remove(i);
-            }
-            return; // return if no timer is needed
-        } else if (foodModel.getColor() == Color.YELLOW) {
-            this.doublePoints = true;
-        }
-        this.effectGiven = System.currentTimeMillis();
-    }
-
-    private void removeAllEffects() {
-        this.speed = 100;
-        this.invincible = false;
         this.effectGiven = 0;
         this.doublePoints = false;
-    }
-
-    private boolean collisionWithSnakeBody() {
-        if (invincible) return false;
-        for (Point point : snake.getBodyPoints()) {
-            if (point.getX() == snake.getHeadPoint().getX() && point.getY() == snake.getHeadPoint().getY()) return true;
-        }
-        return false;
-    }
-
-    private boolean collisionWithBorder() {
-        for (int i = 0; i < borderPoints.size(); i++) {
-            if (snake.getHeadPoint().getX() == borderPoints.get(i).getX() && snake.getHeadPoint().getY() == borderPoints.get(i).getY())
-                return true;
-        }
-        return false;
     }
 
     private void pauseGame() {
@@ -359,7 +299,23 @@ public class Game implements InputListener {
         }
     }
 
+    public void setEffectGiven(long effectGiven) {
+        this.effectGiven = effectGiven;
+    }
+
+    public void setDoublePoints(boolean doublePoints) {
+        this.doublePoints = doublePoints;
+    }
+
     public EngineConfiguration getEngineConfiguration() {
         return engineConfiguration;
+    }
+
+    public List<Point> getBorderPoints() {
+        return borderPoints;
+    }
+
+    public AtomicBoolean getPause() {
+        return pause;
     }
 }
