@@ -5,10 +5,13 @@ import de.devathlon.hnl.core.MapModel;
 import de.devathlon.hnl.core.SnakeModel;
 import de.devathlon.hnl.core.math.Point;
 import de.devathlon.hnl.engine.listener.InputListener;
+import sun.awt.image.ImageWatched;
+import sun.security.tools.policytool.PolicyTool;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public final class GameCanvas extends Canvas {
@@ -45,10 +48,18 @@ public final class GameCanvas extends Canvas {
         // Draw border
         graphics.setColor(Color.BLUE);
 
-        for (Point point : createBorder(mapModel.getBorder())) {
-            Point transform = transform(point);
+        List<Point> corners = mapModel.getBorder();
+        List<Point> border = new LinkedList<>();
 
-            graphics.fillRect(transform.getX(), transform.getY(), BLOCK_SIZE, BLOCK_SIZE);
+        for (int i = 0; i < corners.size() - 1; i++) {
+            border.addAll(getPoints(corners.get(i), corners.get(i + 1)));
+        }
+        border.addAll(getPoints(corners.get(corners.size() - 1), corners.get(0)));
+
+        for (Point point : border) {
+            Point transformed = transform(point);
+
+            graphics.fillRect(transformed.getX(), transformed.getY(), BLOCK_SIZE, BLOCK_SIZE);
         }
 
         // Draw snake
@@ -80,50 +91,37 @@ public final class GameCanvas extends Canvas {
         bufferStrategy.show();
     }
 
-    private List<Point> createBorder(List<Point> corners) {
-        // TODO: Refactor me
-
-        List<Point> border = new ArrayList<>();
-
-        for (int i = 0; i < corners.size() - 1; i++) {
-            Point point = corners.get(i);
-            Point nextPoint = corners.get(i + 1);
-
-            if (point.getX() == nextPoint.getX()) {
-                // Increase y
-                for (int y = Math.min(point.getY(), nextPoint.getY()); y < Math.max(point.getY(), nextPoint.getY()); y++) {
-                    border.add(Point.of(point.getX(), y));
-                }
-            } else if (point.getY() == nextPoint.getY()) {
-                // Increase x
-                for (int x = Math.min(point.getX(), nextPoint.getX()); x < Math.max(point.getX(), nextPoint.getX()); x++) {
-                    border.add(Point.of(x, point.getY()));
-                }
-            }
-        }
-
-        Point last = corners.get(corners.size() - 1);
-        Point first = corners.get(0);
-
-        if (last.getX() == first.getX()) {
-            // Increase y
-            for (int y = Math.min(last.getY(), first.getY()); y < Math.max(last.getY(), first.getY()); y++) {
-                border.add(Point.of(last.getX(), y));
-            }
-        } else if (last.getY() == first.getY()) {
-            // Increase x
-            for (int x = Math.min(last.getX(), first.getX()); x < Math.max(last.getX(), first.getX()); x++) {
-                border.add(Point.of(x, last.getY()));
-            }
-        }
-
-        return border;
-    }
-
     private Point transform(Point point) {
-        int x = point.getX() == 0 ? 0 : point.getX() * (BLOCK_SIZE + GAP);
+        int x = point.getX() * (BLOCK_SIZE + GAP);
         int y = (int) getSize().getHeight() - BLOCK_SIZE - (BLOCK_SIZE + GAP) * (point.getY());
 
         return Point.of(x, y);
+    }
+
+    private List<Point> getPoints(Point start, Point end) {
+        // TODO: Refactor me
+        List<Point> points = new LinkedList<>();
+
+        if (start.getX() == end.getX()) {
+            int delta = (int) Math.signum(Integer.compare(end.getY(), start.getY()));
+
+            Point point = start;
+            while (!point.equals(end)) {
+                point = Point.of(start.getX(), point.getY() + delta);
+                points.add(point);
+            }
+        } else if (start.getY() == end.getY()) {
+            int delta = (int) Math.signum(Integer.compare(end.getX(), start.getX()));
+
+            Point point = start;
+            while (!point.equals(end)) {
+                point = Point.of(point.getX() + delta, start.getY());
+                points.add(point);
+            }
+        } else {
+            throw new UnsupportedOperationException("Only rectangle corners are allowed.");
+        }
+
+        return points;
     }
 }
