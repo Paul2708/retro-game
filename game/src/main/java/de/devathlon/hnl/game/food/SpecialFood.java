@@ -1,5 +1,6 @@
 package de.devathlon.hnl.game.food;
 
+import de.devathlon.hnl.game.animation.Effect;
 import de.devathlon.hnl.game.entities.Snake;
 import de.devathlon.hnl.game.snake.Game;
 
@@ -27,6 +28,7 @@ public class SpecialFood extends Food {
         } else if (getColor() == Color.YELLOW) {
             game.setDoublePoints(true);
         }
+        Effect.animateTimer(game, 0);
         game.setEffectGiven(System.currentTimeMillis());
     }
 }
