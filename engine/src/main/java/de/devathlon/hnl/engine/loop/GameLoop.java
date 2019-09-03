@@ -9,9 +9,9 @@ import de.devathlon.hnl.engine.window.GameCanvas;
  */
 public final class GameLoop implements Runnable {
 
-    private GameCanvas canvas;
-    private Boolean running;
-    private int fps;
+    private final GameCanvas canvas;
+    private final Boolean running;
+    private final int fps;
 
     public GameLoop(GameCanvas canvas, Boolean running, int fps) {
         this.canvas = canvas;
