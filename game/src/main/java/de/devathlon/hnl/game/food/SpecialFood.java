@@ -28,7 +28,7 @@ public class SpecialFood extends Food {
         } else if (getColor() == Color.YELLOW) {
             game.setDoublePoints(true);
         }
-        Effect.animateTimer(game, 0);
+        // Effect.animateTimer(game, 0);
         game.setEffectGiven(System.currentTimeMillis());
     }
 }
