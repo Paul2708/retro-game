@@ -43,17 +43,9 @@ public final class GameCanvas extends Canvas {
         graphics.fillRect(0, 0, getWidth(), getHeight());
 
         // Draw border
-        graphics.setColor(Color.BLUE);
+        graphics.setColor(new Color(139, 69, 19));
 
-        List<Point> corners = mapModel.getBorder();
-        List<Point> border = new LinkedList<>();
-
-        for (int i = 0; i < corners.size() - 1; i++) {
-            border.addAll(getPoints(corners.get(i), corners.get(i + 1)));
-        }
-        border.addAll(getPoints(corners.get(corners.size() - 1), corners.get(0)));
-
-        for (Point point : border) {
+        for (Point point : mapModel.getBorder()) {
             Point transformed = transform(point);
 
             graphics.fillRect(transformed.getX(), transformed.getY(), BLOCK_SIZE, BLOCK_SIZE);
@@ -93,32 +85,5 @@ public final class GameCanvas extends Canvas {
         int y = (int) getSize().getHeight() - BLOCK_SIZE - (BLOCK_SIZE + GAP) * (point.getY());
 
         return Point.of(x, y);
-    }
-
-    private List<Point> getPoints(Point start, Point end) {
-        // TODO: Refactor me
-        List<Point> points = new LinkedList<>();
-
-        if (start.getX() == end.getX()) {
-            int delta = (int) Math.signum(Integer.compare(end.getY(), start.getY()));
-
-            Point point = start;
-            while (!point.equals(end)) {
-                point = Point.of(start.getX(), point.getY() + delta);
-                points.add(point);
-            }
-        } else if (start.getY() == end.getY()) {
-            int delta = (int) Math.signum(Integer.compare(end.getX(), start.getX()));
-
-            Point point = start;
-            while (!point.equals(end)) {
-                point = Point.of(point.getX() + delta, start.getY());
-                points.add(point);
-            }
-        } else {
-            throw new UnsupportedOperationException("Only rectangle corners are allowed.");
-        }
-
-        return points;
     }
 }
