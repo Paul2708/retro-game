@@ -1,6 +1,7 @@
 package de.devathlon.hnl.engine;
 
 import de.devathlon.hnl.core.MapModel;
+import de.devathlon.hnl.core.update.EngineUpdate;
 import de.devathlon.hnl.engine.configuration.EngineConfiguration;
 import de.devathlon.hnl.engine.listener.InputListener;
 import de.devathlon.hnl.engine.loop.GameLoop;
@@ -80,6 +81,18 @@ final class GameEngineImpl implements GameEngine {
 
         Thread loopThread = new Thread(new GameLoop(gameCanvas, running, configuration.getFps()));
         loopThread.start();
+    }
+
+    /**
+     * Used to update the game view by game module.
+     * Verify the arguments to ensure that they are valid parameters.
+     *
+     * @param update    update enum type
+     * @param arguments arguments that matches the parameter classes
+     */
+    @Override
+    public void update(EngineUpdate update, Object... arguments) {
+        // TODO: Implement me
     }
 
     /**
