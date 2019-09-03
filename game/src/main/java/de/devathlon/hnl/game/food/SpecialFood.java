@@ -20,9 +20,8 @@ public class SpecialFood extends Food {
         } else if (getColor() == Color.RED) {
             snake.setInvincible(true);
         } else if (getColor() == Color.GRAY) {
-            for (int i = 0; i < snake.getBodyPoints().size() / 2; i++) {
+            for (int i = snake.getBodyPoints().size() - 1; i > (snake.getBodyPoints().size() / 2); i--) {
                 snake.getBodyPoints().remove(i);
-                i--;
             }
             return; // return if no timer is needed
         } else if (getColor() == Color.YELLOW) {
