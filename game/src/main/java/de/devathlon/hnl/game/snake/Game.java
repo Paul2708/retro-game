@@ -127,7 +127,7 @@ public class Game implements InputListener {
             public void run() {
                 if (effectGiven != 0) {
                     long secondsLeft = ((System.currentTimeMillis() - effectGiven) / 1000);
-                    Effect.animateTimer(Launcher.getGame(), (int) secondsLeft);
+                    Effect.animateTimer(Game.this, (int) secondsLeft);
                     if (((System.currentTimeMillis() - effectGiven) / 1000) >= effectTime) {
                         removeAllEffects();
                     }
