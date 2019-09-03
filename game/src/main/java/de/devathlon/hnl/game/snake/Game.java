@@ -267,6 +267,10 @@ public class Game implements InputListener {
 
         this.effectGiven = 0;
         this.doublePoints = false;
+
+        for (int i = 2; i < effectTime + 3; i++) {
+            borderPoints.remove(Point.of(i, engineConfiguration.getHeightInBlocks() - 2));
+        }
     }
 
     private void pauseGame() {
