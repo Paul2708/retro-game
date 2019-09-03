@@ -88,6 +88,11 @@ public class Game implements InputListener {
         }
 
         // map
+        for (int x = 5; x < 20; x++) {
+            for (int y = 15; y < 20; y++) {
+                this.borderPoints.add(Point.of(x, y));
+            }
+        }
         for (int x = 15; x < 20; x++) {
             for (int y = 15; y < 20; y++) {
                 this.borderPoints.add(Point.of(x, y));
@@ -153,7 +158,7 @@ public class Game implements InputListener {
                 special = new SpecialFood(specialX, specialY, Color.GRAY); // gray (half snake disappears)
                 break;
             case 5:
-                special = new SpecialFood(specialX, specialY, Color.YELLOW); // yellow (double points)
+                special = new SpecialFood(specialX, specialY, Color.MAGENTA); // magenta (double points)
                 break;
         }
         for (Point borderPoint : borderPoints) {
