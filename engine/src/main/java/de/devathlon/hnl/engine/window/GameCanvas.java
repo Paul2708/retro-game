@@ -7,10 +7,14 @@ import de.devathlon.hnl.core.math.Point;
 import de.devathlon.hnl.engine.listener.InputListener;
 import de.devathlon.hnl.engine.loop.GameLoop;
 
+import javax.imageio.ImageIO;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferStrategy;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * This canvas will be used to render the map, snake and all other entities.
@@ -18,6 +22,11 @@ import java.awt.image.BufferStrategy;
  * @author Paul2708
  */
 public final class GameCanvas extends Canvas {
+
+    /**
+     * Path to ground png.
+     */
+    private static final String GROUND_IMAGE = "/ground.png";
 
     /**
      * Number of strategy buffers to create, including the front buffer
@@ -37,14 +46,22 @@ public final class GameCanvas extends Canvas {
 
     private final MapModel mapModel;
 
+    private final Image image;
+
     /**
-     * Create a new game canvas.
+     * Create a new game canvas and read in the ground file.
      *
      * @param mapModel      model to get the current positions to draw
      * @param inputListener listener set to {@link CanvasKeyListener}
      */
     public GameCanvas(MapModel mapModel, InputListener inputListener) {
         this.mapModel = mapModel;
+
+        try (InputStream stream = getClass().getResourceAsStream(GameCanvas.GROUND_IMAGE)) {
+            this.image = ImageIO.read(stream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         addKeyListener(new CanvasKeyListener(inputListener));
         setFocusable(true);
@@ -67,6 +84,9 @@ public final class GameCanvas extends Canvas {
         Graphics graphics = bufferStrategy.getDrawGraphics();
         graphics.setColor(Color.BLACK);
         graphics.fillRect(0, 0, getWidth(), getHeight());
+
+        // Draw ground
+        graphics.drawImage(image, 0, 0, (int) getSize().getWidth(), (int) getSize().getHeight(), this);
 
         // Draw border
         graphics.setColor(new Color(139, 69, 19));
