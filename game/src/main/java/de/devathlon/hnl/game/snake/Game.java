@@ -50,6 +50,18 @@ public class Game implements InputListener {
         this.doublePoints = false;
         this.invincible = false;
 
+        // map
+        for(int x = 15; x < 20; x++) {
+            for(int y = 15; y < 20; y++) {
+                this.borderPoints.add(Point.of(x, y));
+            }
+        }
+        for(int x = 25; x < 30; x++) {
+            for(int y = 15; y < 20; y++) {
+                this.borderPoints.add(Point.of(x, y));
+            }
+        }
+
         this.running = true;
         this.pause = new AtomicBoolean(true);
         setup();
@@ -78,11 +90,16 @@ public class Game implements InputListener {
         this.gameEngine.setUp(engineConfiguration);
         this.gameEngine.start();
         // setup border
-        this.borderPoints.add(Point.of(0, 0));
-        this.borderPoints.add(Point.of(0, engineConfiguration.getHeightInBlocks() - 1));
-        this.borderPoints.add(Point.of(engineConfiguration.getWidthInBlocks() - 1, engineConfiguration.getHeightInBlocks() - 1));
-        this.borderPoints.add(Point.of(engineConfiguration.getWidthInBlocks() - 1, 0));
-
+        for(int i = 0; i < 4; i++) {
+            for(int x = 0; x < engineConfiguration.getWidthInBlocks(); x++) {
+                this.borderPoints.add(Point.of(x, 0));
+                this.borderPoints.add(Point.of(x, engineConfiguration.getHeightInBlocks() -1));
+            }
+            for(int y = 0; y < engineConfiguration.getHeightInBlocks(); y++) {
+                this.borderPoints.add(Point.of(0, y));
+                this.borderPoints.add(Point.of(engineConfiguration.getWidthInBlocks() -1, y));
+            }
+        }
         // generate new food model
         generateNewFood();
     }
@@ -197,11 +214,11 @@ public class Game implements InputListener {
                         if (collisionWithBorder() && invincible) {
                             if (headPoint.getX() == 0) {
                                 headPoint.setX(engineConfiguration.getWidthInBlocks() - 1);
-                            } else if (headPoint.getX() == engineConfiguration.getWidthInBlocks()) {
+                            } else if (headPoint.getX() == engineConfiguration.getWidthInBlocks() - 1) {
                                 headPoint.setX(1);
                             } else if (headPoint.getY() == 0) {
                                 headPoint.setY(engineConfiguration.getHeightInBlocks() - 1);
-                            } else if (headPoint.getY() == engineConfiguration.getHeightInBlocks()) {
+                            } else if (headPoint.getY() == engineConfiguration.getHeightInBlocks() - 1) {
                                 headPoint.setY(1);
                             }
                         } else {
