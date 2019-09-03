@@ -1,6 +1,7 @@
 package de.devathlon.hnl.engine;
 
 import de.devathlon.hnl.core.MapModel;
+import de.devathlon.hnl.core.update.EngineUpdate;
 import de.devathlon.hnl.engine.configuration.EngineConfiguration;
 import de.devathlon.hnl.engine.listener.InputListener;
 
@@ -41,6 +42,15 @@ public interface GameEngine {
      * It opens the frame and starts to render the game map.
      */
     void start();
+
+    /**
+     * Used to update the game view by game module.
+     * Verify the arguments to ensure that they are valid parameters.
+     *
+     * @param update    update enum type
+     * @param arguments arguments that matches the parameter classes
+     */
+    void update(EngineUpdate update, Object... arguments);
 
     /**
      * Stop the engine.
