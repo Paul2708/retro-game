@@ -5,9 +5,9 @@ import de.devathlon.hnl.engine.listener.InputListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class CanvasKeyListener implements KeyListener {
+class CanvasKeyListener implements KeyListener {
 
-    private InputListener inputListener;
+    private final InputListener inputListener;
 
     CanvasKeyListener(InputListener inputListener) {
         this.inputListener = inputListener;

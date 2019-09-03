@@ -5,12 +5,9 @@ import de.devathlon.hnl.core.MapModel;
 import de.devathlon.hnl.core.SnakeModel;
 import de.devathlon.hnl.core.math.Point;
 import de.devathlon.hnl.engine.listener.InputListener;
-import sun.awt.image.ImageWatched;
-import sun.security.tools.policytool.PolicyTool;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,7 +22,7 @@ public final class GameCanvas extends Canvas {
 
     public static final int GAP = 2;
 
-    private MapModel mapModel;
+    private final MapModel mapModel;
 
     public GameCanvas(MapModel mapModel, InputListener inputListener) {
         this.mapModel = mapModel;
