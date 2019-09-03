@@ -5,12 +5,18 @@ import de.devathlon.hnl.core.MapModel;
 import de.devathlon.hnl.core.SnakeModel;
 import de.devathlon.hnl.core.math.Point;
 import de.devathlon.hnl.engine.listener.InputListener;
+import de.devathlon.hnl.engine.loop.GameLoop;
 
-import java.awt.*;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-import java.util.LinkedList;
-import java.util.List;
 
+/**
+ * This canvas will be used to render the map, snake and all other entities.
+ *
+ * @author Paul2708
+ */
 public final class GameCanvas extends Canvas {
 
     /**
@@ -18,12 +24,25 @@ public final class GameCanvas extends Canvas {
      */
     private static final int BUFFERS = 3;
 
+    /**
+     * Size in pixel that one single block has.
+     * The block will be shown as square.
+     */
     public static final int BLOCK_SIZE = 20;
 
+    /**
+     * Size in pixel between to blocks.
+     */
     public static final int GAP = 2;
 
     private final MapModel mapModel;
 
+    /**
+     * Create a new game canvas.
+     *
+     * @param mapModel      model to get the current positions to draw
+     * @param inputListener listener set to {@link CanvasKeyListener}
+     */
     public GameCanvas(MapModel mapModel, InputListener inputListener) {
         this.mapModel = mapModel;
 
@@ -31,7 +50,14 @@ public final class GameCanvas extends Canvas {
         setFocusable(true);
     }
 
+    /**
+     * Render the game.
+     * It includes border, snake, items and scores.
+     *
+     * @see GameLoop#run()
+     */
     public void render() {
+        // TODO: Optimize me
         BufferStrategy bufferStrategy = getBufferStrategy();
         if (bufferStrategy == null) {
             createBufferStrategy(GameCanvas.BUFFERS);
@@ -80,6 +106,12 @@ public final class GameCanvas extends Canvas {
         bufferStrategy.show();
     }
 
+    /**
+     * Transform a block point into an real sized screen point.
+     *
+     * @param point point to transform
+     * @return transformed point
+     */
     private Point transform(Point point) {
         int x = point.getX() * (BLOCK_SIZE + GAP);
         int y = (int) getSize().getHeight() - BLOCK_SIZE - (BLOCK_SIZE + GAP) * (point.getY());

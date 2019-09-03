@@ -6,7 +6,7 @@ package de.devathlon.hnl.engine.configuration;
  *
  * @author Paul2708
  */
-public class DefaultEngineConfiguration extends EngineConfiguration {
+public final class DefaultEngineConfiguration extends EngineConfiguration {
 
     /**
      * Create a new default configuration with a small map and 30 fps.
