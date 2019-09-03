@@ -92,7 +92,24 @@ final class GameEngineImpl implements GameEngine {
      */
     @Override
     public void update(EngineUpdate update, Object... arguments) {
-        // TODO: Implement me
+        try {
+            update.verify(arguments);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        switch (update) {
+            case SCORE_UPDATE:
+                String title = (String) arguments[0];
+                int score = (int) arguments[0];
+
+                // TODO: Implement me
+
+                break;
+            default:
+                break;
+        }
     }
 
     /**
