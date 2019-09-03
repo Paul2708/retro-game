@@ -15,8 +15,9 @@ public final class GameWindow extends JFrame {
         canvas.setMinimumSize(dimension);
 
         add(canvas);
-        pack();
         setResizable(false);
+        pack();
+
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
