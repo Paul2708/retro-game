@@ -79,15 +79,9 @@ public class Game implements InputListener {
         this.gameEngine.start();
         // setup border
         this.borderPoints.add(Point.of(0, 0));
-        this.borderPoints.add(Point.of(0, engineConfiguration.getHeightInBlocks()));
-        this.borderPoints.add(Point.of(engineConfiguration.getWidthInBlocks(), 0));
-        this.borderPoints.add(Point.of(engineConfiguration.getWidthInBlocks(), engineConfiguration.getHeightInBlocks()));
-
-        // map design
-        this.borderPoints.add(Point.of(10, 15));
-        this.borderPoints.add(Point.of(10, 20));
-        this.borderPoints.add(Point.of(20, 20));
-        this.borderPoints.add(Point.of(20, 15));
+        this.borderPoints.add(Point.of(0, engineConfiguration.getHeightInBlocks() - 1));
+        this.borderPoints.add(Point.of(engineConfiguration.getWidthInBlocks() - 1, engineConfiguration.getHeightInBlocks() - 1));
+        this.borderPoints.add(Point.of(engineConfiguration.getWidthInBlocks() - 1, 0));
 
         // generate new food model
         generateNewFood();
