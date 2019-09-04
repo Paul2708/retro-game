@@ -1,5 +1,6 @@
 package de.devathlon.hnl.game.snake;
 
+import de.devathlon.hnl.core.EffectBarModel;
 import de.devathlon.hnl.core.FoodModel;
 import de.devathlon.hnl.core.MapModel;
 import de.devathlon.hnl.core.SnakeModel;
@@ -59,7 +60,7 @@ public class Game implements InputListener {
         gameEngine = GameEngine.create();
         MapModel mapModel = new MapModel() {
             @Override
-            public List<Point> getBorder() {
+            public Collection<Point> getBorder() {
                 return borderPoints;
             }
 
@@ -71,6 +72,27 @@ public class Game implements InputListener {
             @Override
             public Collection<FoodModel> getFood() {
                 return foodList;
+            }
+
+            // TODO: Implement me
+            @Override
+            public EffectBarModel getEffectBar() {
+                return new EffectBarModel() {
+                    @Override
+                    public boolean isActive() {
+                        return false;
+                    }
+
+                    @Override
+                    public Color getColor() {
+                        return Color.GREEN;
+                    }
+
+                    @Override
+                    public Collection<Point> getBar() {
+                        return Collections.emptyList();
+                    }
+                };
             }
         };
         gameEngine.setModel(mapModel);

@@ -14,6 +14,13 @@ import java.util.Collection;
 public interface EffectBarModel {
 
     /**
+     * Check if the bar is active and should be drawn to the game.
+     *
+     * @return true if the bar is active, otherwise false
+     */
+    boolean isActive();
+
+    /**
      * Get the bar color.
      *
      * @return color
