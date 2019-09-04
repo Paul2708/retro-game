@@ -123,11 +123,14 @@ public final class GameCanvas extends Canvas {
         
         // Draw effect bar
         EffectBarModel effectBarModel = mapModel.getEffectBar();
-        graphics.setColor(effectBarModel.getColor());
 
-        for (Point point : effectBarModel.getBar()) {
-            Point transform = transform(point);
-            graphics.fillRect(transform.getX(), transform.getY(), BLOCK_SIZE, BLOCK_SIZE);
+        if (effectBarModel.isActive()) {
+            graphics.setColor(effectBarModel.getColor());
+
+            for (Point point : effectBarModel.getBar()) {
+                Point transform = transform(point);
+                graphics.fillRect(transform.getX(), transform.getY(), BLOCK_SIZE, BLOCK_SIZE);
+            }
         }
 
         graphics.dispose();
