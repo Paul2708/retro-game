@@ -34,11 +34,15 @@ public final class PauseMenu {
 
     private Map<PauseItem, Rectangle> itemMap;
 
+    private boolean enabled;
+
     public void load(List<PauseItem> itemList, Dimension dimension) {
         this.items = itemList;
         Collections.reverse(itemList);
 
         this.dimension = dimension;
+
+        this.enabled = false;
 
         // Load custom font
         GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -62,6 +66,10 @@ public final class PauseMenu {
     }
 
     public void render(Graphics2D graphics) {
+        if (!enabled) {
+            return;
+        }
+
         graphics.setColor(Color.BLACK);
         graphics.setFont(font);
 
@@ -83,6 +91,10 @@ public final class PauseMenu {
         return null;
     }
 
+    public void setPause(boolean pause) {
+        this.enabled = pause;
+    }
+
     private Rectangle calculateBorder(PauseItem item) {
         FontRenderContext renderContext = new FontRenderContext(null, true, true);
         Rectangle2D bounds = font.getStringBounds(item.getTitle(), renderContext);
@@ -98,5 +110,9 @@ public final class PauseMenu {
         Rectangle rectangle = itemMap.get(item);
 
         graphics.drawString(item.getTitle(), (int) rectangle.getX(), (int) rectangle.getY() + (int) rectangle.getHeight());
+    }
+
+    public boolean isEnabled() {
+        return enabled;
     }
 }

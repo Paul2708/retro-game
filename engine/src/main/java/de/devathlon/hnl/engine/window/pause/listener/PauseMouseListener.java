@@ -21,6 +21,10 @@ public final class PauseMouseListener implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent event) {
+        if (!pauseMenu.isEnabled()) {
+            return;
+        }
+
         PauseItem item = pauseMenu.getItemByPoint(event.getPoint());
 
         if (item != null) {

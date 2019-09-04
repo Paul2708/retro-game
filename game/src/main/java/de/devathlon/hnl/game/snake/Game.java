@@ -321,6 +321,12 @@ public class Game implements InputListener {
             }
         }
         pause.set(!pause.get());
+
+        if (pause.get()) {
+            gameEngine.pause();
+        } else {
+            gameEngine.unpause();
+        }
     }
 
     private void endGame() {
