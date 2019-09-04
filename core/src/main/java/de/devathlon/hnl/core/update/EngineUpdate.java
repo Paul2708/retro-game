@@ -13,6 +13,11 @@ public enum EngineUpdate {
      * Test update. Will be used to test the verify method.
      */
     TEST(Integer.class, String.class),
+
+    /**
+     * The score got updated.
+     * Arguments: String to display, actual score
+     */
     SCORE_UPDATE(String.class, Integer.class);
 
     private final Class<?>[] classes;
