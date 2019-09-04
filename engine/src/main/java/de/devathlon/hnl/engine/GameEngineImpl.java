@@ -9,6 +9,10 @@ import de.devathlon.hnl.engine.loop.GameLoop;
 import de.devathlon.hnl.engine.window.GameCanvas;
 import de.devathlon.hnl.engine.window.GameWindow;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * This class is the actual implementation of the game engine.
  *
@@ -25,12 +29,15 @@ final class GameEngineImpl implements GameEngine {
 
     private Boolean running;
 
+    private List<PauseItem> pauseItems;
+
     /**
      * Private constructor.
      * Set running identifier to <code>false</code>.
      */
     GameEngineImpl() {
         this.running = false;
+        this.pauseItems = new LinkedList<>();
     }
 
     /**
@@ -52,7 +59,7 @@ final class GameEngineImpl implements GameEngine {
      */
     @Override
     public void setPauseItems(PauseItem... items) {
-        // TODO: Implement me
+        pauseItems.addAll(Arrays.asList(items));
     }
 
     /**
@@ -76,7 +83,7 @@ final class GameEngineImpl implements GameEngine {
     public void setUp(EngineConfiguration configuration) {
         this.configuration = configuration;
 
-        this.gameCanvas = new GameCanvas(configuration.getDimension(), mapModel, inputListener);
+        this.gameCanvas = new GameCanvas(pauseItems, configuration.getDimension(), mapModel, inputListener);
         this.gameWindow = new GameWindow(configuration.getDimension(), "Snake", gameCanvas);
     }
 
