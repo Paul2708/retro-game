@@ -102,7 +102,7 @@ final class GameEngineImpl implements GameEngine {
         switch (update) {
             case SCORE_UPDATE:
                 String title = (String) arguments[0];
-                int score = (int) arguments[0];
+                int score = (int) arguments[1];
 
                 // TODO: Implement me
 
