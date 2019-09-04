@@ -308,9 +308,8 @@ public class Game implements InputListener {
         if (!pause.get()) {
             if (effectGiven != 0) {
                 pauseEffectTimePassed = ((System.currentTimeMillis() - effectGiven) / 1000);
-                System.out.println("Pause time PASSED:  " + pauseEffectTimePassed);
+                this.effectGiven = 0;
             }
-            this.effectGiven = 0;
         } else {
             if (pauseEffectTimePassed != 0) {
                 effectGiven = System.currentTimeMillis() - (pauseEffectTimePassed * 1000);
