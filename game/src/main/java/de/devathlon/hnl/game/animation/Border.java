@@ -46,11 +46,11 @@ public class Border {
                         currentX--;
                     }
                     if (moveForward) currentX++;
-                    try {
-                        Thread.sleep(time);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                }
+                try {
+                    Thread.sleep(time);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
