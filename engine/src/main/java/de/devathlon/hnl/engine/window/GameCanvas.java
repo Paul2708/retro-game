@@ -150,12 +150,15 @@ public final class GameCanvas extends Canvas {
         // Draw settings menu
         pauseMenu.render((Graphics2D) graphics);
 
-
         //graphics.drawString("Map-Auswahl", 100, 300);
         //graphics.drawString("Spiel beenden", 100, 400);
 
         graphics.dispose();
         bufferStrategy.show();
+    }
+
+    public void setPause(boolean enabled) {
+        pauseMenu.setPause(enabled);
     }
 
     /**

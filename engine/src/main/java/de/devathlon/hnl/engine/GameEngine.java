@@ -52,6 +52,10 @@ public interface GameEngine {
      */
     void start();
 
+    void pause();
+
+    void unpause();
+
     /**
      * Used to update the game view by game module.
      * Verify the arguments to ensure that they are valid parameters.

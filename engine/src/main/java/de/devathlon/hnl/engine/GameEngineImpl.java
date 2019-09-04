@@ -102,6 +102,16 @@ final class GameEngineImpl implements GameEngine {
         loopThread.start();
     }
 
+    @Override
+    public void pause() {
+        gameCanvas.setPause(true);
+    }
+
+    @Override
+    public void unpause() {
+        gameCanvas.setPause(false);
+    }
+
     /**
      * Used to update the game view by game module.
      * Verify the arguments to ensure that they are valid parameters.
