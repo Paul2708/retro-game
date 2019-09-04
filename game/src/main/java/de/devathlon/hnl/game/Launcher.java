@@ -3,9 +3,9 @@ package de.devathlon.hnl.game;
 import de.devathlon.hnl.game.snake.Game;
 
 /**
- * Class description.
+ * This is the main class.
  *
- * @author Paul2708
+ * @author Leon
  */
 public class Launcher {
 
