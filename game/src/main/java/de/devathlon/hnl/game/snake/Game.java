@@ -395,4 +395,8 @@ public class Game implements InputListener {
     public List<Point> getEffectBar() {
         return effectBar;
     }
+
+    public GameEngine getGameEngine() {
+        return gameEngine;
+    }
 }

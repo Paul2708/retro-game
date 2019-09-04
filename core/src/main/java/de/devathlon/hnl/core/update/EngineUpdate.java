@@ -18,7 +18,13 @@ public enum EngineUpdate {
      * The score got updated.
      * Arguments: String to display, actual score
      */
-    SCORE_UPDATE(String.class, Integer.class);
+    SCORE_UPDATE(String.class, Integer.class),
+
+    /**
+     * The effect got updated.
+     * Arguments: String to display, actual score
+     */
+    EFFECT_UPDATE(String.class);
 
     private final Class<?>[] classes;
 
