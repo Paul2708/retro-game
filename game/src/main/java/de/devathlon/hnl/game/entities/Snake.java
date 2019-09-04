@@ -3,7 +3,6 @@ package de.devathlon.hnl.game.entities;
 import de.devathlon.hnl.core.FoodModel;
 import de.devathlon.hnl.core.SnakeModel;
 import de.devathlon.hnl.core.math.Point;
-import de.devathlon.hnl.core.update.EngineUpdate;
 
 import java.util.ArrayList;
 import java.util.List;
