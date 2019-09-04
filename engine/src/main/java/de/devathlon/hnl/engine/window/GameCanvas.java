@@ -5,17 +5,23 @@ import de.devathlon.hnl.core.FoodModel;
 import de.devathlon.hnl.core.MapModel;
 import de.devathlon.hnl.core.SnakeModel;
 import de.devathlon.hnl.core.math.Point;
+import de.devathlon.hnl.core.pause.PauseItem;
 import de.devathlon.hnl.engine.listener.InputListener;
 import de.devathlon.hnl.engine.loop.GameLoop;
+import de.devathlon.hnl.engine.window.pause.PauseMenu;
+import de.devathlon.hnl.engine.window.pause.listener.PauseMouseListener;
 
 import javax.imageio.ImageIO;
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * This canvas will be used to render the map, snake and all other entities.
@@ -49,22 +55,30 @@ public final class GameCanvas extends Canvas {
 
     private final Image image;
 
+    private final PauseMenu pauseMenu;
+
     /**
      * Create a new game canvas and read in the ground file.
      *
      * @param mapModel      model to get the current positions to draw
      * @param inputListener listener set to {@link CanvasKeyListener}
      */
-    public GameCanvas(MapModel mapModel, InputListener inputListener) {
+    public GameCanvas(List<PauseItem> pauseItems, Dimension dimension, MapModel mapModel, InputListener inputListener) {
         this.mapModel = mapModel;
 
+        // Load ground image
         try (InputStream stream = getClass().getResourceAsStream(GameCanvas.GROUND_IMAGE)) {
             this.image = ImageIO.read(stream);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+        this.pauseMenu = new PauseMenu();
+        this.pauseMenu.load(pauseItems, dimension);
+
+        // Set key listener and canvas settings
         addKeyListener(new CanvasKeyListener(inputListener));
+        addMouseListener(new PauseMouseListener(pauseMenu));
         setFocusable(true);
     }
 
@@ -132,6 +146,13 @@ public final class GameCanvas extends Canvas {
                 graphics.fillRect(transform.getX(), transform.getY(), BLOCK_SIZE, BLOCK_SIZE);
             }
         }
+
+        // Draw settings menu
+        pauseMenu.render((Graphics2D) graphics);
+
+
+        //graphics.drawString("Map-Auswahl", 100, 300);
+        //graphics.drawString("Spiel beenden", 100, 400);
 
         graphics.dispose();
         bufferStrategy.show();
