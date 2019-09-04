@@ -44,6 +44,12 @@ public class Game implements InputListener {
     private int effectTime;
     private boolean doublePoints;
 
+    // effectbar
+    private List<Point> effectBar = new CopyOnWriteArrayList<>();
+    private Color effectBarColor;
+    private boolean effectBarActive;
+
+
     public Game() {
         // initialize effect variables
         this.effectGiven = 0;
@@ -80,17 +86,17 @@ public class Game implements InputListener {
                 return new EffectBarModel() {
                     @Override
                     public boolean isActive() {
-                        return false;
+                        return effectBarActive;
                     }
 
                     @Override
                     public Color getColor() {
-                        return Color.GREEN;
+                        return effectBarColor;
                     }
 
                     @Override
                     public Collection<Point> getBar() {
-                        return Collections.emptyList();
+                        return effectBar;
                     }
                 };
             }
@@ -268,16 +274,15 @@ public class Game implements InputListener {
                         }
                         generateNewFood();
                     }
-                    // sleep
-                    try {
-                        Thread.sleep(snake.getSpeed());
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
 
                     // update score
-
                     gameEngine.update(EngineUpdate.SCORE_UPDATE, "Dein neuer Score", snake.getBodyPoints().size() + 1);
+                }
+                // sleep
+                try {
+                    Thread.sleep(snake.getSpeed());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
@@ -290,9 +295,7 @@ public class Game implements InputListener {
         this.effectGiven = 0;
         this.doublePoints = false;
 
-        for (int i = 2; i < effectTime + 3; i++) {
-            borderPoints.remove(Point.of(i, engineConfiguration.getHeightInBlocks() - 2));
-        }
+        effectBar.clear();
     }
 
     private void pauseGame() {
@@ -360,5 +363,18 @@ public class Game implements InputListener {
 
     public int getEffectTime() {
         return effectTime;
+    }
+
+
+    public void setEffectBarActive(boolean effectBarActive) {
+        this.effectBarActive = effectBarActive;
+    }
+
+    public void setEffectBarColor(Color effectBarColor) {
+        this.effectBarColor = effectBarColor;
+    }
+
+    public List<Point> getEffectBar() {
+        return effectBar;
     }
 }
