@@ -22,7 +22,7 @@ public enum EngineUpdate {
 
     /**
      * The effect got updated.
-     * Arguments: String to display, actual score
+     * Arguments: String to display
      */
     EFFECT_UPDATE(String.class);
 
