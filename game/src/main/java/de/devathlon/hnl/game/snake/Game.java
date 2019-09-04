@@ -14,6 +14,9 @@ import de.devathlon.hnl.game.animation.Effect;
 import de.devathlon.hnl.game.food.Food;
 import de.devathlon.hnl.game.entities.Snake;
 import de.devathlon.hnl.game.food.SpecialFood;
+import de.devathlon.hnl.game.pause.ContinuePauseItem;
+import de.devathlon.hnl.game.pause.EndPauseItem;
+import de.devathlon.hnl.game.pause.MapPauseItem;
 import de.devathlon.hnl.game.util.Direction;
 
 import java.awt.*;
@@ -103,6 +106,7 @@ public class Game implements InputListener {
             }
         };
         gameEngine.setModel(mapModel);
+        gameEngine.setPauseItems(new ContinuePauseItem(), new MapPauseItem(), new EndPauseItem());
         gameEngine.setInputListener(this);
         this.engineConfiguration = new EngineConfiguration(35, 35, 120);
         gameEngine.setUp(engineConfiguration);
