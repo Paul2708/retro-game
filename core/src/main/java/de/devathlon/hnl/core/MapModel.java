@@ -17,7 +17,7 @@ public interface MapModel {
      *
      * @return collection of points
      */
-    List<Point> getBorder();
+    Collection<Point> getBorder();
 
     /**
      * Get the snake entity model.
