@@ -1,6 +1,7 @@
 package de.devathlon.hnl.engine;
 
 import de.devathlon.hnl.core.MapModel;
+import de.devathlon.hnl.core.pause.PauseItem;
 import de.devathlon.hnl.core.update.EngineUpdate;
 import de.devathlon.hnl.engine.configuration.EngineConfiguration;
 import de.devathlon.hnl.engine.listener.InputListener;
@@ -44,6 +45,17 @@ final class GameEngineImpl implements GameEngine {
     }
 
     /**
+     * Set the pause items for the pause menu.
+     * It also provides a listener that got called if the item gets clicked.
+     *
+     * @param items array of pause items
+     */
+    @Override
+    public void setPauseItems(PauseItem... items) {
+        // TODO: Implement me
+    }
+
+    /**
      * Set the input listener that will be called on key input.
      *
      * @param listener input listener
@@ -64,7 +76,7 @@ final class GameEngineImpl implements GameEngine {
     public void setUp(EngineConfiguration configuration) {
         this.configuration = configuration;
 
-        this.gameCanvas = new GameCanvas(mapModel, inputListener);
+        this.gameCanvas = new GameCanvas(configuration.getDimension(), mapModel, inputListener);
         this.gameWindow = new GameWindow(configuration.getDimension(), "Snake", gameCanvas);
     }
 

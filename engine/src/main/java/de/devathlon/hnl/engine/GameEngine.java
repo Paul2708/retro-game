@@ -1,6 +1,7 @@
 package de.devathlon.hnl.engine;
 
 import de.devathlon.hnl.core.MapModel;
+import de.devathlon.hnl.core.pause.PauseItem;
 import de.devathlon.hnl.core.update.EngineUpdate;
 import de.devathlon.hnl.engine.configuration.EngineConfiguration;
 import de.devathlon.hnl.engine.listener.InputListener;
@@ -20,6 +21,14 @@ public interface GameEngine {
      * @see MapModel
      */
     void setModel(MapModel model);
+
+    /**
+     * Set the pause items for the pause menu.
+     * It also provides a listener that got called if the item gets clicked.
+     *
+     * @param items array of pause items
+     */
+    void setPauseItems(PauseItem... items);
 
     /**
      * Set the input listener that will be called on key input.
