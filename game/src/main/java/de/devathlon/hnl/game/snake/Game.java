@@ -9,7 +9,6 @@ import de.devathlon.hnl.core.update.EngineUpdate;
 import de.devathlon.hnl.engine.GameEngine;
 import de.devathlon.hnl.engine.configuration.EngineConfiguration;
 import de.devathlon.hnl.engine.listener.InputListener;
-import de.devathlon.hnl.game.Launcher;
 import de.devathlon.hnl.game.animation.Border;
 import de.devathlon.hnl.game.animation.Effect;
 import de.devathlon.hnl.game.food.Food;
@@ -43,6 +42,7 @@ public class Game implements InputListener {
     private long effectGiven;
     private int effectTime;
     private boolean doublePoints;
+    private long pauseEffectTimePassed;
 
     // effectbar
     private List<Point> effectBar = new CopyOnWriteArrayList<>();
@@ -55,6 +55,7 @@ public class Game implements InputListener {
         this.effectGiven = 0;
         this.effectTime = 10;
         this.doublePoints = false;
+        this.pauseEffectTimePassed = 0;
 
         // map end
 
@@ -153,11 +154,24 @@ public class Game implements InputListener {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                if (effectGiven != 0) {
-                    long secondsLeft = ((System.currentTimeMillis() - effectGiven) / 1000);
-                    Effect.animateTimer(Game.this, (int) secondsLeft);
-                    if (((System.currentTimeMillis() - effectGiven) / 1000) >= effectTime) {
-                        removeAllEffects();
+                if (!pause.get()) {
+                    if (effectGiven != 0) {
+                        long secondsLeft = ((System.currentTimeMillis() - effectGiven) / 1000);
+                        Effect.animateTimer(Game.this, (int) secondsLeft);
+                        if (((System.currentTimeMillis() - effectGiven) / 1000) >= effectTime) {
+                            removeAllEffects();
+                        }
+                    }
+
+                    for (FoodModel food : foodList) {
+                        if (food instanceof SpecialFood) {
+                            SpecialFood specialFood = (SpecialFood) food;
+                            if (specialFood.getTimeAlive() == 0) {
+                                foodList.remove(food);
+                            } else {
+                                specialFood.setTimeAlive(specialFood.getTimeAlive() - 1);
+                            }
+                        }
                     }
                 }
             }
@@ -207,15 +221,7 @@ public class Game implements InputListener {
         food = new Food(x, y, Color.ORANGE);
         foodList.add(food);
         if (special != null) {
-            final Food specialFood = special;
-            foodList.add(specialFood);
-            // remove food after 20 seconds
-            new Timer().schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    foodList.remove(specialFood);
-                }
-            }, 1000 * 20);
+            foodList.add(special);
         }
     }
 
@@ -299,6 +305,18 @@ public class Game implements InputListener {
     }
 
     private void pauseGame() {
+        if (!pause.get()) {
+            if (effectGiven != 0) {
+                pauseEffectTimePassed = ((System.currentTimeMillis() - effectGiven) / 1000);
+                System.out.println("Pause time PASSED:  " + pauseEffectTimePassed);
+            }
+            this.effectGiven = 0;
+        } else {
+            if (pauseEffectTimePassed != 0) {
+                effectGiven = System.currentTimeMillis() - (pauseEffectTimePassed * 1000);
+                pauseEffectTimePassed = 0;
+            }
+        }
         pause.set(!pause.get());
     }
 
@@ -317,6 +335,7 @@ public class Game implements InputListener {
 
         removeAllEffects();
         this.effectGiven = 0;
+        this.pauseEffectTimePassed = 0;
 
         this.currentDirection = Direction.LEFT;
     }

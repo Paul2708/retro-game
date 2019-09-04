@@ -8,8 +8,11 @@ import java.awt.*;
 
 public class SpecialFood extends Food {
 
+    private int timeAlive;
+
     public SpecialFood(int x, int y, Color color) {
         super(x, y, color);
+        this.timeAlive = 2;
     }
 
     public void activateEffect(Game game, Snake snake) {
@@ -28,7 +31,14 @@ public class SpecialFood extends Food {
         } else if (getColor() == Color.YELLOW) {
             game.setDoublePoints(true);
         }
-        // Effect.animateTimer(game, 0);
         game.setEffectGiven(System.currentTimeMillis());
+    }
+
+    public void setTimeAlive(int timeAlive) {
+        this.timeAlive = timeAlive;
+    }
+
+    public int getTimeAlive() {
+        return timeAlive;
     }
 }

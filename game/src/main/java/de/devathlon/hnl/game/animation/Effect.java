@@ -22,8 +22,6 @@ public class Effect {
             }
             Point point = Point.of(2 + (timeLeft + 1), game.getEngineConfiguration().getHeightInBlocks() - 2);
 
-            System.out.println( point);
-
             game.getEffectBar().remove(point);
         }
 
