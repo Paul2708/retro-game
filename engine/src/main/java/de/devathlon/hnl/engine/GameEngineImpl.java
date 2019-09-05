@@ -106,7 +106,7 @@ final class GameEngineImpl implements GameEngine {
     public void setUp(EngineConfiguration configuration) {
         this.configuration = configuration;
 
-        this.gameCanvas = new GameCanvas(this, mapItems, pauseItems, configuration.getDimension(), mapModel, inputListener);
+        this.gameCanvas = new GameCanvas(this, configuration.getDimension(), inputListener);
         this.gameWindow = new GameWindow(configuration.getDimension(), "Snake", gameCanvas);
     }
 

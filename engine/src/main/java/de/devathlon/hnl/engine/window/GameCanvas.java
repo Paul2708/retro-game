@@ -1,8 +1,6 @@
 package de.devathlon.hnl.engine.window;
 
 import de.devathlon.hnl.core.MapModel;
-import de.devathlon.hnl.core.math.Point;
-import de.devathlon.hnl.core.pause.PauseItem;
 import de.devathlon.hnl.engine.GameEngine;
 import de.devathlon.hnl.engine.listener.InputListener;
 import de.devathlon.hnl.engine.loop.GameLoop;
@@ -16,16 +14,12 @@ import de.devathlon.hnl.engine.window.overlay.impl.GameSettingsOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.MapSelectionOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.ScoreOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.SnakeOverlay;
-import de.devathlon.hnl.engine.window.score.Score;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Canvas;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 
 /**
@@ -34,11 +28,6 @@ import java.util.function.Consumer;
  * @author Paul2708
  */
 public final class GameCanvas extends Canvas {
-
-    /**
-     * Path to ground png.
-     */
-    private static final String GROUND_IMAGE = "/ground.png";
 
     /**
      * Number of strategy buffers to create, including the front buffer
@@ -56,16 +45,7 @@ public final class GameCanvas extends Canvas {
      */
     public static final int GAP = 2;
 
-    private final MapModel mapModel;
-
-    private final Image image;
-
     private final Dimension dimension;
-
-    private Score score;
-    private String effect;
-
-    private Map<Point, Color> colorMap;
 
     private Overlay backgroundOverlay;
     private Overlay borderOverlay;
@@ -80,30 +60,14 @@ public final class GameCanvas extends Canvas {
     /**
      * Create a new game canvas and read in the ground file.
      *
-     * @param mapModel      model to get the current positions to draw
      * @param inputListener listener set to {@link CanvasKeyListener}
      */
-    public GameCanvas(GameEngine engine, List<MapModel> mapModels, List<PauseItem> pauseItems, Dimension dimension, MapModel mapModel, InputListener inputListener) {
-        this.mapModel = mapModel;
+    public GameCanvas(GameEngine engine, Dimension dimension, InputListener inputListener) {
         this.dimension = dimension;
-
-        // Load ground image
-        try (InputStream stream = getClass().getResourceAsStream(GameCanvas.GROUND_IMAGE)) {
-            this.image = ImageIO.read(stream);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
 
         // Set key listener and canvas settings
         addKeyListener(new CanvasKeyListener(inputListener));
         setFocusable(true);
-
-        this.score = new Score("High-Score: ", 0);
-        this.effect = "kein Effekt";
-        this.colorMap = new HashMap<>();
-
 
         this.backgroundOverlay = new BackgroundOverlay();
         this.backgroundOverlay.initialize(engine, this);
@@ -157,11 +121,6 @@ public final class GameCanvas extends Canvas {
         }
 
         Graphics graphics = bufferStrategy.getDrawGraphics();
-        // graphics.setColor(Color.BLACK);
-        // graphics.fillRect(0, 0, getWidth(), getHeight());
-
-        // Draw ground
-        // graphics.drawImage(image, 0, 0, (int) getSize().getWidth(), (int) getSize().getHeight(), this);
 
         backgroundOverlay.render((Graphics2D) graphics);
 
@@ -207,27 +166,6 @@ public final class GameCanvas extends Canvas {
         gameSettingsOverlay.activate(false);
 
         mapSelectionOverlay.activate(enabled);
-    }
-
-    public void setScore(Score score) {
-        this.score = score;
-    }
-
-    /**
-     * Transform a block point into an real sized screen point.
-     *
-     * @param point point to transform
-     * @return transformed point
-     */
-    private Point transform(Point point) {
-        int x = point.getX() * (BLOCK_SIZE + GAP);
-        int y = (int) getSize().getHeight() - BLOCK_SIZE - (BLOCK_SIZE + GAP) * (point.getY());
-
-        return Point.of(x, y);
-    }
-
-    public void setEffect(String effect) {
-        this.effect = effect;
     }
 
     public Dimension getGameDimension() {
