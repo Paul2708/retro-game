@@ -25,11 +25,22 @@ public class BackgroundOverlay extends Overlay {
             new Color(51, 153, 51)
     };
 
+    private static final Color[] DEATH_COLORS = new Color[] {
+            new Color(205, 55, 0),
+            new Color(139, 37, 0),
+            new Color(84, 84, 84),
+            new Color(46, 46, 46),
+            new Color(178, 28, 28),
+            new Color(139, 44, 38)
+    };
+
     private Map<Point, Color> spreading;
+    private Map<Point, Color> deadSpreading;
 
     @Override
     public void onInitialize() {
         this.spreading = new HashMap<>();
+        this.deadSpreading = new HashMap<>();
 
         Dimension dimension = getCanvas().getGameDimension();
         int blockSize = GameCanvas.BLOCK_SIZE;
@@ -38,13 +49,21 @@ public class BackgroundOverlay extends Overlay {
         for (int i = 0; i < dimension.getWidth(); i += blockSize + gap / 2) {
             for (int j = 0; j < dimension.getHeight(); j += blockSize + gap / 2) {
                 spreading.put(Point.of(i, j), randomColor());
+                deadSpreading.put(Point.of(i, j), randomDeadColor());
             }
         }
     }
 
     @Override
     public void onRender(Graphics2D graphics) {
-        for (Map.Entry<Point, Color> entry : spreading.entrySet()) {
+        Map<Point, Color> map;
+        if (getEngine().isDead()) {
+            map = deadSpreading;
+        } else {
+            map = spreading;
+        }
+
+        for (Map.Entry<Point, Color> entry : map.entrySet()) {
             Point point = entry.getKey();
             Color color = entry.getValue();
 
@@ -56,5 +75,9 @@ public class BackgroundOverlay extends Overlay {
 
     private Color randomColor() {
         return BackgroundOverlay.COLORS[ThreadLocalRandom.current().nextInt(BackgroundOverlay.COLORS.length)];
+    }
+
+    private Color randomDeadColor() {
+        return BackgroundOverlay.DEATH_COLORS[ThreadLocalRandom.current().nextInt(BackgroundOverlay.DEATH_COLORS.length)];
     }
 }

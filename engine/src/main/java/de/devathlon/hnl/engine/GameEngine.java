@@ -93,6 +93,8 @@ public interface GameEngine {
 
     EffectInformation getEffectInformation();
 
+    boolean isDead();
+
     /**
      * Create the game engine implementation.
      *
