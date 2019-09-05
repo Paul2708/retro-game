@@ -53,7 +53,7 @@ public abstract class CustomMap implements MapModel {
                     if (game.getEffectGiven() != 0) {
                         long secondsLeft = ((System.currentTimeMillis() - game.getEffectGiven()) / 1000);
                         Effect.animateTimer(getGame(), (int) secondsLeft);
-                        if (((System.currentTimeMillis() - game.getEffectGiven()) / 1000) >= game.getEffectGiven()) {
+                        if (secondsLeft >= getGame().getEffectTime()) {
                             game.removeAllEffects();
                         }
                     }
@@ -88,7 +88,7 @@ public abstract class CustomMap implements MapModel {
         int x = random.nextInt(game.getEngineConfiguration().getWidthInBlocks() - 2) + 1;
         int y = random.nextInt(game.getEngineConfiguration().getHeightInBlocks() - 7) + 1;
 
-        Food food = new Food(x, y, Color.ORANGE);
+        Food food = new Food(x, y, new Color(238, 118, 000));
 
         if (checkIfFoodIsInBorder(food)) {
             generateFood();

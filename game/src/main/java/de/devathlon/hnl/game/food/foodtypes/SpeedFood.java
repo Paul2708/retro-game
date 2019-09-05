@@ -11,7 +11,7 @@ import java.awt.*;
 public class SpeedFood extends SpecialFood {
 
     public SpeedFood(int x, int y, Game game) {
-        super(x, y, Color.GREEN, game, true);
+        super(x, y, new Color(127, 255, 212), game, true);
     }
 
     @Override

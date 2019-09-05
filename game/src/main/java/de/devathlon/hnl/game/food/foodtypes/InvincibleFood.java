@@ -11,7 +11,7 @@ import java.awt.*;
 public class InvincibleFood extends SpecialFood {
 
     public InvincibleFood(int x, int y, Game game) {
-        super(x, y, Color.RED, game, true);
+        super(x, y, new Color(205, 055, 000), game, true);
 
     }
 
