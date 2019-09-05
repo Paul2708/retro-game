@@ -96,7 +96,7 @@ public final class MapMenu {
 
     private Rectangle calculateBorder(MapModel item) {
         FontRenderContext renderContext = new FontRenderContext(null, true, true);
-        Rectangle2D bounds = font.getStringBounds(item.getName(), renderContext);
+        Rectangle2D bounds = font.getStringBounds(item.getConfiguration().getName(), renderContext);
 
         int x = (int) ((dimension.getWidth() / 2) - (bounds.getWidth() / 2) - bounds.getX());
         int y = (int) ((dimension.getHeight() / 2) - (bounds.getHeight() / 2) - bounds.getY());
@@ -108,7 +108,7 @@ public final class MapMenu {
     private void drawItem(Graphics2D graphics, MapModel item) {
         Rectangle rectangle = itemMap.get(item);
 
-        graphics.drawString(item.getName(), (int) rectangle.getX(), (int) rectangle.getY() + (int) rectangle.getHeight());
+        graphics.drawString(item.getConfiguration().getName(), (int) rectangle.getX(), (int) rectangle.getY() + (int) rectangle.getHeight());
     }
 
     public boolean isEnabled() {

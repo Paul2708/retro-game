@@ -28,7 +28,7 @@ public final class MapMouseListener implements MouseListener {
 
         if (item != null) {
             // TODO: Select map
-            menu.getConsumer().accept(item.getName());
+            menu.getConsumer().accept(item.getConfiguration().getName());
             menu.setPause(false);
         }
     }
