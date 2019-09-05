@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,7 @@ public class GameSettingsOverlay extends Overlay implements MouseListener {
         this.font = getFont().deriveFont(25f).deriveFont(Font.BOLD);
 
         this.items = getEngine().getPauseItems();
+        Collections.reverse(items);
 
         this.rectangles = new HashMap<>();
         for (PauseItem item : items) {
