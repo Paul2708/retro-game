@@ -8,6 +8,8 @@ import de.devathlon.hnl.core.math.Point;
 import de.devathlon.hnl.core.pause.PauseItem;
 import de.devathlon.hnl.engine.listener.InputListener;
 import de.devathlon.hnl.engine.loop.GameLoop;
+import de.devathlon.hnl.engine.window.map.MapMenu;
+import de.devathlon.hnl.engine.window.map.MapMouseListener;
 import de.devathlon.hnl.engine.window.pause.PauseMenu;
 import de.devathlon.hnl.engine.window.pause.listener.PauseMouseListener;
 import de.devathlon.hnl.engine.window.score.Score;
@@ -21,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.function.Consumer;
 
 /**
  * This canvas will be used to render the map, snake and all other entities.
@@ -55,6 +58,7 @@ public final class GameCanvas extends Canvas {
     private final Image image;
 
     private final PauseMenu pauseMenu;
+    private final MapMenu mapMenu;
 
     private final Dimension dimension;
 
@@ -68,7 +72,7 @@ public final class GameCanvas extends Canvas {
      * @param mapModel      model to get the current positions to draw
      * @param inputListener listener set to {@link CanvasKeyListener}
      */
-    public GameCanvas(List<PauseItem> pauseItems, Dimension dimension, MapModel mapModel, InputListener inputListener) {
+    public GameCanvas(List<MapModel> mapModels, List<PauseItem> pauseItems, Dimension dimension, MapModel mapModel, InputListener inputListener) {
         this.mapModel = mapModel;
         this.dimension = dimension;
 
@@ -82,9 +86,13 @@ public final class GameCanvas extends Canvas {
         this.pauseMenu = new PauseMenu();
         this.pauseMenu.load(pauseItems, dimension);
 
+        this.mapMenu = new MapMenu();
+        this.mapMenu.load(mapModels, dimension);
+
         // Set key listener and canvas settings
         addKeyListener(new CanvasKeyListener(inputListener));
         addMouseListener(new PauseMouseListener(pauseMenu));
+        addMouseListener(new MapMouseListener(mapMenu));
         setFocusable(true);
 
         this.score = new Score("High-Score: ", 0);
@@ -196,6 +204,9 @@ public final class GameCanvas extends Canvas {
         //graphics.drawString("Map-Auswahl", 100, 300);
         //graphics.drawString("Spiel beenden", 100, 400);
 
+        // Draw map menu
+        mapMenu.render((Graphics2D) graphics);
+
         // Draw score
         graphics.setColor(Color.BLACK);
         graphics.setFont(font);
@@ -208,6 +219,13 @@ public final class GameCanvas extends Canvas {
 
     public void setPause(boolean enabled) {
         pauseMenu.setPause(enabled);
+    }
+
+    public void setSelection(boolean enabled, Consumer<String> consumer) {
+        pauseMenu.setPause(false);
+
+        mapMenu.setPause(enabled);
+        mapMenu.setConsumer(consumer);
     }
 
     public void setScore(Score score) {
