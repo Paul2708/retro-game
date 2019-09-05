@@ -4,6 +4,7 @@ import de.devathlon.hnl.core.EffectBarModel;
 import de.devathlon.hnl.core.FoodModel;
 import de.devathlon.hnl.core.MapModel;
 import de.devathlon.hnl.core.SnakeModel;
+import de.devathlon.hnl.core.map.MapConfiguration;
 import de.devathlon.hnl.core.math.Point;
 import de.devathlon.hnl.core.update.EngineUpdate;
 import de.devathlon.hnl.engine.GameEngine;
@@ -15,10 +16,7 @@ import de.devathlon.hnl.game.food.Food;
 import de.devathlon.hnl.game.entities.Snake;
 import de.devathlon.hnl.game.food.SpecialFood;
 import de.devathlon.hnl.game.food.foodtypes.*;
-import de.devathlon.hnl.game.map.CustomMap;
-import de.devathlon.hnl.game.map.EasyMap;
-import de.devathlon.hnl.game.map.EmptyMap;
-import de.devathlon.hnl.game.map.NormalMap;
+import de.devathlon.hnl.game.map.*;
 import de.devathlon.hnl.game.pause.ContinueGameItem;
 import de.devathlon.hnl.game.pause.EndGameItem;
 import de.devathlon.hnl.game.pause.MapPauseItem;
@@ -27,7 +25,6 @@ import de.devathlon.hnl.game.util.Messages;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.*;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -65,12 +62,11 @@ public class Game implements InputListener {
 
         this.running = true;
         this.pause = new AtomicBoolean(true);
-        setup();
 
         // Refactor
         gameEngine = GameEngine.create();
 
-        this.mapModel = new NormalMap(this);
+        this.mapModel = new DifficultMap(this);
         gameEngine.setModel(mapModel);
         gameEngine.setPauseItems(new ContinueGameItem(this), new MapPauseItem(this), new EndGameItem(this));
         gameEngine.setInputListener(this);
@@ -79,11 +75,12 @@ public class Game implements InputListener {
         gameEngine.start();
 
         mapModel.setup();
+        setup();
     }
 
     private void setup() {
         // initialize snake
-        this.snake = new Snake();
+        this.snake = new Snake(this);
         this.currentDirection = Direction.LEFT;
         updateHeadPosition();
     }
@@ -199,7 +196,7 @@ public class Game implements InputListener {
     }
 
     private void reset() {
-        this.snake = new Snake();
+        this.snake = new Snake(this);
 
         mapModel.getFood().clear();
         generateNewFood();

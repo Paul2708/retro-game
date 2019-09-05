@@ -14,7 +14,7 @@ import java.util.Random;
 public class NormalMap extends CustomMap {
 
     public NormalMap(Game game) {
-        super(game);
+        super("Normal", Point.of(10, 2), game);
     }
 
     @Override
@@ -58,11 +58,6 @@ public class NormalMap extends CustomMap {
                 this.borderPoints.add(Point.of(x, y));
             }
         }
-        for (int x = 15; x < 20; x++) {
-            for (int y = 15; y < 20; y++) {
-                this.borderPoints.add(Point.of(x, y));
-            }
-        }
         for (int x = 25; x < 30; x++) {
             for (int y = 15; y < 20; y++) {
                 this.borderPoints.add(Point.of(x, y));
@@ -71,11 +66,6 @@ public class NormalMap extends CustomMap {
 
         Border.animateMovingBorder(0, 1000, getGame(), 25, 30);
         Border.animateMovingBorder(5500, 1500, getGame(), 25, 30);
-    }
-
-    @Override
-    public MapConfiguration getConfiguration() {
-        return new MapConfiguration("Standard", new Dimension(35, 35), Point.of(10, 10));
     }
 
     @Override

@@ -5,6 +5,7 @@ import de.devathlon.hnl.core.SnakeModel;
 import de.devathlon.hnl.core.math.Point;
 import de.devathlon.hnl.core.update.EngineUpdate;
 import de.devathlon.hnl.engine.GameEngine;
+import de.devathlon.hnl.game.snake.Game;
 import de.devathlon.hnl.game.util.Messages;
 
 import java.util.ArrayList;
@@ -20,17 +21,18 @@ public class Snake implements SnakeModel {
 
     private int defaultLength;
 
-    public Snake() {
+    public Snake(Game game) {
         this.speed = 100;
         this.invincible = false;
         this.defaultLength = 2;
 
         bodyPoints = new ArrayList<>();
         // generate snake at 10;10 with 4 body points
-        headPoint = Point.of(10, 10);
+        // headPoint = game.getMapModel().getConfiguration().getSpawnPoint();
+        headPoint = Point.of(10, 2);
 
         for (int i = 1; i <= defaultLength; i++) {
-            bodyPoints.add(Point.of(10 + i, 10));
+            bodyPoints.add(Point.of(headPoint.getX() + i, headPoint.getY()));
         }
     }
 
@@ -70,8 +72,10 @@ public class Snake implements SnakeModel {
 
     public boolean collisionWithBorder(List<Point> borderPoints) {
         for (Point borderPoint : borderPoints) {
-            if (headPoint.getX() == borderPoint.getX() && headPoint.getY() == borderPoint.getY())
+            if (headPoint.getX() == borderPoint.getX() && headPoint.getY() == borderPoint.getY()) {
+                System.out.println("collision border XD");
                 return true;
+            }
         }
         return false;
     }
