@@ -1,7 +1,7 @@
-package de.devathlon.hnl.engine.window.overlay.impl;
+package de.devathlon.hnl.engine.internal.window.overlay.impl;
 
 import de.devathlon.hnl.core.pause.PauseItem;
-import de.devathlon.hnl.engine.window.overlay.Overlay;
+import de.devathlon.hnl.engine.internal.window.overlay.Overlay;
 
 import java.awt.Color;
 import java.awt.Dimension;

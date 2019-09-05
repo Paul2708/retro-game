@@ -1,4 +1,4 @@
-package de.devathlon.hnl.engine.update;
+package de.devathlon.hnl.engine.internal.update;
 
 /**
  * Class description.

@@ -1,9 +1,9 @@
-package de.devathlon.hnl.engine.window.overlay;
+package de.devathlon.hnl.engine.internal.window.overlay;
 
 import de.devathlon.hnl.core.MapModel;
 import de.devathlon.hnl.core.math.Point;
 import de.devathlon.hnl.engine.GameEngine;
-import de.devathlon.hnl.engine.window.GameCanvas;
+import de.devathlon.hnl.engine.internal.window.GameCanvas;
 
 import java.awt.*;
 import java.io.IOException;

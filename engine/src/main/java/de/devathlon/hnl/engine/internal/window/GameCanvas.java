@@ -1,19 +1,19 @@
-package de.devathlon.hnl.engine.window;
+package de.devathlon.hnl.engine.internal.window;
 
 import de.devathlon.hnl.core.MapModel;
 import de.devathlon.hnl.engine.GameEngine;
 import de.devathlon.hnl.engine.listener.InputListener;
-import de.devathlon.hnl.engine.loop.GameLoop;
-import de.devathlon.hnl.engine.window.overlay.Overlay;
-import de.devathlon.hnl.engine.window.overlay.impl.BackgroundOverlay;
-import de.devathlon.hnl.engine.window.overlay.impl.BorderOverlay;
-import de.devathlon.hnl.engine.window.overlay.impl.EffectBarOverlay;
-import de.devathlon.hnl.engine.window.overlay.impl.EffectInfoOverlay;
-import de.devathlon.hnl.engine.window.overlay.impl.FoodOverlay;
-import de.devathlon.hnl.engine.window.overlay.impl.GameSettingsOverlay;
-import de.devathlon.hnl.engine.window.overlay.impl.MapSelectionOverlay;
-import de.devathlon.hnl.engine.window.overlay.impl.ScoreOverlay;
-import de.devathlon.hnl.engine.window.overlay.impl.SnakeOverlay;
+import de.devathlon.hnl.engine.internal.loop.GameLoop;
+import de.devathlon.hnl.engine.internal.window.overlay.Overlay;
+import de.devathlon.hnl.engine.internal.window.overlay.impl.BackgroundOverlay;
+import de.devathlon.hnl.engine.internal.window.overlay.impl.BorderOverlay;
+import de.devathlon.hnl.engine.internal.window.overlay.impl.EffectBarOverlay;
+import de.devathlon.hnl.engine.internal.window.overlay.impl.EffectInfoOverlay;
+import de.devathlon.hnl.engine.internal.window.overlay.impl.FoodOverlay;
+import de.devathlon.hnl.engine.internal.window.overlay.impl.GameSettingsOverlay;
+import de.devathlon.hnl.engine.internal.window.overlay.impl.MapSelectionOverlay;
+import de.devathlon.hnl.engine.internal.window.overlay.impl.ScoreOverlay;
+import de.devathlon.hnl.engine.internal.window.overlay.impl.SnakeOverlay;
 
 import java.awt.Canvas;
 import java.awt.Dimension;

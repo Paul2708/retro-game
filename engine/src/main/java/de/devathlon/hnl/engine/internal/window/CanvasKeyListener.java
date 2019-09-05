@@ -1,4 +1,4 @@
-package de.devathlon.hnl.engine.window;
+package de.devathlon.hnl.engine.internal.window;
 
 import de.devathlon.hnl.engine.listener.InputListener;
 
