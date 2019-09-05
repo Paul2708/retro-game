@@ -11,7 +11,7 @@ import java.awt.*;
 public class SlowFood extends SpecialFood {
 
     public SlowFood(int x, int y, Game game) {
-        super(x, y, Color.BLUE, game, true);
+        super(x, y, new Color(024, 116, 205), game, true);
 
     }
 
