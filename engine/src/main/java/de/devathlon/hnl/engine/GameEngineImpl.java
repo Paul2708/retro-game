@@ -153,6 +153,11 @@ final class GameEngineImpl implements GameEngine {
 
                 gameCanvas.setScore(new Score(title, score));
                 break;
+            case EFFECT_UPDATE:
+                String effect = (String) arguments[0];
+
+                gameCanvas.setEffect(effect);
+                break;
             default:
                 break;
         }
