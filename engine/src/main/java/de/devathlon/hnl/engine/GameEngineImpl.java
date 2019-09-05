@@ -163,6 +163,11 @@ final class GameEngineImpl implements GameEngine {
         }
     }
 
+    @Override
+    public MapModel getMap() {
+        return mapModel;
+    }
+
     /**
      * Stop the engine.
      * The rendering stops and the window disappears.

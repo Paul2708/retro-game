@@ -1,5 +1,7 @@
 package de.devathlon.hnl.engine.window.overlay;
 
+import de.devathlon.hnl.core.MapModel;
+import de.devathlon.hnl.core.math.Point;
 import de.devathlon.hnl.engine.GameEngine;
 import de.devathlon.hnl.engine.window.GameCanvas;
 
@@ -40,6 +42,10 @@ public abstract class Overlay {
 
     public abstract void render(Graphics2D graphics);
 
+    protected MapModel getMap() {
+        return engine.getMap();
+    }
+
     protected Font getFont() {
         if (Overlay.font == null) {
             GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -53,6 +59,20 @@ public abstract class Overlay {
         }
 
         return Overlay.font;
+    }
+
+    /**
+     * Transform a block point into an real sized screen point.
+     *
+     * @param point point to transform
+     * @return transformed point
+     */
+    protected Point transform(de.devathlon.hnl.core.math.Point point) {
+        int x = point.getX() * (GameCanvas.BLOCK_SIZE + GameCanvas.GAP);
+        int y = (int) canvas.getGameDimension().getHeight() - GameCanvas.BLOCK_SIZE
+                - (GameCanvas.BLOCK_SIZE + GameCanvas.GAP) * (point.getY());
+
+        return Point.of(x, y);
     }
 
     public boolean isEnabled() {
