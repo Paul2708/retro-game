@@ -39,6 +39,8 @@ public abstract class CustomMap implements MapModel {
     }
 
     public void setup() {
+        game.getAnimatedBorders().forEach(Thread::interrupt);
+
         generateDefaultBorder();
         generateCustomBorder();
         startFoodTimer();
@@ -107,7 +109,7 @@ public abstract class CustomMap implements MapModel {
         return false;
     }
 
-    public void generateDefaultBorder() {
+    private void generateDefaultBorder() {
         for (int i = 0; i < 4; i++) {
             for (int x = 0; x < getGame().getEngineConfiguration().getWidthInBlocks(); x++) {
                 this.borderPoints.add(Point.of(x, 0));

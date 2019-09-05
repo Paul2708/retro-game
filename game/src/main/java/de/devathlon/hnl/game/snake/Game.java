@@ -26,7 +26,9 @@ import de.devathlon.hnl.game.util.Messages;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -56,6 +58,8 @@ public class Game implements InputListener {
 
     private boolean inputBlocked;
 
+    private Set<Thread> animatedBorders;
+
     public Game() {
         // initialize effect variables
         this.effectBar = new CopyOnWriteArrayList<>();
@@ -63,6 +67,7 @@ public class Game implements InputListener {
         this.effectTime = 10;
         this.doublePoints = false;
         this.pauseEffectTimePassed = 0;
+        this.animatedBorders = new HashSet<>();
 
         this.inputBlocked = false;
         this.running = true;
@@ -291,5 +296,9 @@ public class Game implements InputListener {
 
     public void setMapModel(CustomMap mapModel) {
         this.mapModel = mapModel;
+    }
+
+    public Set<Thread> getAnimatedBorders() {
+        return animatedBorders;
     }
 }

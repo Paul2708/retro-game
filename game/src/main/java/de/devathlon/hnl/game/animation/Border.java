@@ -9,11 +9,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Border {
 
     public static void animateMovingBorder(int delay, int time, Game game, int yStart, int yEnd) {
-        new Thread(() -> {
+        Thread thread = new Thread(() -> {
             try {
                 Thread.sleep(delay);
             } catch (InterruptedException e) {
-                e.printStackTrace();
             }
             int currentX = 2;
             boolean moveForward = true;
@@ -50,9 +49,12 @@ public class Border {
                 try {
                     Thread.sleep(time);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
             }
-        }).start();
+        });
+
+        thread.start();
+
+        game.getAnimatedBorders().add(thread);
     }
 }
