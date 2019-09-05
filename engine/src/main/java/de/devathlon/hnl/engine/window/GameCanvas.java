@@ -18,6 +18,7 @@ import java.awt.image.BufferStrategy;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Random;
 
 /**
  * This canvas will be used to render the map, snake and all other entities.
@@ -104,7 +105,25 @@ public final class GameCanvas extends Canvas {
         graphics.fillRect(0, 0, getWidth(), getHeight());
 
         // Draw ground
-        graphics.drawImage(image, 0, 0, (int) getSize().getWidth(), (int) getSize().getHeight(), this);
+        // graphics.drawImage(image, 0, 0, (int) getSize().getWidth(), (int) getSize().getHeight(), this);
+
+        for (int i = 0; i < dimension.getWidth(); i += BLOCK_SIZE + GAP/2) {
+            for (int j = 0; j < dimension.getHeight(); j += BLOCK_SIZE + GAP/2) {
+                int random = new Random().nextInt(4);
+
+                if (random == 0) {
+                    graphics.setColor(new Color(102, 153, 51));
+                } else if (random == 1) {
+                    graphics.setColor(new Color(143, 197, 98));
+                } else if (random == 2) {
+                    graphics.setColor(new Color(72, 141, 29));
+                } else if (random == 3) {
+                    graphics.setColor(new Color(51, 153, 51));
+                }
+
+                graphics.fillRect(i, j, BLOCK_SIZE + GAP / 2, BLOCK_SIZE + GAP / 2);
+            }
+        }
 
         // Draw border
         graphics.setColor(new Color(139, 69, 19));
