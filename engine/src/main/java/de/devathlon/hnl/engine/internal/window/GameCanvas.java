@@ -110,11 +110,11 @@ public final class GameCanvas extends Canvas {
         bufferStrategy.show();
     }
 
-    public void setPause(boolean enabled) {
+    public void enablePause(boolean enabled) {
         gameSettingsOverlay.activate(enabled);
     }
 
-    public void setSelection(boolean enabled, Consumer<MapModel> consumer) {
+    public void enableMapSelection(boolean enabled, Consumer<MapModel> consumer) {
         mapSelectionOverlay.setConsumer(consumer);
 
         gameSettingsOverlay.activate(false);

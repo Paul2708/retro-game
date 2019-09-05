@@ -74,7 +74,7 @@ final class GameEngineImpl implements GameEngine {
 
     @Override
     public void openMapDialog(Consumer<MapModel> mapConsumer) {
-        gameCanvas.setSelection(true, mapConsumer);
+        gameCanvas.enableMapSelection(true, mapConsumer);
     }
 
     /**
@@ -119,12 +119,12 @@ final class GameEngineImpl implements GameEngine {
 
     @Override
     public void pause() {
-        gameCanvas.setPause(true);
+        gameCanvas.enablePause(true);
     }
 
     @Override
     public void unpause() {
-        gameCanvas.setPause(false);
+        gameCanvas.enablePause(false);
     }
 
     /**
