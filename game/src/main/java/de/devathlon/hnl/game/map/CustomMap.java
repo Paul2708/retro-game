@@ -39,7 +39,8 @@ public abstract class CustomMap implements MapModel {
     }
 
     public void setup() {
-        game.getAnimatedBorders().forEach(Thread::interrupt);
+        game.getAnimatedBorders().forEach(Thread::stop);
+        game.getAnimatedBorders().clear();
 
         generateDefaultBorder();
         generateCustomBorder();

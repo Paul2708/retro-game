@@ -93,6 +93,11 @@ public class Game implements InputListener {
         this.snake = new Snake(this);
         this.currentDirection = Direction.LEFT;
         updateHeadPosition();
+
+        // deactivate death screen
+        gameEngine.update(EngineUpdate.DEATH_SCREEN, false);
+        // update score
+        gameEngine.update(EngineUpdate.SCORE_UPDATE, Messages.SCORE_UPDATE, 0);
     }
 
     private void generateNewFood() {
@@ -126,7 +131,7 @@ public class Game implements InputListener {
                     if (snake.collisionWithBody() || snake.collisionWithBorder(mapModel.getBorderPoints())) {
                         if (snake.collisionWithBorder(mapModel.getBorderPoints()) && snake.isInvincible()) {
                             if (headPoint.getX() == 0) {
-                                headPoint.setX(engineConfiguration.getWidthInBlocks() - 1);
+                                headPoint.setX(engineConfiguration.getWidthInBlocks() - 2);
                             } else if (headPoint.getX() == engineConfiguration.getWidthInBlocks() - 1) {
                                 headPoint.setX(1);
                             } else if (headPoint.getY() == 0) {
@@ -204,6 +209,9 @@ public class Game implements InputListener {
     private void endGame() {
         running = false;
         pause = new AtomicBoolean(true);
+
+        // activate death screen
+        gameEngine.update(EngineUpdate.DEATH_SCREEN, true);
     }
 
     public void reset() {
@@ -222,6 +230,8 @@ public class Game implements InputListener {
 
         // update score
         gameEngine.update(EngineUpdate.SCORE_UPDATE, Messages.SCORE_UPDATE, 0);
+        // deactivate death screen
+        gameEngine.update(EngineUpdate.DEATH_SCREEN, false);
     }
 
     @Override

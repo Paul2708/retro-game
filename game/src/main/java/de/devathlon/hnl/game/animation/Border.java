@@ -49,6 +49,7 @@ public class Border {
                 try {
                     Thread.sleep(time);
                 } catch (InterruptedException e) {
+
                 }
             }
         });

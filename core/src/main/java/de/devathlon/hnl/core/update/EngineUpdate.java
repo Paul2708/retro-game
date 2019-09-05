@@ -24,7 +24,13 @@ public enum EngineUpdate {
      * The effect got updated.
      * Arguments: Effect state, actual effect
      */
-    EFFECT_UPDATE(String.class, String.class);
+    EFFECT_UPDATE(String.class, String.class),
+
+    /**
+     * The player is dead.
+     * Arguments: Boolean if screen is active.
+     */
+    DEATH_SCREEN(Boolean.class);
 
     private final Class<?>[] classes;
 
