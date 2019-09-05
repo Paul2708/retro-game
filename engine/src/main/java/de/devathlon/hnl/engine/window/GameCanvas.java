@@ -17,7 +17,9 @@ import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -58,6 +60,8 @@ public final class GameCanvas extends Canvas {
 
     private Score score;
 
+    private Map<Point, Color> colorMap;
+
     /**
      * Create a new game canvas and read in the ground file.
      *
@@ -84,6 +88,26 @@ public final class GameCanvas extends Canvas {
         setFocusable(true);
 
         this.score = new Score("High-Score: ", 0);
+        this.colorMap = new HashMap<>();
+
+        for (int i = 0; i < dimension.getWidth(); i += BLOCK_SIZE + GAP/2) {
+            for (int j = 0; j < dimension.getHeight(); j += BLOCK_SIZE + GAP/2) {
+                int random = new Random().nextInt(4);
+                Color color = null;
+
+                if (random == 0) {
+                    color = new Color(102, 153, 51);
+                } else if (random == 1) {
+                    color = new Color(143, 197, 98);
+                } else if (random == 2) {
+                    color = new Color(72, 141, 29);
+                } else if (random == 3) {
+                    color = new Color(51, 153, 51);
+                }
+
+                this.colorMap.put(Point.of(i, j), color);
+            }
+        }
     }
 
     /**
@@ -107,22 +131,9 @@ public final class GameCanvas extends Canvas {
         // Draw ground
         // graphics.drawImage(image, 0, 0, (int) getSize().getWidth(), (int) getSize().getHeight(), this);
 
-        for (int i = 0; i < dimension.getWidth(); i += BLOCK_SIZE + GAP/2) {
-            for (int j = 0; j < dimension.getHeight(); j += BLOCK_SIZE + GAP/2) {
-                int random = new Random().nextInt(4);
-
-                if (random == 0) {
-                    graphics.setColor(new Color(102, 153, 51));
-                } else if (random == 1) {
-                    graphics.setColor(new Color(143, 197, 98));
-                } else if (random == 2) {
-                    graphics.setColor(new Color(72, 141, 29));
-                } else if (random == 3) {
-                    graphics.setColor(new Color(51, 153, 51));
-                }
-
-                graphics.fillRect(i, j, BLOCK_SIZE + GAP / 2, BLOCK_SIZE + GAP / 2);
-            }
+        for (Map.Entry<Point, Color> entry : colorMap.entrySet()) {
+            graphics.setColor(entry.getValue());
+            graphics.fillRect(entry.getKey().getX(), entry.getKey().getY(), BLOCK_SIZE + GAP / 2, BLOCK_SIZE + GAP / 2);
         }
 
         // Draw border
