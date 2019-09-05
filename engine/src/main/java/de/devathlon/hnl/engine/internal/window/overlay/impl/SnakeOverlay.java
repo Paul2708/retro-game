@@ -5,7 +5,8 @@ import de.devathlon.hnl.core.math.Point;
 import de.devathlon.hnl.engine.internal.window.GameCanvas;
 import de.devathlon.hnl.engine.internal.window.overlay.Overlay;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics2D;
 
 /**
  * Class description.
