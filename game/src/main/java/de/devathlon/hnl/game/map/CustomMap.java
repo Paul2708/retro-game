@@ -4,6 +4,7 @@ import de.devathlon.hnl.core.EffectBarModel;
 import de.devathlon.hnl.core.FoodModel;
 import de.devathlon.hnl.core.MapModel;
 import de.devathlon.hnl.core.SnakeModel;
+import de.devathlon.hnl.core.map.MapConfiguration;
 import de.devathlon.hnl.core.math.Point;
 import de.devathlon.hnl.game.animation.Effect;
 import de.devathlon.hnl.game.food.Food;
@@ -24,13 +25,17 @@ public abstract class CustomMap implements MapModel {
 
     private final Game game;
 
+    private MapConfiguration mapConfiguration;
+
     protected final List<FoodModel> foodList;
     protected final List<Point> borderPoints;
 
-    public CustomMap(Game game) {
+    public CustomMap(String name, Point spawnPoint, Game game) {
         this.game = game;
         this.foodList = new ArrayList<>();
         this.borderPoints = new CopyOnWriteArrayList<>();
+
+        this.mapConfiguration = new MapConfiguration(name, new Dimension(35, 35), spawnPoint);
     }
 
     public void setup() {
@@ -155,5 +160,10 @@ public abstract class CustomMap implements MapModel {
                 return game.getEffectBar();
             }
         };
+    }
+
+    @Override
+    public MapConfiguration getConfiguration() {
+        return mapConfiguration;
     }
 }
