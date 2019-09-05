@@ -18,6 +18,6 @@ public class InvincibleFood extends SpecialFood {
     @Override
     protected void activateEffect() {
         getGame().getSnake().setInvincible(true);
-        getGame().getGameEngine().update(EngineUpdate.EFFECT_UPDATE, Messages.EFFECT_UPDATE + "Unbesiegbar");
+        getGame().getGameEngine().update(EngineUpdate.EFFECT_UPDATE, Messages.EFFECT_UPDATE, "Unbesiegbar");
     }
 }

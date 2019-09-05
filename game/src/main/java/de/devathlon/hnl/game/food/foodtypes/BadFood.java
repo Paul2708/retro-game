@@ -23,7 +23,7 @@ public class BadFood extends SpecialFood {
         for (int i = snake.getBodyPoints().size() - 1; i > halfSize; i--) {
             snake.getBodyPoints().remove(i);
         }
-        getGame().getGameEngine().update(EngineUpdate.EFFECT_UPDATE, "Deine Schlange wurde verkürzt :(");
+        getGame().getGameEngine().update(EngineUpdate.EFFECT_UPDATE, "Deine Schlange", "wurde verkürzt :(");
         snake.updateScore(getGame().getGameEngine());
     }
 }

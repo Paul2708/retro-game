@@ -36,7 +36,7 @@ final class GameEngineImpl implements GameEngine {
 
     private Consumer<MapModel> consumer;
     private Score score;
-    private String effect;
+    private String effect1, effect2;
 
     /**
      * Private constructor.
@@ -47,7 +47,8 @@ final class GameEngineImpl implements GameEngine {
         this.pauseItems = new LinkedList<>();
         this.mapItems = new LinkedList<>();
         score = new Score("-/-", 0);
-        this.effect = "-/-";
+        this.effect1 = "xD";
+        this.effect2 = "xD";
     }
 
     /**
@@ -158,7 +159,8 @@ final class GameEngineImpl implements GameEngine {
                 this.score = new Score(title, score);
                 break;
             case EFFECT_UPDATE:
-                this.effect = (String) arguments[0];
+                this.effect1 = (String) arguments[0];
+                this.effect2 = (String) arguments[1];
                 break;
             default:
                 break;
@@ -181,8 +183,13 @@ final class GameEngineImpl implements GameEngine {
     }
 
     @Override
-    public String getEffect() {
-        return effect;
+    public String getEffect1() {
+        return effect1;
+    }
+
+    @Override
+    public String getEffect2() {
+        return effect2;
     }
 
     @Override

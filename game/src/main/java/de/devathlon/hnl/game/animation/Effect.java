@@ -11,15 +11,17 @@ public class Effect {
         game.setEffectBarColor(Color.GREEN);
         int timeLeft = game.getEffectTime() - timePassed;
 
+        int startX = 11;
+
         if (timeLeft == game.getEffectTime()) {
             for (int i = timeLeft; i > 0; i--) {
-                game.getEffectBar().add(Point.of(2 + i, game.getEngineConfiguration().getHeightInBlocks() - 2));
+                game.getEffectBar().add(Point.of(startX + i, game.getEngineConfiguration().getHeightInBlocks() - 2));
             }
         } else {
             if(timeLeft <= 3) {
                 game.setEffectBarColor(Color.PINK);
             }
-            Point point = Point.of(2 + (timeLeft + 1), game.getEngineConfiguration().getHeightInBlocks() - 2);
+            Point point = Point.of(startX + (timeLeft + 1), game.getEngineConfiguration().getHeightInBlocks() - 2);
 
             game.getEffectBar().remove(point);
         }
