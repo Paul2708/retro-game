@@ -22,6 +22,16 @@ public class EasyMap extends CustomMap {
     }
 
     /**
+     * Get the name of the map.
+     *
+     * @return map name
+     */
+    @Override
+    public String getName() {
+        return null;
+    }
+
+    /**
      * Get a collection of all border points.
      *
      * @return collection of points
