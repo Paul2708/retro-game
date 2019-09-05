@@ -35,6 +35,7 @@ final class GameEngineImpl implements GameEngine {
     private List<MapModel> mapItems;
 
     private Consumer<String> consumer;
+    private Score score;
 
     /**
      * Private constructor.
@@ -44,6 +45,7 @@ final class GameEngineImpl implements GameEngine {
         this.running = false;
         this.pauseItems = new LinkedList<>();
         this.mapItems = new LinkedList<>();
+        score = new Score("-/-", 0);
     }
 
     /**
@@ -151,7 +153,7 @@ final class GameEngineImpl implements GameEngine {
                 String title = (String) arguments[0];
                 int score = (int) arguments[1];
 
-                gameCanvas.setScore(new Score(title, score));
+                this.score = new Score(title, score);
                 break;
             case EFFECT_UPDATE:
                 String effect = (String) arguments[0];
@@ -171,6 +173,11 @@ final class GameEngineImpl implements GameEngine {
     @Override
     public List<PauseItem> getPauseItems() {
         return pauseItems;
+    }
+
+    @Override
+    public Score getScore() {
+        return score;
     }
 
     /**
