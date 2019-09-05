@@ -32,7 +32,7 @@ public abstract class CustomMap implements MapModel {
 
     public CustomMap(String name, Point spawnPoint, Game game) {
         this.game = game;
-        this.foodList = new ArrayList<>();
+        this.foodList = new CopyOnWriteArrayList<>();
         this.borderPoints = new CopyOnWriteArrayList<>();
 
         this.mapConfiguration = new MapConfiguration(name, new Dimension(35, 35), spawnPoint);
@@ -70,7 +70,7 @@ public abstract class CustomMap implements MapModel {
                     }
                 }
             }
-        }, 1000, 1000);
+        }, 0, 1000);
     }
 
     public void updateFood() {
