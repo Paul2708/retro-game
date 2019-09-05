@@ -75,7 +75,7 @@ public final class GameCanvas extends Canvas {
     private Overlay backgroundOverlay;
     private Overlay borderOverlay;
     private Overlay snakeOverlay;
-
+    private Overlay foodOverlay;
 
     /**
      * Create a new game canvas and read in the ground file.
@@ -122,6 +122,10 @@ public final class GameCanvas extends Canvas {
         this.snakeOverlay = new SnakeOverlay();
         this.snakeOverlay.initialize(engine, this);
         this.snakeOverlay.activate();
+
+        this.foodOverlay = new SnakeOverlay();
+        this.foodOverlay.initialize(engine, this);
+        this.foodOverlay.activate();
     }
 
     /**
