@@ -38,7 +38,7 @@ public interface GameEngine {
 
     void setMaps(MapModel... models);
 
-    void openMapDialog(Consumer<String> mapConsumer);
+    void openMapDialog(Consumer<MapModel> mapConsumer);
 
     /**
      * Set the input listener that will be called on key input.
@@ -90,6 +90,8 @@ public interface GameEngine {
     Score getScore();
 
     String getEffect();
+
+    List<MapModel> getMapPool();
 
     /**
      * Create the game engine implementation.

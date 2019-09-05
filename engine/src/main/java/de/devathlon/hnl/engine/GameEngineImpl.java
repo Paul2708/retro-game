@@ -34,7 +34,7 @@ final class GameEngineImpl implements GameEngine {
     private List<PauseItem> pauseItems;
     private List<MapModel> mapItems;
 
-    private Consumer<String> consumer;
+    private Consumer<MapModel> consumer;
     private Score score;
     private String effect;
 
@@ -78,7 +78,7 @@ final class GameEngineImpl implements GameEngine {
     }
 
     @Override
-    public void openMapDialog(Consumer<String> mapConsumer) {
+    public void openMapDialog(Consumer<MapModel> mapConsumer) {
         this.consumer = mapConsumer;
 
         gameCanvas.setSelection(true, consumer);
@@ -183,6 +183,11 @@ final class GameEngineImpl implements GameEngine {
     @Override
     public String getEffect() {
         return effect;
+    }
+
+    @Override
+    public List<MapModel> getMapPool() {
+        return mapItems;
     }
 
     /**
