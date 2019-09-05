@@ -139,7 +139,7 @@ public final class GameCanvas extends Canvas {
 
         this.mapSelectionOverlay = new MapSelectionOverlay();
         this.mapSelectionOverlay.initialize(engine, this);
-        this.mapSelectionOverlay.activate(true);
+        this.mapSelectionOverlay.activate(false);
     }
 
     /**
