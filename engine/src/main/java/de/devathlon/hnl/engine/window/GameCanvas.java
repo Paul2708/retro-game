@@ -10,14 +10,10 @@ import de.devathlon.hnl.engine.listener.InputListener;
 import de.devathlon.hnl.engine.loop.GameLoop;
 import de.devathlon.hnl.engine.window.pause.PauseMenu;
 import de.devathlon.hnl.engine.window.pause.listener.PauseMouseListener;
+import de.devathlon.hnl.engine.window.score.Score;
 
 import javax.imageio.ImageIO;
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,6 +53,10 @@ public final class GameCanvas extends Canvas {
 
     private final PauseMenu pauseMenu;
 
+    private final Dimension dimension;
+
+    private Score score;
+
     /**
      * Create a new game canvas and read in the ground file.
      *
@@ -65,6 +65,7 @@ public final class GameCanvas extends Canvas {
      */
     public GameCanvas(List<PauseItem> pauseItems, Dimension dimension, MapModel mapModel, InputListener inputListener) {
         this.mapModel = mapModel;
+        this.dimension = dimension;
 
         // Load ground image
         try (InputStream stream = getClass().getResourceAsStream(GameCanvas.GROUND_IMAGE)) {
@@ -80,6 +81,8 @@ public final class GameCanvas extends Canvas {
         addKeyListener(new CanvasKeyListener(inputListener));
         addMouseListener(new PauseMouseListener(pauseMenu));
         setFocusable(true);
+
+        this.score = new Score("High-Score: ", 0);
     }
 
     /**
@@ -148,10 +151,27 @@ public final class GameCanvas extends Canvas {
         }
 
         // Draw settings menu
+        Font font;
+        GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
+
+        try (InputStream stream = getClass().getResourceAsStream("/pixel_font.ttf")) {
+            font = Font.createFont(Font.TRUETYPE_FONT, stream);
+            environment.registerFont(font);
+        } catch (IOException | FontFormatException e) {
+            throw new RuntimeException(e);
+        }
+
+        font = font.deriveFont(15f).deriveFont(Font.BOLD);
         pauseMenu.render((Graphics2D) graphics);
 
         //graphics.drawString("Map-Auswahl", 100, 300);
         //graphics.drawString("Spiel beenden", 100, 400);
+
+        // Draw score
+        graphics.setColor(Color.BLACK);
+        graphics.setFont(font);
+        graphics.drawString(score.getText() + " " + score.getScore(), (int) (dimension.getWidth() - 300), 30);
+        graphics.drawString("Aktueller Score:" + score.getScore(), (int) (dimension.getWidth() - 300), 60);
 
         graphics.dispose();
         bufferStrategy.show();
@@ -159,6 +179,10 @@ public final class GameCanvas extends Canvas {
 
     public void setPause(boolean enabled) {
         pauseMenu.setPause(enabled);
+    }
+
+    public void setScore(Score score) {
+        this.score = score;
     }
 
     /**

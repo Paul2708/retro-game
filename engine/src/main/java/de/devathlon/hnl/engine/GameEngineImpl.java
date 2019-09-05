@@ -8,6 +8,7 @@ import de.devathlon.hnl.engine.listener.InputListener;
 import de.devathlon.hnl.engine.loop.GameLoop;
 import de.devathlon.hnl.engine.window.GameCanvas;
 import de.devathlon.hnl.engine.window.GameWindow;
+import de.devathlon.hnl.engine.window.score.Score;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -133,8 +134,7 @@ final class GameEngineImpl implements GameEngine {
                 String title = (String) arguments[0];
                 int score = (int) arguments[1];
 
-                // TODO: Implement me
-
+                gameCanvas.setScore(new Score(title, score));
                 break;
             default:
                 break;
