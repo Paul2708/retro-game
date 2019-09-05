@@ -22,9 +22,9 @@ public enum EngineUpdate {
 
     /**
      * The effect got updated.
-     * Arguments: String to display
+     * Arguments: Effect state, actual effect
      */
-    EFFECT_UPDATE(String.class);
+    EFFECT_UPDATE(String.class, String.class);
 
     private final Class<?>[] classes;
 

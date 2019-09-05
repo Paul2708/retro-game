@@ -17,6 +17,6 @@ public class SpeedFood extends SpecialFood {
     @Override
     protected void activateEffect() {
         getGame().getSnake().setSpeed(75);
-        getGame().getGameEngine().update(EngineUpdate.EFFECT_UPDATE, Messages.EFFECT_UPDATE + "Speed");
+        getGame().getGameEngine().update(EngineUpdate.EFFECT_UPDATE, Messages.EFFECT_UPDATE, "Speed");
     }
 }

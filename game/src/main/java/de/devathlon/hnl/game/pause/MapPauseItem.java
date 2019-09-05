@@ -26,7 +26,7 @@ public class MapPauseItem implements PauseItem {
     @Override
     public void onSelect() {
         game.getGameEngine().openMapDialog(s -> {
-            System.out.println("Test" + s);
+            System.out.println("Test" + s.getConfiguration().getName());
         });
     }
 }

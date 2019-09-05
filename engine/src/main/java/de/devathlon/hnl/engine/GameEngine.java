@@ -89,9 +89,11 @@ public interface GameEngine {
 
     Score getScore();
 
-    String getEffect();
-
     List<MapModel> getMapPool();
+
+    String getEffect1();
+
+    String getEffect2();
 
     /**
      * Create the game engine implementation.

@@ -71,6 +71,7 @@ public class Game implements InputListener {
 
         this.mapModel = new EmptyMap(this);
         gameEngine.setModel(mapModel);
+        gameEngine.setMaps(new EmptyMap(this), new EasyMap(this), new NormalMap(this), new DifficultMap(this));
         gameEngine.setPauseItems(new ContinueGameItem(this), new MapPauseItem(this), new EndGameItem(this));
         gameEngine.setInputListener(this);
         this.engineConfiguration = new EngineConfiguration(35, 35, 120);
@@ -170,7 +171,7 @@ public class Game implements InputListener {
 
         effectBar.clear();
 
-        gameEngine.update(EngineUpdate.EFFECT_UPDATE, Messages.EFFECT_UPDATE + "Kein Effekt!");
+        gameEngine.update(EngineUpdate.EFFECT_UPDATE, "Effekt:", "-/-");
     }
 
     public void pauseGame() {

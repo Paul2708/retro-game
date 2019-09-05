@@ -25,11 +25,13 @@ public class EffectInfoOverlay extends Overlay {
     @Override
     public void onRender(Graphics2D graphics) {
         Dimension dimension = getCanvas().getGameDimension();
-        String effect = getEngine().getEffect();
+        String effect1 = getEngine().getEffect1();
+        String effect2 = getEngine().getEffect2();
 
         graphics.setColor(Color.BLACK);
 
         graphics.setFont(font);
-        graphics.drawString(effect, (int) (dimension.getWidth() - 750), 30);
+        graphics.drawString(effect1, (int) (dimension.getWidth() - 750), 30);
+        graphics.drawString(effect2, (int) (dimension.getWidth() - 750), 60);
     }
 }

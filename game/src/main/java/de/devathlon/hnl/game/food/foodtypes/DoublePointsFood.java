@@ -17,6 +17,6 @@ public class DoublePointsFood extends SpecialFood {
     @Override
     protected void activateEffect() {
         getGame().setDoublePoints(true);
-        getGame().getGameEngine().update(EngineUpdate.EFFECT_UPDATE, Messages.EFFECT_UPDATE + "Doppelte Punkte");
+        getGame().getGameEngine().update(EngineUpdate.EFFECT_UPDATE, Messages.EFFECT_UPDATE, "Doppelte Punkte");
     }
 }
