@@ -43,7 +43,7 @@ public class BackgroundOverlay extends Overlay {
     }
 
     @Override
-    public void render(Graphics2D graphics) {
+    public void onRender(Graphics2D graphics) {
         for (Map.Entry<Point, Color> entry : spreading.entrySet()) {
             Point point = entry.getKey();
             Color color = entry.getValue();

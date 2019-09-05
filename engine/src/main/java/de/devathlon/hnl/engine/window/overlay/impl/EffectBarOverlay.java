@@ -22,7 +22,7 @@ public class EffectBarOverlay extends Overlay {
     }
 
     @Override
-    public void render(Graphics2D graphics) {
+    public void onRender(Graphics2D graphics) {
         graphics.setColor(effectBar.getColor());
 
         for (Point point : effectBar.getBar()) {

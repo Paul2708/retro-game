@@ -44,7 +44,7 @@ public class GameSettingsOverlay extends Overlay implements MouseListener {
     }
 
     @Override
-    public void render(Graphics2D graphics) {
+    public void onRender(Graphics2D graphics) {
         graphics.setColor(Color.BLACK);
         graphics.setFont(font);
 

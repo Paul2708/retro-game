@@ -21,7 +21,7 @@ public class BorderOverlay extends Overlay {
     }
 
     @Override
-    public void render(Graphics2D graphics) {
+    public void onRender(Graphics2D graphics) {
         graphics.setColor(BorderOverlay.COLOR);
 
         for (Point point : getMap().getBorder()) {

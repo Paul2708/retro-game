@@ -1,9 +1,6 @@
 package de.devathlon.hnl.engine.window;
 
-import de.devathlon.hnl.core.EffectBarModel;
-import de.devathlon.hnl.core.FoodModel;
 import de.devathlon.hnl.core.MapModel;
-import de.devathlon.hnl.core.SnakeModel;
 import de.devathlon.hnl.core.math.Point;
 import de.devathlon.hnl.core.pause.PauseItem;
 import de.devathlon.hnl.engine.GameEngine;
@@ -30,7 +27,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.function.Consumer;
 
 /**
@@ -177,21 +173,8 @@ public final class GameCanvas extends Canvas {
         // Draw effect bar
         effectBarOverlay.render((Graphics2D) graphics);
 
-        gameSettingsOverlay.render((Graphics2D) graphics);
-
         // Draw settings menu
-        Font font;
-        GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-
-        try (InputStream stream = getClass().getResourceAsStream("/pixel_font.ttf")) {
-            font = Font.createFont(Font.TRUETYPE_FONT, stream);
-            environment.registerFont(font);
-        } catch (IOException | FontFormatException e) {
-            throw new RuntimeException(e);
-        }
-
-        font = font.deriveFont(15f).deriveFont(Font.BOLD);
-        pauseMenu.render((Graphics2D) graphics);
+        gameSettingsOverlay.render((Graphics2D) graphics);
 
         //graphics.drawString("Map-Auswahl", 100, 300);
         //graphics.drawString("Spiel beenden", 100, 400);
@@ -200,7 +183,7 @@ public final class GameCanvas extends Canvas {
         mapMenu.render((Graphics2D) graphics);
 
         // Draw score
-        graphics.setColor(Color.BLACK);
+        /*graphics.setColor(Color.BLACK);
         graphics.setFont(font);
         graphics.drawString(score.getText() + " " + score.getScore(), (int) (dimension.getWidth() - 300), 30);
         graphics.drawString("Aktueller Score:" + score.getScore(), (int) (dimension.getWidth() - 300), 60);
@@ -208,18 +191,18 @@ public final class GameCanvas extends Canvas {
         // Draw effect
         graphics.setColor(Color.BLACK);
         graphics.setFont(font);
-        graphics.drawString(effect, (int) (dimension.getWidth() - 750), 30);
+        graphics.drawString(effect, (int) (dimension.getWidth() - 750), 30);*/
 
         graphics.dispose();
         bufferStrategy.show();
     }
 
     public void setPause(boolean enabled) {
-        pauseMenu.setPause(enabled);
+        gameSettingsOverlay.activate(enabled);
     }
 
     public void setSelection(boolean enabled, Consumer<String> consumer) {
-        pauseMenu.setPause(false);
+        gameSettingsOverlay.activate(false);
 
         mapMenu.setPause(enabled);
         mapMenu.setConsumer(consumer);

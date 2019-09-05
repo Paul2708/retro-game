@@ -20,7 +20,7 @@ public class FoodOverlay extends Overlay {
     }
 
     @Override
-    public void render(Graphics2D graphics) {
+    public void onRender(Graphics2D graphics) {
         for (FoodModel food : getMap().getFood()) {
             Point transform = transform(food.getLocation());
 
