@@ -48,25 +48,28 @@ public class Game implements InputListener {
     private long pauseEffectTimePassed;
 
     // effectbar
-    private List<Point> effectBar = new CopyOnWriteArrayList<>();
+    private List<Point> effectBar;
     private Color effectBarColor;
 
     private CustomMap mapModel;
 
+    private boolean inputBlocked;
+
     public Game() {
         // initialize effect variables
+        this.effectBar = new CopyOnWriteArrayList<>();
         this.effectGiven = 0;
         this.effectTime = 10;
         this.doublePoints = false;
         this.pauseEffectTimePassed = 0;
 
+        this.inputBlocked = false;
         this.running = true;
         this.pause = new AtomicBoolean(true);
 
-        // Refactor
         gameEngine = GameEngine.create();
 
-        this.mapModel = new DifficultMap(this);
+        this.mapModel = new EmptyMap(this);
         gameEngine.setModel(mapModel);
         gameEngine.setPauseItems(new ContinueGameItem(this), new MapPauseItem(this), new EndGameItem(this));
         gameEngine.setInputListener(this);
@@ -147,6 +150,8 @@ public class Game implements InputListener {
 
                     snake.updateScore(gameEngine);
                 }
+
+                this.inputBlocked = true;
                 // sleep
                 try {
                     Thread.sleep(snake.getSpeed());
@@ -216,13 +221,15 @@ public class Game implements InputListener {
     @Override
     public void onInput(int keyCode) {
         if (keyCode != KeyEvent.VK_SPACE && keyCode != KeyEvent.VK_ESCAPE) {
+            if (!inputBlocked) return;
             Direction direction = Direction.getDirectionByKey(keyCode);
             if (direction != null) {
                 if (currentDirection == Direction.UP && direction == Direction.DOWN) return;
                 if (currentDirection == Direction.DOWN && direction == Direction.UP) return;
                 if (currentDirection == Direction.LEFT && direction == Direction.RIGHT) return;
                 if (currentDirection == Direction.RIGHT && direction == Direction.LEFT) return;
-                currentDirection = direction;
+                this.inputBlocked = true;
+                this.currentDirection = direction;
             }
         } else {
             if (!running) {
