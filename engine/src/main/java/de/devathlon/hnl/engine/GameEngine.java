@@ -4,9 +4,8 @@ import de.devathlon.hnl.core.MapModel;
 import de.devathlon.hnl.core.pause.PauseItem;
 import de.devathlon.hnl.core.update.EngineUpdate;
 import de.devathlon.hnl.engine.configuration.EngineConfiguration;
+import de.devathlon.hnl.engine.internal.GameState;
 import de.devathlon.hnl.engine.listener.InputListener;
-import de.devathlon.hnl.engine.internal.update.EffectInformation;
-import de.devathlon.hnl.engine.internal.update.Score;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -82,17 +81,9 @@ public interface GameEngine {
      */
     void stop();
 
-    MapModel getMap();
-
     List<PauseItem> getPauseItems();
 
-    Score getScore();
-
-    List<MapModel> getMapPool();
-
-    EffectInformation getEffectInformation();
-
-    boolean isDead();
+    GameState getGameState();
 
     /**
      * Create the game engine implementation.

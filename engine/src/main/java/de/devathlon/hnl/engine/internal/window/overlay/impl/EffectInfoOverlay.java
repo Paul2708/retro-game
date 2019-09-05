@@ -25,7 +25,7 @@ public class EffectInfoOverlay extends Overlay {
     @Override
     public void onRender(Graphics2D graphics) {
         Dimension dimension = getCanvas().getGameDimension();
-        EffectInformation effect = getEngine().getEffectInformation();
+        EffectInformation effect = getEngine().getGameState().getEffectInformation();
 
         graphics.setColor(Color.BLACK);
 

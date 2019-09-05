@@ -49,7 +49,7 @@ public abstract class Overlay {
     public abstract void onRender(Graphics2D graphics);
 
     protected MapModel getMap() {
-        return engine.getMap();
+        return engine.getGameState().getMapModel();
     }
 
     protected Font getFont() {

@@ -4,6 +4,7 @@ import de.devathlon.hnl.core.MapModel;
 import de.devathlon.hnl.core.pause.PauseItem;
 import de.devathlon.hnl.core.update.EngineUpdate;
 import de.devathlon.hnl.engine.configuration.EngineConfiguration;
+import de.devathlon.hnl.engine.internal.GameState;
 import de.devathlon.hnl.engine.listener.InputListener;
 import de.devathlon.hnl.engine.internal.loop.GameLoop;
 import de.devathlon.hnl.engine.internal.update.EffectInformation;
@@ -23,35 +24,25 @@ import java.util.function.Consumer;
  */
 final class GameEngineImpl implements GameEngine {
 
-    private MapModel mapModel;
     private InputListener inputListener;
     private EngineConfiguration configuration;
 
     private GameWindow gameWindow;
     private GameCanvas gameCanvas;
 
-    private Boolean running;
-
     private List<PauseItem> pauseItems;
-    private List<MapModel> mapItems;
 
-    private Consumer<MapModel> consumer;
-    private Score score;
-    private EffectInformation effectInformation;
-    private boolean dead;
+    private GameState state;
+
 
     /**
      * Private constructor.
      * Set running identifier to <code>false</code>.
      */
     GameEngineImpl() {
-        this.running = false;
         this.pauseItems = new LinkedList<>();
-        this.mapItems = new LinkedList<>();
 
-        this.score = new Score("Score:", 0);
-        this.effectInformation = new EffectInformation("", "");
-        this.dead = false;
+        this.state = new GameState();
     }
 
     /**
@@ -62,7 +53,7 @@ final class GameEngineImpl implements GameEngine {
      */
     @Override
     public void setModel(MapModel model) {
-        this.mapModel = model;
+        state.setMapModel(model);
     }
 
     /**
@@ -78,14 +69,12 @@ final class GameEngineImpl implements GameEngine {
 
     @Override
     public void setMaps(List<MapModel> mapPool) {
-        mapItems.addAll(mapPool);
+        state.setMapPool(mapPool);
     }
 
     @Override
     public void openMapDialog(Consumer<MapModel> mapConsumer) {
-        this.consumer = mapConsumer;
-
-        gameCanvas.setSelection(true, consumer);
+        gameCanvas.setSelection(true, mapConsumer);
     }
 
     /**
@@ -119,12 +108,12 @@ final class GameEngineImpl implements GameEngine {
      */
     @Override
     public void start() {
-        running = true;
+        state.setRunning(true);
 
         gameWindow.setVisible(true);
         gameCanvas.requestFocus();
 
-        Thread loopThread = new Thread(new GameLoop(gameCanvas, running, configuration.getFps()));
+        Thread loopThread = new Thread(new GameLoop(gameCanvas, state.isRunning(), configuration.getFps()));
         loopThread.start();
     }
 
@@ -159,22 +148,18 @@ final class GameEngineImpl implements GameEngine {
                 String title = (String) arguments[0];
                 int score = (int) arguments[1];
 
-                this.score = new Score(title, score);
+                state.setScore(new Score(title, score));
                 break;
             case EFFECT_UPDATE:
-                this.effectInformation = new EffectInformation((String) arguments[0], (String) arguments[1]);
+                EffectInformation effect = new EffectInformation((String) arguments[0], (String) arguments[1]);
+                state.setEffectInformation(effect);
                 break;
             case DEATH_SCREEN:
-                this.dead = (Boolean) arguments[0];
+                state.setDead((Boolean) arguments[0]);
                 break;
             default:
                 break;
         }
-    }
-
-    @Override
-    public MapModel getMap() {
-        return mapModel;
     }
 
     @Override
@@ -183,22 +168,8 @@ final class GameEngineImpl implements GameEngine {
     }
 
     @Override
-    public Score getScore() {
-        return score;
-    }
-
-    @Override
-    public EffectInformation getEffectInformation() {
-        return effectInformation;
-    }
-
-    @Override
-    public List<MapModel> getMapPool() {
-        return mapItems;
-    }
-
-    public boolean isDead() {
-        return dead;
+    public GameState getGameState() {
+        return state;
     }
 
     /**
@@ -209,7 +180,7 @@ final class GameEngineImpl implements GameEngine {
      */
     @Override
     public void stop() {
-        running = false;
+        state.setRunning(false);
 
         gameWindow.dispose();
     }

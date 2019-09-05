@@ -57,7 +57,7 @@ public class BackgroundOverlay extends Overlay {
     @Override
     public void onRender(Graphics2D graphics) {
         Map<Point, Color> map;
-        if (getEngine().isDead()) {
+        if (getEngine().getGameState().isDead()) {
             map = deadSpreading;
         } else {
             map = spreading;
