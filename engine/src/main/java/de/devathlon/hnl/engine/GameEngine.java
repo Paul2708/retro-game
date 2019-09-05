@@ -81,6 +81,8 @@ public interface GameEngine {
      */
     void stop();
 
+    MapModel getMap();
+
     /**
      * Create the game engine implementation.
      *

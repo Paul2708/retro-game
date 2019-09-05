@@ -13,6 +13,7 @@ import de.devathlon.hnl.engine.window.map.MapMenu;
 import de.devathlon.hnl.engine.window.map.MapMouseListener;
 import de.devathlon.hnl.engine.window.overlay.Overlay;
 import de.devathlon.hnl.engine.window.overlay.impl.BackgroundOverlay;
+import de.devathlon.hnl.engine.window.overlay.impl.BorderOverlay;
 import de.devathlon.hnl.engine.window.pause.PauseMenu;
 import de.devathlon.hnl.engine.window.pause.listener.PauseMouseListener;
 import de.devathlon.hnl.engine.window.score.Score;
@@ -71,6 +72,7 @@ public final class GameCanvas extends Canvas {
     private Map<Point, Color> colorMap;
 
     private Overlay backgroundOverlay;
+    private Overlay borderOverlay;
 
 
     /**
@@ -106,10 +108,14 @@ public final class GameCanvas extends Canvas {
         this.effect = "kein Effekt";
         this.colorMap = new HashMap<>();
 
-        this.backgroundOverlay = new BackgroundOverlay();
 
+        this.backgroundOverlay = new BackgroundOverlay();
         this.backgroundOverlay.initialize(engine, this);
         this.backgroundOverlay.activate();
+
+        this.borderOverlay = new BorderOverlay();
+        this.borderOverlay.initialize(engine, this);
+        this.borderOverlay.activate();
     }
 
     /**
@@ -127,8 +133,8 @@ public final class GameCanvas extends Canvas {
         }
 
         Graphics graphics = bufferStrategy.getDrawGraphics();
-        graphics.setColor(Color.BLACK);
-        graphics.fillRect(0, 0, getWidth(), getHeight());
+        // graphics.setColor(Color.BLACK);
+        // graphics.fillRect(0, 0, getWidth(), getHeight());
 
         // Draw ground
         // graphics.drawImage(image, 0, 0, (int) getSize().getWidth(), (int) getSize().getHeight(), this);
@@ -137,13 +143,7 @@ public final class GameCanvas extends Canvas {
 
 
         // Draw border
-        graphics.setColor(new Color(139, 69, 19));
-
-        for (Point point : mapModel.getBorder()) {
-            Point transformed = transform(point);
-
-            graphics.fillRect(transformed.getX(), transformed.getY(), BLOCK_SIZE, BLOCK_SIZE);
-        }
+        borderOverlay.render((Graphics2D) graphics);
 
         // Draw snake
         SnakeModel snakeModel = mapModel.getSnake();
