@@ -39,7 +39,7 @@ public class MapSelectionOverlay extends Overlay implements MouseListener {
     public void onInitialize() {
         this.font = getFont().deriveFont(25f).deriveFont(Font.BOLD);
 
-        this.mapPool = getEngine().getMapPool();
+        this.mapPool = getEngine().getGameState().getMapPool();
         Collections.reverse(mapPool);
 
         this.rectangles = new HashMap<>();

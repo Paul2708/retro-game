@@ -25,7 +25,7 @@ public class ScoreOverlay extends Overlay {
     @Override
     public void onRender(Graphics2D graphics) {
         Dimension dimension = getCanvas().getGameDimension();
-        Score score = getEngine().getScore();
+        Score score = getEngine().getGameState().getScore();
 
         graphics.setColor(Color.BLACK);
         graphics.setFont(font);
