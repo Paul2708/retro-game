@@ -14,6 +14,7 @@ import de.devathlon.hnl.engine.window.overlay.impl.BorderOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.EffectBarOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.FoodOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.GameSettingsOverlay;
+import de.devathlon.hnl.engine.window.overlay.impl.ScoreOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.SnakeOverlay;
 import de.devathlon.hnl.engine.window.score.Score;
 
@@ -73,6 +74,7 @@ public final class GameCanvas extends Canvas {
     private Overlay snakeOverlay;
     private Overlay foodOverlay;
     private Overlay effectBarOverlay;
+    private Overlay scoreOverlay;
     private Overlay gameSettingsOverlay;
 
     /**
@@ -126,6 +128,10 @@ public final class GameCanvas extends Canvas {
         this.effectBarOverlay.initialize(engine, this);
         this.effectBarOverlay.activate(true);
 
+        this.scoreOverlay = new ScoreOverlay();
+        this.scoreOverlay.initialize(engine, this);
+        this.scoreOverlay.activate(true);
+
         this.gameSettingsOverlay = new GameSettingsOverlay();
         this.gameSettingsOverlay.initialize(engine, this);
         this.gameSettingsOverlay.activate(true);
@@ -167,11 +173,11 @@ public final class GameCanvas extends Canvas {
         // Draw effect bar
         effectBarOverlay.render((Graphics2D) graphics);
 
+        // Draw score overlay
+        scoreOverlay.render((Graphics2D) graphics);
+
         // Draw settings menu
         gameSettingsOverlay.render((Graphics2D) graphics);
-
-        //graphics.drawString("Map-Auswahl", 100, 300);
-        //graphics.drawString("Spiel beenden", 100, 400);
 
         // Draw map menu
         mapMenu.render((Graphics2D) graphics);

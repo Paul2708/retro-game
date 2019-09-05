@@ -5,6 +5,7 @@ import de.devathlon.hnl.core.pause.PauseItem;
 import de.devathlon.hnl.core.update.EngineUpdate;
 import de.devathlon.hnl.engine.configuration.EngineConfiguration;
 import de.devathlon.hnl.engine.listener.InputListener;
+import de.devathlon.hnl.engine.window.score.Score;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -85,6 +86,8 @@ public interface GameEngine {
     MapModel getMap();
 
     List<PauseItem> getPauseItems();
+
+    Score getScore();
 
     /**
      * Create the game engine implementation.
