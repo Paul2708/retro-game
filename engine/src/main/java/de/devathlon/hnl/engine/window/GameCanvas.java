@@ -146,12 +146,7 @@ public final class GameCanvas extends Canvas {
         }
 
         // Draw snake
-        graphics.setColor(Color.RED);
-
         SnakeModel snakeModel = mapModel.getSnake();
-
-        graphics.fillRect(transform(snakeModel.getHeadPoint()).getX(),
-                transform(snakeModel.getHeadPoint()).getY(), BLOCK_SIZE, BLOCK_SIZE);
 
         graphics.setColor(Color.WHITE);
         for (Point point : snakeModel.getBodyPoints()) {
@@ -159,6 +154,10 @@ public final class GameCanvas extends Canvas {
 
             graphics.fillRect(transform.getX(), transform.getY(), BLOCK_SIZE, BLOCK_SIZE);
         }
+
+        graphics.setColor(Color.RED);
+        graphics.fillRect(transform(snakeModel.getHeadPoint()).getX(),
+                transform(snakeModel.getHeadPoint()).getY(), BLOCK_SIZE, BLOCK_SIZE);
 
         // Draw food
         for (FoodModel foodModel : mapModel.getFood()) {
