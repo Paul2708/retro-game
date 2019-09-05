@@ -19,7 +19,7 @@ import java.util.Random;
 public class EasyMap extends CustomMap {
 
     public EasyMap(Game game) {
-        super(game);
+        super("Leicht", Point.of(10, 2), game);
     }
 
     @Override
@@ -55,12 +55,6 @@ public class EasyMap extends CustomMap {
 
     @Override
     protected void generateCustomBorder() {
-
-    }
-
-    @Override
-    public MapConfiguration getConfiguration() {
-        return new MapConfiguration("Test", new Dimension(35, 35), Point.of(10, 10));
     }
 
     /**
