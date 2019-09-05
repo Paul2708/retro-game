@@ -14,6 +14,7 @@ import de.devathlon.hnl.engine.window.map.MapMouseListener;
 import de.devathlon.hnl.engine.window.overlay.Overlay;
 import de.devathlon.hnl.engine.window.overlay.impl.BackgroundOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.BorderOverlay;
+import de.devathlon.hnl.engine.window.overlay.impl.SnakeOverlay;
 import de.devathlon.hnl.engine.window.pause.PauseMenu;
 import de.devathlon.hnl.engine.window.pause.listener.PauseMouseListener;
 import de.devathlon.hnl.engine.window.score.Score;
@@ -73,6 +74,7 @@ public final class GameCanvas extends Canvas {
 
     private Overlay backgroundOverlay;
     private Overlay borderOverlay;
+    private Overlay snakeOverlay;
 
 
     /**
@@ -116,6 +118,10 @@ public final class GameCanvas extends Canvas {
         this.borderOverlay = new BorderOverlay();
         this.borderOverlay.initialize(engine, this);
         this.borderOverlay.activate();
+
+        this.snakeOverlay = new SnakeOverlay();
+        this.snakeOverlay.initialize(engine, this);
+        this.snakeOverlay.activate();
     }
 
     /**
@@ -146,18 +152,7 @@ public final class GameCanvas extends Canvas {
         borderOverlay.render((Graphics2D) graphics);
 
         // Draw snake
-        SnakeModel snakeModel = mapModel.getSnake();
-
-        graphics.setColor(Color.WHITE);
-        for (Point point : snakeModel.getBodyPoints()) {
-            Point transform = transform(point);
-
-            graphics.fillRect(transform.getX(), transform.getY(), BLOCK_SIZE, BLOCK_SIZE);
-        }
-
-        graphics.setColor(Color.RED);
-        graphics.fillRect(transform(snakeModel.getHeadPoint()).getX(),
-                transform(snakeModel.getHeadPoint()).getY(), BLOCK_SIZE, BLOCK_SIZE);
+        snakeOverlay.render((Graphics2D) graphics);
 
         // Draw food
         for (FoodModel foodModel : mapModel.getFood()) {
