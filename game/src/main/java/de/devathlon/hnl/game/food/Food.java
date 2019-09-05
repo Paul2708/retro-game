@@ -4,7 +4,6 @@ import de.devathlon.hnl.core.FoodModel;
 import de.devathlon.hnl.core.math.Point;
 
 import java.awt.*;
-import java.util.List;
 
 public class Food implements FoodModel {
 

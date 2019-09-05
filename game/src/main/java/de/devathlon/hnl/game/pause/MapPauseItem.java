@@ -16,7 +16,6 @@ public class MapPauseItem implements PauseItem {
 
     @Override
     public void onSelect() {
-        // TODO: Leon, implement me
         System.out.println("Karte auswählen.");
     }
 }

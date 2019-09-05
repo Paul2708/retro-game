@@ -14,10 +14,12 @@ import de.devathlon.hnl.game.animation.Effect;
 import de.devathlon.hnl.game.food.Food;
 import de.devathlon.hnl.game.entities.Snake;
 import de.devathlon.hnl.game.food.SpecialFood;
-import de.devathlon.hnl.game.pause.ContinuePauseItem;
-import de.devathlon.hnl.game.pause.EndPauseItem;
+import de.devathlon.hnl.game.food.foodtypes.*;
+import de.devathlon.hnl.game.pause.ContinueGameItem;
+import de.devathlon.hnl.game.pause.EndGameItem;
 import de.devathlon.hnl.game.pause.MapPauseItem;
 import de.devathlon.hnl.game.util.Direction;
+import de.devathlon.hnl.game.util.Messages;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -106,7 +108,7 @@ public class Game implements InputListener {
             }
         };
         gameEngine.setModel(mapModel);
-        gameEngine.setPauseItems(new ContinuePauseItem(), new MapPauseItem(), new EndPauseItem());
+        gameEngine.setPauseItems(new ContinueGameItem(this), new MapPauseItem(), new EndGameItem(this));
         gameEngine.setInputListener(this);
         this.engineConfiguration = new EngineConfiguration(35, 35, 120);
         gameEngine.setUp(engineConfiguration);
@@ -196,19 +198,19 @@ public class Game implements InputListener {
 
         switch (random.nextInt(6)) {
             case 1:
-                special = new SpecialFood(specialX, specialY, Color.GREEN); // green (speed)
+                special = new SpeedFood(specialX, specialY, this); // green (speed)
                 break;
             case 2:
-                special = new SpecialFood(specialX, specialY, Color.BLUE); // blue (slowness)
+                special = new SlowFood(specialX, specialY, this); // blue (slowness)
                 break;
             case 3:
-                special = new SpecialFood(specialX, specialY, Color.RED); // blue (slowness)
+                special = new InvincibleFood(specialX, specialY, this); // blue (slowness)
                 break;
             case 4:
-                special = new SpecialFood(specialX, specialY, Color.GRAY); // gray (half snake disappears)
+                special = new BadFood(specialX, specialY, this); // gray (half snake disappears)
                 break;
             case 5:
-                special = new SpecialFood(specialX, specialY, Color.MAGENTA); // magenta (double points)
+                special = new DoublePointsFood(specialX, specialY, this); // magenta (double points)
                 break;
         }
         for (Point borderPoint : borderPoints) {
@@ -275,7 +277,7 @@ public class Game implements InputListener {
                         foodList.remove(food);
                         if (food instanceof SpecialFood) {
                             SpecialFood specialFood = (SpecialFood) food;
-                            specialFood.activateEffect(this, snake);
+                            specialFood.apply();
                         } else {
                             if (doublePoints)
                                 snake.getBodyPoints().add(Point.of(oldX, oldY));
@@ -285,8 +287,7 @@ public class Game implements InputListener {
                         generateNewFood();
                     }
 
-                    // update score
-                    gameEngine.update(EngineUpdate.SCORE_UPDATE, "Dein neuer Score", snake.getBodyPoints().size() + 1);
+                    snake.updateScore(gameEngine);
                 }
                 // sleep
                 try {
@@ -306,9 +307,11 @@ public class Game implements InputListener {
         this.doublePoints = false;
 
         effectBar.clear();
+
+        gameEngine.update(EngineUpdate.EFFECT_UPDATE, Messages.EFFECT_UPDATE + "Kein Effekt!");
     }
 
-    private void pauseGame() {
+    public void pauseGame() {
         if (!pause.get()) {
             if (effectGiven != 0) {
                 pauseEffectTimePassed = ((System.currentTimeMillis() - effectGiven) / 1000);
@@ -347,6 +350,9 @@ public class Game implements InputListener {
         this.pauseEffectTimePassed = 0;
 
         this.currentDirection = Direction.LEFT;
+
+        // update score
+        gameEngine.update(EngineUpdate.SCORE_UPDATE, Messages.SCORE_UPDATE, 0);
     }
 
     @Override
@@ -408,5 +414,9 @@ public class Game implements InputListener {
 
     public GameEngine getGameEngine() {
         return gameEngine;
+    }
+
+    public Snake getSnake() {
+        return snake;
     }
 }
