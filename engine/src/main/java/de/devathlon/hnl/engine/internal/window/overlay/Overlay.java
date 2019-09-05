@@ -5,7 +5,10 @@ import de.devathlon.hnl.core.math.Point;
 import de.devathlon.hnl.engine.GameEngine;
 import de.devathlon.hnl.engine.internal.window.GameCanvas;
 
-import java.awt.*;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -44,9 +47,9 @@ public abstract class Overlay {
         this.enabled = activate;
     }
 
-    public abstract void onInitialize();
+    protected abstract void onInitialize();
 
-    public abstract void onRender(Graphics2D graphics);
+    protected abstract void onRender(Graphics2D graphics);
 
     protected MapModel getMap() {
         return engine.getGameState().getMapModel();
@@ -81,7 +84,7 @@ public abstract class Overlay {
         return Point.of(x, y);
     }
 
-    public boolean isEnabled() {
+    protected boolean isEnabled() {
         return enabled;
     }
 

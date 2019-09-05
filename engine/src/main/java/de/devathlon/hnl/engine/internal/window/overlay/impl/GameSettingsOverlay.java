@@ -66,7 +66,7 @@ public class GameSettingsOverlay extends Overlay implements MouseListener {
         }
     }
 
-    public PauseItem getItemByPoint(Point point) {
+    private PauseItem getItemByPoint(Point point) {
         for (Map.Entry<PauseItem, Rectangle> entry : rectangles.entrySet()) {
             if (entry.getValue().contains(point)) {
                 return entry.getKey();
@@ -92,7 +92,8 @@ public class GameSettingsOverlay extends Overlay implements MouseListener {
     private void drawItem(Graphics2D graphics, PauseItem item) {
         Rectangle rectangle = rectangles.get(item);
 
-        graphics.drawString(item.getTitle(), (int) rectangle.getX(), (int) rectangle.getY() + (int) rectangle.getHeight());
+        graphics.drawString(item.getTitle(), (int) rectangle.getX(), (int) rectangle.getY()
+                + (int) rectangle.getHeight());
     }
 
     @Override

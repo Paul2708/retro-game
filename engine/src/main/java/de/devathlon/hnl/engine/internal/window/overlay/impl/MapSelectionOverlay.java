@@ -73,7 +73,7 @@ public class MapSelectionOverlay extends Overlay implements MouseListener {
         }
     }
 
-    public MapModel getItemByPoint(Point point) {
+    private MapModel getItemByPoint(Point point) {
         for (Map.Entry<MapModel, Rectangle> entry : rectangles.entrySet()) {
             if (entry.getValue().contains(point)) {
                 return entry.getKey();
@@ -99,7 +99,8 @@ public class MapSelectionOverlay extends Overlay implements MouseListener {
     private void drawItem(Graphics2D graphics, MapModel item) {
         Rectangle rectangle = rectangles.get(item);
 
-        graphics.drawString(item.getConfiguration().getName(), (int) rectangle.getX(), (int) rectangle.getY() + (int) rectangle.getHeight());
+        graphics.drawString(item.getConfiguration().getName(), (int) rectangle.getX(), (int) rectangle.getY()
+                + (int) rectangle.getHeight());
     }
 
     @Override

@@ -52,8 +52,8 @@ public final class GameCanvas extends Canvas {
 
     private final Dimension dimension;
 
-    private GameSettingsOverlay gameSettingsOverlay;
-    private MapSelectionOverlay mapSelectionOverlay;
+    private final GameSettingsOverlay gameSettingsOverlay;
+    private final MapSelectionOverlay mapSelectionOverlay;
 
     /**
      * Create a new game canvas and read in the ground file.

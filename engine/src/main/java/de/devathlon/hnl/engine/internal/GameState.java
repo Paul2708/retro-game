@@ -4,7 +4,6 @@ import de.devathlon.hnl.core.MapModel;
 import de.devathlon.hnl.engine.internal.update.EffectInformation;
 import de.devathlon.hnl.engine.internal.update.Score;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 

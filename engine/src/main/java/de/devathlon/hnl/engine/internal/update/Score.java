@@ -7,8 +7,8 @@ package de.devathlon.hnl.engine.internal.update;
  */
 public class Score {
 
-    private String text;
-    private long score;
+    private final String text;
+    private final long score;
 
     public Score(String text, long score) {
         this.text = text;

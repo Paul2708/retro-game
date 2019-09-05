@@ -30,9 +30,9 @@ final class GameEngineImpl implements GameEngine {
     private GameWindow gameWindow;
     private GameCanvas gameCanvas;
 
-    private List<PauseItem> pauseItems;
+    private final List<PauseItem> pauseItems;
 
-    private GameState state;
+    private final GameState state;
 
 
     /**
