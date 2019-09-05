@@ -36,6 +36,7 @@ final class GameEngineImpl implements GameEngine {
 
     private Consumer<String> consumer;
     private Score score;
+    private String effect;
 
     /**
      * Private constructor.
@@ -46,6 +47,7 @@ final class GameEngineImpl implements GameEngine {
         this.pauseItems = new LinkedList<>();
         this.mapItems = new LinkedList<>();
         score = new Score("-/-", 0);
+        this.effect = "-/-";
     }
 
     /**
@@ -156,9 +158,7 @@ final class GameEngineImpl implements GameEngine {
                 this.score = new Score(title, score);
                 break;
             case EFFECT_UPDATE:
-                String effect = (String) arguments[0];
-
-                gameCanvas.setEffect(effect);
+                this.effect = (String) arguments[0];
                 break;
             default:
                 break;
@@ -178,6 +178,11 @@ final class GameEngineImpl implements GameEngine {
     @Override
     public Score getScore() {
         return score;
+    }
+
+    @Override
+    public String getEffect() {
+        return effect;
     }
 
     /**
