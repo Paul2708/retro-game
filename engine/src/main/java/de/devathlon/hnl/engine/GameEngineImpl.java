@@ -6,6 +6,7 @@ import de.devathlon.hnl.core.update.EngineUpdate;
 import de.devathlon.hnl.engine.configuration.EngineConfiguration;
 import de.devathlon.hnl.engine.listener.InputListener;
 import de.devathlon.hnl.engine.loop.GameLoop;
+import de.devathlon.hnl.engine.update.EffectInformation;
 import de.devathlon.hnl.engine.window.GameCanvas;
 import de.devathlon.hnl.engine.window.GameWindow;
 import de.devathlon.hnl.engine.update.Score;
@@ -36,7 +37,7 @@ final class GameEngineImpl implements GameEngine {
 
     private Consumer<MapModel> consumer;
     private Score score;
-    private String effect1, effect2;
+    private EffectInformation effectInformation;
 
     /**
      * Private constructor.
@@ -46,9 +47,9 @@ final class GameEngineImpl implements GameEngine {
         this.running = false;
         this.pauseItems = new LinkedList<>();
         this.mapItems = new LinkedList<>();
-        score = new Score("-/-", 0);
-        this.effect1 = "xD";
-        this.effect2 = "xD";
+
+        this.score = new Score("Score:", 0);
+        this.effectInformation = new EffectInformation("", "");
     }
 
     /**
@@ -159,8 +160,7 @@ final class GameEngineImpl implements GameEngine {
                 this.score = new Score(title, score);
                 break;
             case EFFECT_UPDATE:
-                this.effect1 = (String) arguments[0];
-                this.effect2 = (String) arguments[1];
+                this.effectInformation = new EffectInformation((String) arguments[0], (String) arguments[1]);
                 break;
             default:
                 break;
@@ -183,13 +183,8 @@ final class GameEngineImpl implements GameEngine {
     }
 
     @Override
-    public String getEffect1() {
-        return effect1;
-    }
-
-    @Override
-    public String getEffect2() {
-        return effect2;
+    public EffectInformation getEffectInformation() {
+        return effectInformation;
     }
 
     @Override

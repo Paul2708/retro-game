@@ -1,5 +1,6 @@
 package de.devathlon.hnl.engine.window.overlay.impl;
 
+import de.devathlon.hnl.engine.update.EffectInformation;
 import de.devathlon.hnl.engine.window.overlay.Overlay;
 
 import java.awt.Color;
@@ -24,13 +25,12 @@ public class EffectInfoOverlay extends Overlay {
     @Override
     public void onRender(Graphics2D graphics) {
         Dimension dimension = getCanvas().getGameDimension();
-        String effect1 = getEngine().getEffect1();
-        String effect2 = getEngine().getEffect2();
+        EffectInformation effect = getEngine().getEffectInformation();
 
         graphics.setColor(Color.BLACK);
 
         graphics.setFont(font);
-        graphics.drawString(effect1, (int) (dimension.getWidth() - 750), 30);
-        graphics.drawString(effect2, (int) (dimension.getWidth() - 750), 60);
+        graphics.drawString(effect.getDescription(), (int) (dimension.getWidth() - 750), 30);
+        graphics.drawString(effect.getEffect(), (int) (dimension.getWidth() - 750), 60);
     }
 }
