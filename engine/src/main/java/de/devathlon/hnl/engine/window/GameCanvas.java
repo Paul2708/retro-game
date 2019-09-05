@@ -6,8 +6,6 @@ import de.devathlon.hnl.core.pause.PauseItem;
 import de.devathlon.hnl.engine.GameEngine;
 import de.devathlon.hnl.engine.listener.InputListener;
 import de.devathlon.hnl.engine.loop.GameLoop;
-import de.devathlon.hnl.engine.window.map.MapMenu;
-import de.devathlon.hnl.engine.window.map.MapMouseListener;
 import de.devathlon.hnl.engine.window.overlay.Overlay;
 import de.devathlon.hnl.engine.window.overlay.impl.BackgroundOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.BorderOverlay;
@@ -15,6 +13,7 @@ import de.devathlon.hnl.engine.window.overlay.impl.EffectBarOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.EffectInfoOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.FoodOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.GameSettingsOverlay;
+import de.devathlon.hnl.engine.window.overlay.impl.MapSelectionOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.ScoreOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.SnakeOverlay;
 import de.devathlon.hnl.engine.window.score.Score;
@@ -61,8 +60,6 @@ public final class GameCanvas extends Canvas {
 
     private final Image image;
 
-    private final MapMenu mapMenu;
-
     private final Dimension dimension;
 
     private Score score;
@@ -78,6 +75,7 @@ public final class GameCanvas extends Canvas {
     private Overlay scoreOverlay;
     private Overlay effectInfoOverlay;
     private Overlay gameSettingsOverlay;
+    private MapSelectionOverlay mapSelectionOverlay;
 
     /**
      * Create a new game canvas and read in the ground file.
@@ -97,12 +95,9 @@ public final class GameCanvas extends Canvas {
         }
 
 
-        this.mapMenu = new MapMenu();
-        this.mapMenu.load(mapModels, dimension);
 
         // Set key listener and canvas settings
         addKeyListener(new CanvasKeyListener(inputListener));
-        addMouseListener(new MapMouseListener(mapMenu));
         setFocusable(true);
 
         this.score = new Score("High-Score: ", 0);
@@ -140,7 +135,11 @@ public final class GameCanvas extends Canvas {
 
         this.gameSettingsOverlay = new GameSettingsOverlay();
         this.gameSettingsOverlay.initialize(engine, this);
-        this.gameSettingsOverlay.activate(true);
+        this.gameSettingsOverlay.activate(false);
+
+        this.mapSelectionOverlay = new MapSelectionOverlay();
+        this.mapSelectionOverlay.initialize(engine, this);
+        this.mapSelectionOverlay.activate(true);
     }
 
     /**
@@ -188,7 +187,7 @@ public final class GameCanvas extends Canvas {
         gameSettingsOverlay.render((Graphics2D) graphics);
 
         // Draw map menu
-        mapMenu.render((Graphics2D) graphics);
+        mapSelectionOverlay.render(((Graphics2D) graphics));
 
         // Draw score
 
@@ -202,11 +201,12 @@ public final class GameCanvas extends Canvas {
         gameSettingsOverlay.activate(enabled);
     }
 
-    public void setSelection(boolean enabled, Consumer<String> consumer) {
+    public void setSelection(boolean enabled, Consumer<MapModel> consumer) {
+        mapSelectionOverlay.setConsumer(consumer);
+
         gameSettingsOverlay.activate(false);
 
-        mapMenu.setPause(enabled);
-        mapMenu.setConsumer(consumer);
+        mapSelectionOverlay.activate(enabled);
     }
 
     public void setScore(Score score) {
