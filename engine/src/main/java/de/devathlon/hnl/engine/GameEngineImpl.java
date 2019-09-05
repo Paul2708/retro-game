@@ -13,6 +13,7 @@ import de.devathlon.hnl.engine.window.score.Score;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * This class is the actual implementation of the game engine.
@@ -31,6 +32,9 @@ final class GameEngineImpl implements GameEngine {
     private Boolean running;
 
     private List<PauseItem> pauseItems;
+    private List<MapModel> mapItems;
+
+    private Consumer<String> consumer;
 
     /**
      * Private constructor.
@@ -39,6 +43,7 @@ final class GameEngineImpl implements GameEngine {
     GameEngineImpl() {
         this.running = false;
         this.pauseItems = new LinkedList<>();
+        this.mapItems = new LinkedList<>();
     }
 
     /**
@@ -63,6 +68,18 @@ final class GameEngineImpl implements GameEngine {
         pauseItems.addAll(Arrays.asList(items));
     }
 
+    @Override
+    public void setMaps(MapModel... models) {
+        mapItems.addAll(Arrays.asList(models));
+    }
+
+    @Override
+    public void openMapDialog(Consumer<String> mapConsumer) {
+        this.consumer = mapConsumer;
+
+        gameCanvas.setSelection(true, consumer);
+    }
+
     /**
      * Set the input listener that will be called on key input.
      *
@@ -84,7 +101,7 @@ final class GameEngineImpl implements GameEngine {
     public void setUp(EngineConfiguration configuration) {
         this.configuration = configuration;
 
-        this.gameCanvas = new GameCanvas(pauseItems, configuration.getDimension(), mapModel, inputListener);
+        this.gameCanvas = new GameCanvas(mapItems, pauseItems, configuration.getDimension(), mapModel, inputListener);
         this.gameWindow = new GameWindow(configuration.getDimension(), "Snake", gameCanvas);
     }
 

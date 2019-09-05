@@ -6,6 +6,10 @@ import de.devathlon.hnl.core.update.EngineUpdate;
 import de.devathlon.hnl.engine.configuration.EngineConfiguration;
 import de.devathlon.hnl.engine.listener.InputListener;
 
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 /**
  * This interface represents the actual game engine.
  * It will be used in the game module to start.
@@ -29,6 +33,10 @@ public interface GameEngine {
      * @param items array of pause items
      */
     void setPauseItems(PauseItem... items);
+
+    void setMaps(MapModel... models);
+
+    void openMapDialog(Consumer<String> mapConsumer);
 
     /**
      * Set the input listener that will be called on key input.
