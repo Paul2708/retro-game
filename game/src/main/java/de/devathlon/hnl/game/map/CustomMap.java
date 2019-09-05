@@ -5,12 +5,15 @@ import de.devathlon.hnl.core.FoodModel;
 import de.devathlon.hnl.core.MapModel;
 import de.devathlon.hnl.core.SnakeModel;
 import de.devathlon.hnl.core.math.Point;
+import de.devathlon.hnl.game.animation.Effect;
+import de.devathlon.hnl.game.food.Food;
+import de.devathlon.hnl.game.food.SpecialFood;
 import de.devathlon.hnl.game.snake.Game;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Class description.
@@ -21,14 +24,96 @@ public abstract class CustomMap implements MapModel {
 
     private final Game game;
 
-    protected final Collection<FoodModel> foodList;
+    protected final List<FoodModel> foodList;
+    protected final List<Point> borderPoints;
 
     public CustomMap(Game game) {
         this.game = game;
         this.foodList = new ArrayList<>();
+        this.borderPoints = new CopyOnWriteArrayList<>();
     }
 
-    public abstract void updateFood();
+    public void setup() {
+        generateDefaultBorder();
+        generateCustomBorder();
+        startFoodTimer();
+        updateFood();
+    }
+
+    private void startFoodTimer() {
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (!game.getPause().get()) {
+                    if (game.getEffectGiven() != 0) {
+                        long secondsLeft = ((System.currentTimeMillis() - game.getEffectGiven()) / 1000);
+                        Effect.animateTimer(getGame(), (int) secondsLeft);
+                        if (((System.currentTimeMillis() - game.getEffectGiven()) / 1000) >= game.getEffectGiven()) {
+                            game.removeAllEffects();
+                        }
+                    }
+
+                    for (FoodModel food : foodList) {
+                        if (food instanceof SpecialFood) {
+                            SpecialFood specialFood = (SpecialFood) food;
+                            if (specialFood.getTimeAlive() == 0) {
+                                foodList.remove(food);
+                            } else {
+                                specialFood.setTimeAlive(specialFood.getTimeAlive() - 1);
+                            }
+                        }
+                    }
+                }
+            }
+        }, 1000, 1000);
+    }
+
+    public void updateFood() {
+        generateFood();
+        generateSpecialFood();
+    }
+
+    protected abstract void generateSpecialFood();
+
+    protected abstract void generateCustomBorder();
+
+    protected void generateFood() {
+        Random random = new Random();
+
+        int x = random.nextInt(game.getEngineConfiguration().getWidthInBlocks() - 2) + 1;
+        int y = random.nextInt(game.getEngineConfiguration().getHeightInBlocks() - 7) + 1;
+
+        Food food = new Food(x, y, Color.ORANGE);
+
+        if (checkIfFoodIsInBorder(food)) {
+            generateFood();
+            return;
+        }
+
+        foodList.add(food);
+    }
+
+    private boolean checkIfFoodIsInBorder(FoodModel foodModel) {
+        for (Point borderPoint : this.borderPoints) {
+            if (foodModel.getLocation().getX() == borderPoint.getX() && foodModel.getLocation().getY() == borderPoint.getY()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void generateDefaultBorder() {
+        for (int i = 0; i < 4; i++) {
+            for (int x = 0; x < getGame().getEngineConfiguration().getWidthInBlocks(); x++) {
+                this.borderPoints.add(Point.of(x, 0));
+                this.borderPoints.add(Point.of(x, getGame().getEngineConfiguration().getHeightInBlocks() - 4));
+            }
+            for (int y = 0; y < getGame().getEngineConfiguration().getHeightInBlocks() - 4; y++) {
+                this.borderPoints.add(Point.of(0, y));
+                this.borderPoints.add(Point.of(getGame().getEngineConfiguration().getWidthInBlocks() - 1, y));
+            }
+        }
+    }
 
     /**
      * Get the snake entity model.
@@ -40,23 +125,35 @@ public abstract class CustomMap implements MapModel {
         return game.getSnake();
     }
 
-    /**
-     * Get a collection of all current food entity models.
-     *
-     * @return food model
-     */
-    @Override
-    public Collection<FoodModel> getFood() {
+    public List<FoodModel> getFood() {
         return foodList;
     }
 
-    /**
-     * Get the effect bar model.
-     *
-     * @return effect bar model
-     */
+    public Game getGame() {
+        return game;
+    }
+
+    public List<Point> getBorderPoints() {
+        return borderPoints;
+    }
+
     @Override
     public EffectBarModel getEffectBar() {
-        return null;
+        return new EffectBarModel() {
+            @Override
+            public boolean isActive() {
+                return true;
+            }
+
+            @Override
+            public Color getColor() {
+                return game.getEffectBarColor();
+            }
+
+            @Override
+            public Collection<Point> getBar() {
+                return game.getEffectBar();
+            }
+        };
     }
 }

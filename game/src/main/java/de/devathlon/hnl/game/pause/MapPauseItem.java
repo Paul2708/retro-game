@@ -1,6 +1,9 @@
 package de.devathlon.hnl.game.pause;
 
 import de.devathlon.hnl.core.pause.PauseItem;
+import de.devathlon.hnl.game.snake.Game;
+
+import java.util.function.Consumer;
 
 /**
  * Class description.
@@ -9,6 +12,12 @@ import de.devathlon.hnl.core.pause.PauseItem;
  */
 public class MapPauseItem implements PauseItem {
 
+    private Game game;
+
+    public MapPauseItem(Game game) {
+        this.game = game;
+    }
+
     @Override
     public String getTitle() {
         return "Karte auswählen";
@@ -16,6 +25,8 @@ public class MapPauseItem implements PauseItem {
 
     @Override
     public void onSelect() {
-        System.out.println("Karte auswählen.");
+        game.getGameEngine().openMapDialog(s -> {
+            System.out.println("Test" + s);
+        });
     }
 }
