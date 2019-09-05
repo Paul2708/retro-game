@@ -38,6 +38,7 @@ final class GameEngineImpl implements GameEngine {
     private Consumer<MapModel> consumer;
     private Score score;
     private EffectInformation effectInformation;
+    private boolean dead;
 
     /**
      * Private constructor.
@@ -50,6 +51,7 @@ final class GameEngineImpl implements GameEngine {
 
         this.score = new Score("Score:", 0);
         this.effectInformation = new EffectInformation("", "");
+        this.dead = false;
     }
 
     /**
@@ -162,6 +164,9 @@ final class GameEngineImpl implements GameEngine {
             case EFFECT_UPDATE:
                 this.effectInformation = new EffectInformation((String) arguments[0], (String) arguments[1]);
                 break;
+            case DEATH_SCREEN:
+                this.dead = (Boolean) arguments[0];
+                break;
             default:
                 break;
         }
@@ -190,6 +195,10 @@ final class GameEngineImpl implements GameEngine {
     @Override
     public List<MapModel> getMapPool() {
         return mapItems;
+    }
+
+    public boolean isDead() {
+        return dead;
     }
 
     /**
