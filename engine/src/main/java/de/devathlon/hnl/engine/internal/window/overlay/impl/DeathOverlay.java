@@ -16,14 +16,18 @@ import java.util.concurrent.ThreadLocalRandom;
  *
  * @author Paul2708
  */
-public class BackgroundOverlay extends Overlay {
+public class DeathOverlay extends Overlay {
 
     private static final Color[] COLORS = new Color[] {
-            new Color(102, 153, 51),
-            new Color(143, 197, 98),
-            new Color(72, 141, 29),
-            new Color(51, 153, 51)
+            new Color(205, 55, 0),
+            new Color(139, 37, 0),
+            new Color(84, 84, 84),
+            new Color(46, 46, 46),
+            new Color(178, 28, 28),
+            new Color(139, 44, 38)
     };
+
+    private static final Color BORDER_COLOR = Color.GRAY;
 
     private Map<Point, Color> spreading;
 
@@ -52,9 +56,22 @@ public class BackgroundOverlay extends Overlay {
             graphics.fillRect(point.getX(), point.getY(), GameCanvas.BLOCK_SIZE + GameCanvas.GAP / 2,
                     GameCanvas.BLOCK_SIZE + GameCanvas.GAP / 2);
         }
+
+        graphics.setColor(DeathOverlay.BORDER_COLOR);
+        for (Point point : getMap().getBorder()) {
+            Point transformed = transform(point);
+
+            graphics.fillRect(transformed.getX(), transformed.getY(), GameCanvas.BLOCK_SIZE + GameCanvas.GAP / 2,
+                    GameCanvas.BLOCK_SIZE + GameCanvas.GAP / 2);
+        }
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return getEngine().getGameState().isDead();
     }
 
     private Color randomColor() {
-        return BackgroundOverlay.COLORS[ThreadLocalRandom.current().nextInt(BackgroundOverlay.COLORS.length)];
+        return DeathOverlay.COLORS[ThreadLocalRandom.current().nextInt(DeathOverlay.COLORS.length)];
     }
 }
