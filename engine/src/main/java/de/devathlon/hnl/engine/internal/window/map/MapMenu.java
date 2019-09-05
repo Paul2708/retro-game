@@ -1,4 +1,4 @@
-package de.devathlon.hnl.engine.window.map;
+package de.devathlon.hnl.engine.internal.window.map;
 
 import de.devathlon.hnl.core.MapModel;
 

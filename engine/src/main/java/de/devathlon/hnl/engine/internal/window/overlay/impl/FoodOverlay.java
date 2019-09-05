@@ -1,9 +1,9 @@
-package de.devathlon.hnl.engine.window.overlay.impl;
+package de.devathlon.hnl.engine.internal.window.overlay.impl;
 
 import de.devathlon.hnl.core.FoodModel;
 import de.devathlon.hnl.core.math.Point;
-import de.devathlon.hnl.engine.window.GameCanvas;
-import de.devathlon.hnl.engine.window.overlay.Overlay;
+import de.devathlon.hnl.engine.internal.window.GameCanvas;
+import de.devathlon.hnl.engine.internal.window.overlay.Overlay;
 
 import java.awt.*;
 

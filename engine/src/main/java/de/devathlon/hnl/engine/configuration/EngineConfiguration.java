@@ -1,6 +1,6 @@
 package de.devathlon.hnl.engine.configuration;
 
-import de.devathlon.hnl.engine.window.GameCanvas;
+import de.devathlon.hnl.engine.internal.window.GameCanvas;
 
 import java.awt.Dimension;
 

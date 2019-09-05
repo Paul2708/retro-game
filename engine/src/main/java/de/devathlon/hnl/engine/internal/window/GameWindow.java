@@ -1,4 +1,4 @@
-package de.devathlon.hnl.engine.window;
+package de.devathlon.hnl.engine.internal.window;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;

@@ -1,6 +1,6 @@
-package de.devathlon.hnl.engine.loop;
+package de.devathlon.hnl.engine.internal.loop;
 
-import de.devathlon.hnl.engine.window.GameCanvas;
+import de.devathlon.hnl.engine.internal.window.GameCanvas;
 
 /**
  * This runnable represents the game loop and updates every 1/fps second.

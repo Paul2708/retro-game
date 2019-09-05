@@ -1,7 +1,7 @@
-package de.devathlon.hnl.engine.window.overlay.impl;
+package de.devathlon.hnl.engine.internal.window.overlay.impl;
 
-import de.devathlon.hnl.engine.update.EffectInformation;
-import de.devathlon.hnl.engine.window.overlay.Overlay;
+import de.devathlon.hnl.engine.internal.window.overlay.Overlay;
+import de.devathlon.hnl.engine.internal.update.Score;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,7 +13,7 @@ import java.awt.Graphics2D;
  *
  * @author Paul2708
  */
-public class EffectInfoOverlay extends Overlay {
+public class ScoreOverlay extends Overlay {
 
     private Font font;
 
@@ -25,12 +25,12 @@ public class EffectInfoOverlay extends Overlay {
     @Override
     public void onRender(Graphics2D graphics) {
         Dimension dimension = getCanvas().getGameDimension();
-        EffectInformation effect = getEngine().getEffectInformation();
+        Score score = getEngine().getScore();
 
         graphics.setColor(Color.BLACK);
-
         graphics.setFont(font);
-        graphics.drawString(effect.getDescription(), (int) (dimension.getWidth() - 750), 30);
-        graphics.drawString(effect.getEffect(), (int) (dimension.getWidth() - 750), 60);
+
+        graphics.drawString(score.getText() + " " + score.getScore(), (int) (dimension.getWidth() - 250), 30);
+        graphics.drawString("High-Score: tba", (int) (dimension.getWidth() - 250), 60);
     }
 }
