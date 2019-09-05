@@ -1,4 +1,4 @@
-package de.devathlon.hnl.engine.window.score;
+package de.devathlon.hnl.engine.update;
 
 /**
  * Class description.
@@ -12,14 +12,6 @@ public class Score {
 
     public Score(String text, long score) {
         this.text = text;
-        this.score = score;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public void setScore(long score) {
         this.score = score;
     }
 

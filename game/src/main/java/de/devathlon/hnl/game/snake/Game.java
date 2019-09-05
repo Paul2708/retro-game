@@ -25,6 +25,7 @@ import de.devathlon.hnl.game.util.Messages;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -71,7 +72,7 @@ public class Game implements InputListener {
 
         this.mapModel = new EmptyMap(this);
         gameEngine.setModel(mapModel);
-        gameEngine.setMaps(new EmptyMap(this), new EasyMap(this), new NormalMap(this), new DifficultMap(this));
+        gameEngine.setMaps(Arrays.asList(new EmptyMap(this), new EasyMap(this), new NormalMap(this), new DifficultMap(this)));
         gameEngine.setPauseItems(new ContinueGameItem(this), new MapPauseItem(this), new EndGameItem(this));
         gameEngine.setInputListener(this);
         this.engineConfiguration = new EngineConfiguration(35, 35, 120);
@@ -200,7 +201,7 @@ public class Game implements InputListener {
         pause = new AtomicBoolean(true);
     }
 
-    private void reset() {
+    public void reset() {
         this.snake = new Snake(this);
 
         mapModel.getFood().clear();
@@ -286,5 +287,9 @@ public class Game implements InputListener {
 
     public CustomMap getMapModel() {
         return mapModel;
+    }
+
+    public void setMapModel(CustomMap mapModel) {
+        this.mapModel = mapModel;
     }
 }

@@ -1,6 +1,7 @@
 package de.devathlon.hnl.game.pause;
 
 import de.devathlon.hnl.core.pause.PauseItem;
+import de.devathlon.hnl.game.map.CustomMap;
 import de.devathlon.hnl.game.snake.Game;
 
 import java.util.function.Consumer;
@@ -25,8 +26,13 @@ public class MapPauseItem implements PauseItem {
 
     @Override
     public void onSelect() {
-        game.getGameEngine().openMapDialog(s -> {
-            System.out.println("Test" + s.getConfiguration().getName());
+        game.getGameEngine().openMapDialog(map -> {
+            System.out.println("Current map: " + map.getConfiguration().getName());
+
+            game.getGameEngine().setModel(map);
+            game.setMapModel((CustomMap) map);
+            game.getMapModel().setup();
+            game.reset();
         });
     }
 }

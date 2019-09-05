@@ -8,7 +8,7 @@ import de.devathlon.hnl.engine.listener.InputListener;
 import de.devathlon.hnl.engine.loop.GameLoop;
 import de.devathlon.hnl.engine.window.GameCanvas;
 import de.devathlon.hnl.engine.window.GameWindow;
-import de.devathlon.hnl.engine.window.score.Score;
+import de.devathlon.hnl.engine.update.Score;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -74,8 +74,8 @@ final class GameEngineImpl implements GameEngine {
     }
 
     @Override
-    public void setMaps(MapModel... models) {
-        mapItems.addAll(Arrays.asList(models));
+    public void setMaps(List<MapModel> mapPool) {
+        mapItems.addAll(mapPool);
     }
 
     @Override

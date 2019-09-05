@@ -5,8 +5,9 @@ import de.devathlon.hnl.core.pause.PauseItem;
 import de.devathlon.hnl.core.update.EngineUpdate;
 import de.devathlon.hnl.engine.configuration.EngineConfiguration;
 import de.devathlon.hnl.engine.listener.InputListener;
-import de.devathlon.hnl.engine.window.score.Score;
+import de.devathlon.hnl.engine.update.Score;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -34,7 +35,7 @@ public interface GameEngine {
      */
     void setPauseItems(PauseItem... items);
 
-    void setMaps(MapModel... models);
+    void setMaps(List<MapModel> mapPool);
 
     void openMapDialog(Consumer<MapModel> mapConsumer);
 
