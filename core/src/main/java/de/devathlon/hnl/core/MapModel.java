@@ -3,7 +3,6 @@ package de.devathlon.hnl.core;
 import de.devathlon.hnl.core.math.Point;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * This class models the whole map and all its entities.
@@ -11,6 +10,13 @@ import java.util.List;
  * @author Paul2708
  */
 public interface MapModel {
+
+    /**
+     * Get the name of the map.
+     *
+     * @return map name
+     */
+    String getName();
 
     /**
      * Get a collection of all border points.
