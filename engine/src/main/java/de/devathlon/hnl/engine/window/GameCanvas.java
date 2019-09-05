@@ -15,8 +15,6 @@ import de.devathlon.hnl.engine.window.overlay.impl.EffectBarOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.FoodOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.GameSettingsOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.SnakeOverlay;
-import de.devathlon.hnl.engine.window.pause.PauseMenu;
-import de.devathlon.hnl.engine.window.pause.listener.PauseMouseListener;
 import de.devathlon.hnl.engine.window.score.Score;
 
 import javax.imageio.ImageIO;
@@ -61,7 +59,6 @@ public final class GameCanvas extends Canvas {
 
     private final Image image;
 
-    private final PauseMenu pauseMenu;
     private final MapMenu mapMenu;
 
     private final Dimension dimension;
@@ -95,15 +92,12 @@ public final class GameCanvas extends Canvas {
             throw new RuntimeException(e);
         }
 
-        this.pauseMenu = new PauseMenu();
-        this.pauseMenu.load(pauseItems, dimension);
 
         this.mapMenu = new MapMenu();
         this.mapMenu.load(mapModels, dimension);
 
         // Set key listener and canvas settings
         addKeyListener(new CanvasKeyListener(inputListener));
-        addMouseListener(new PauseMouseListener(pauseMenu));
         addMouseListener(new MapMouseListener(mapMenu));
         setFocusable(true);
 
