@@ -28,8 +28,7 @@ public class Snake implements SnakeModel {
 
         bodyPoints = new ArrayList<>();
         // generate snake at 10;10 with 4 body points
-        // headPoint = game.getMapModel().getConfiguration().getSpawnPoint();
-        headPoint = Point.of(10, 2);
+        headPoint = game.getMapModel().getConfiguration().getSpawnPoint().clone();
 
         for (int i = 1; i <= defaultLength; i++) {
             bodyPoints.add(Point.of(headPoint.getX() + i, headPoint.getY()));
@@ -73,7 +72,6 @@ public class Snake implements SnakeModel {
     public boolean collisionWithBorder(List<Point> borderPoints) {
         for (Point borderPoint : borderPoints) {
             if (headPoint.getX() == borderPoint.getX() && headPoint.getY() == borderPoint.getY()) {
-                System.out.println("collision border XD");
                 return true;
             }
         }

@@ -5,7 +5,7 @@ package de.devathlon.hnl.core.math;
  *
  * @author Paul2708
  */
-public final class Point {
+public final class Point implements Cloneable {
 
     private int x;
     private int y;
@@ -137,6 +137,16 @@ public final class Point {
         int result = x;
         result = 31 * result + y;
         return result;
+    }
+
+    /**
+     * Clone the current point object with x and y coordinate.
+     *
+     * @return cloned point
+     */
+    @Override
+    public Point clone() {
+        return Point.of(x, y);
     }
 
     /**
