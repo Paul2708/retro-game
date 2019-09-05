@@ -3,6 +3,9 @@ package de.devathlon.hnl.game.entities;
 import de.devathlon.hnl.core.FoodModel;
 import de.devathlon.hnl.core.SnakeModel;
 import de.devathlon.hnl.core.math.Point;
+import de.devathlon.hnl.core.update.EngineUpdate;
+import de.devathlon.hnl.engine.GameEngine;
+import de.devathlon.hnl.game.util.Messages;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,15 +18,18 @@ public class Snake implements SnakeModel {
     private long speed;
     private boolean invincible;
 
+    private int defaultLength;
+
     public Snake() {
         this.speed = 100;
         this.invincible = false;
+        this.defaultLength = 2;
 
         bodyPoints = new ArrayList<>();
         // generate snake at 10;10 with 4 body points
         headPoint = Point.of(10, 10);
 
-        for (int i = 1; i <= 4; i++) {
+        for (int i = 1; i <= defaultLength; i++) {
             bodyPoints.add(Point.of(10 + i, 10));
         }
     }
@@ -89,7 +95,14 @@ public class Snake implements SnakeModel {
             x = tempX;
             y = tempY;
         }
+    }
 
+    public void updateScore(GameEngine gameEngine) {
+        // update score
+        gameEngine.update(EngineUpdate.SCORE_UPDATE, Messages.SCORE_UPDATE, getBodyPoints().size() - this.defaultLength);
+    }
 
+    public int getDefaultLength() {
+        return defaultLength;
     }
 }
