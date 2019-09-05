@@ -12,6 +12,7 @@ import de.devathlon.hnl.engine.window.overlay.Overlay;
 import de.devathlon.hnl.engine.window.overlay.impl.BackgroundOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.BorderOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.EffectBarOverlay;
+import de.devathlon.hnl.engine.window.overlay.impl.EffectInfoOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.FoodOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.GameSettingsOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.ScoreOverlay;
@@ -75,6 +76,7 @@ public final class GameCanvas extends Canvas {
     private Overlay foodOverlay;
     private Overlay effectBarOverlay;
     private Overlay scoreOverlay;
+    private Overlay effectInfoOverlay;
     private Overlay gameSettingsOverlay;
 
     /**
@@ -132,6 +134,10 @@ public final class GameCanvas extends Canvas {
         this.scoreOverlay.initialize(engine, this);
         this.scoreOverlay.activate(true);
 
+        this.effectInfoOverlay = new EffectInfoOverlay();
+        this.effectInfoOverlay.initialize(engine, this);
+        this.effectInfoOverlay.activate(true);
+
         this.gameSettingsOverlay = new GameSettingsOverlay();
         this.gameSettingsOverlay.initialize(engine, this);
         this.gameSettingsOverlay.activate(true);
@@ -176,6 +182,8 @@ public final class GameCanvas extends Canvas {
         // Draw score overlay
         scoreOverlay.render((Graphics2D) graphics);
 
+        effectInfoOverlay.render(((Graphics2D) graphics));
+
         // Draw settings menu
         gameSettingsOverlay.render((Graphics2D) graphics);
 
@@ -183,15 +191,8 @@ public final class GameCanvas extends Canvas {
         mapMenu.render((Graphics2D) graphics);
 
         // Draw score
-        /*graphics.setColor(Color.BLACK);
-        graphics.setFont(font);
-        graphics.drawString(score.getText() + " " + score.getScore(), (int) (dimension.getWidth() - 300), 30);
-        graphics.drawString("Aktueller Score:" + score.getScore(), (int) (dimension.getWidth() - 300), 60);
 
         // Draw effect
-        graphics.setColor(Color.BLACK);
-        graphics.setFont(font);
-        graphics.drawString(effect, (int) (dimension.getWidth() - 750), 30);*/
 
         graphics.dispose();
         bufferStrategy.show();

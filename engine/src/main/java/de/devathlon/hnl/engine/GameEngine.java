@@ -89,6 +89,8 @@ public interface GameEngine {
 
     Score getScore();
 
+    String getEffect();
+
     /**
      * Create the game engine implementation.
      *
