@@ -15,6 +15,10 @@ import de.devathlon.hnl.game.food.Food;
 import de.devathlon.hnl.game.entities.Snake;
 import de.devathlon.hnl.game.food.SpecialFood;
 import de.devathlon.hnl.game.food.foodtypes.*;
+import de.devathlon.hnl.game.map.CustomMap;
+import de.devathlon.hnl.game.map.EasyMap;
+import de.devathlon.hnl.game.map.EmptyMap;
+import de.devathlon.hnl.game.map.NormalMap;
 import de.devathlon.hnl.game.pause.ContinueGameItem;
 import de.devathlon.hnl.game.pause.EndGameItem;
 import de.devathlon.hnl.game.pause.MapPauseItem;
@@ -39,9 +43,6 @@ public class Game implements InputListener {
 
     private GameEngine gameEngine;
     private EngineConfiguration engineConfiguration;
-    private List<Point> borderPoints = new CopyOnWriteArrayList<>();
-
-    private List<FoodModel> foodList;
 
     // effect variables
     private long effectGiven;
@@ -52,8 +53,8 @@ public class Game implements InputListener {
     // effectbar
     private List<Point> effectBar = new CopyOnWriteArrayList<>();
     private Color effectBarColor;
-    private boolean effectBarActive;
 
+    private CustomMap mapModel;
 
     public Game() {
         // initialize effect variables
@@ -62,96 +63,22 @@ public class Game implements InputListener {
         this.doublePoints = false;
         this.pauseEffectTimePassed = 0;
 
-        // map end
-
         this.running = true;
         this.pause = new AtomicBoolean(true);
         setup();
 
         // Refactor
         gameEngine = GameEngine.create();
-        MapModel mapModel = new MapModel() {
-            @Override
-            public String getName() {
-                return null;
-            }
 
-            @Override
-            public Collection<Point> getBorder() {
-                return borderPoints;
-            }
-
-            @Override
-            public SnakeModel getSnake() {
-                return snake;
-            }
-
-            @Override
-            public Collection<FoodModel> getFood() {
-                return foodList;
-            }
-
-            // TODO: Implement me
-            @Override
-            public EffectBarModel getEffectBar() {
-                return new EffectBarModel() {
-                    @Override
-                    public boolean isActive() {
-                        return effectBarActive;
-                    }
-
-                    @Override
-                    public Color getColor() {
-                        return effectBarColor;
-                    }
-
-                    @Override
-                    public Collection<Point> getBar() {
-                        return effectBar;
-                    }
-                };
-            }
-        };
+        this.mapModel = new NormalMap(this);
         gameEngine.setModel(mapModel);
-        gameEngine.setPauseItems(new ContinueGameItem(this), new MapPauseItem(), new EndGameItem(this));
+        gameEngine.setPauseItems(new ContinueGameItem(this), new MapPauseItem(this), new EndGameItem(this));
         gameEngine.setInputListener(this);
         this.engineConfiguration = new EngineConfiguration(35, 35, 120);
         gameEngine.setUp(engineConfiguration);
         gameEngine.start();
-        // setup border
-        for (int i = 0; i < 4; i++) {
-            for (int x = 0; x < engineConfiguration.getWidthInBlocks(); x++) {
-                this.borderPoints.add(Point.of(x, 0));
-                this.borderPoints.add(Point.of(x, engineConfiguration.getHeightInBlocks() - 4));
-            }
-            for (int y = 0; y < engineConfiguration.getHeightInBlocks() - 4; y++) {
-                this.borderPoints.add(Point.of(0, y));
-                this.borderPoints.add(Point.of(engineConfiguration.getWidthInBlocks() - 1, y));
-            }
-        }
 
-        // map
-        for (int x = 5; x < 20; x++) {
-            for (int y = 15; y < 20; y++) {
-                this.borderPoints.add(Point.of(x, y));
-            }
-        }
-        for (int x = 15; x < 20; x++) {
-            for (int y = 15; y < 20; y++) {
-                this.borderPoints.add(Point.of(x, y));
-            }
-        }
-        for (int x = 25; x < 30; x++) {
-            for (int y = 15; y < 20; y++) {
-                this.borderPoints.add(Point.of(x, y));
-            }
-        }
-
-        Border.animateMovingBorder(0, 1000, this, 25, 30);
-        Border.animateMovingBorder(5500, 1500, this, 25, 30);
-
-        // generate new food model
-        generateNewFood();
+        mapModel.setup();
     }
 
     private void setup() {
@@ -159,81 +86,10 @@ public class Game implements InputListener {
         this.snake = new Snake();
         this.currentDirection = Direction.LEFT;
         updateHeadPosition();
-        // initialize food
-        this.foodList = new CopyOnWriteArrayList<>();
-
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                if (!pause.get()) {
-                    if (effectGiven != 0) {
-                        long secondsLeft = ((System.currentTimeMillis() - effectGiven) / 1000);
-                        Effect.animateTimer(Game.this, (int) secondsLeft);
-                        if (((System.currentTimeMillis() - effectGiven) / 1000) >= effectTime) {
-                            removeAllEffects();
-                        }
-                    }
-
-                    for (FoodModel food : foodList) {
-                        if (food instanceof SpecialFood) {
-                            SpecialFood specialFood = (SpecialFood) food;
-                            if (specialFood.getTimeAlive() == 0) {
-                                foodList.remove(food);
-                            } else {
-                                specialFood.setTimeAlive(specialFood.getTimeAlive() - 1);
-                            }
-                        }
-                    }
-                }
-            }
-        }, 1000, 1000);
     }
 
     private void generateNewFood() {
-        Random random = new Random();
-
-        int x = random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1;
-        int y = random.nextInt(engineConfiguration.getHeightInBlocks() - 5) + 1;
-
-        int specialX = random.nextInt(engineConfiguration.getWidthInBlocks() - 2) + 1;
-        int specialY = random.nextInt(engineConfiguration.getHeightInBlocks() - 5) + 1;
-        Food food;
-        SpecialFood special = null;
-        // special food
-
-        switch (random.nextInt(6)) {
-            case 1:
-                special = new SpeedFood(specialX, specialY, this); // green (speed)
-                break;
-            case 2:
-                special = new SlowFood(specialX, specialY, this); // blue (slowness)
-                break;
-            case 3:
-                special = new InvincibleFood(specialX, specialY, this); // blue (slowness)
-                break;
-            case 4:
-                special = new BadFood(specialX, specialY, this); // gray (half snake disappears)
-                break;
-            case 5:
-                special = new DoublePointsFood(specialX, specialY, this); // magenta (double points)
-                break;
-        }
-        for (Point borderPoint : borderPoints) {
-            if (x == borderPoint.getX() && y == borderPoint.getY()) {
-                generateNewFood();
-                return;
-            }
-            if (special != null) {
-                if (special.getLocation().getX() == borderPoint.getX() && special.getLocation().getY() == borderPoint.getY()) {
-                    special = null;
-                }
-            }
-        }
-        food = new Food(x, y, Color.ORANGE);
-        foodList.add(food);
-        if (special != null) {
-            foodList.add(special);
-        }
+        mapModel.updateFood();
     }
 
     private void updateHeadPosition() {
@@ -259,8 +115,8 @@ public class Game implements InputListener {
                             break;
                     }
                     // after updating -> check for collision
-                    if (snake.collisionWithBody() || snake.collisionWithBorder(borderPoints)) {
-                        if (snake.collisionWithBorder(borderPoints) && snake.isInvincible()) {
+                    if (snake.collisionWithBody() || snake.collisionWithBorder(mapModel.getBorderPoints())) {
+                        if (snake.collisionWithBorder(mapModel.getBorderPoints()) && snake.isInvincible()) {
                             if (headPoint.getX() == 0) {
                                 headPoint.setX(engineConfiguration.getWidthInBlocks() - 1);
                             } else if (headPoint.getX() == engineConfiguration.getWidthInBlocks() - 1) {
@@ -277,9 +133,9 @@ public class Game implements InputListener {
                     // updated head, now update body
                     snake.updateBody(oldX, oldY);
                     // check if
-                    if (snake.contactWithFood(foodList) != null) {
-                        FoodModel food = snake.contactWithFood(foodList);
-                        foodList.remove(food);
+                    if (snake.contactWithFood(mapModel.getFood()) != null) {
+                        FoodModel food = snake.contactWithFood(mapModel.getFood());
+                        mapModel.getFood().remove(food);
                         if (food instanceof SpecialFood) {
                             SpecialFood specialFood = (SpecialFood) food;
                             specialFood.apply();
@@ -345,7 +201,7 @@ public class Game implements InputListener {
     private void reset() {
         this.snake = new Snake();
 
-        this.foodList.clear();
+        mapModel.getFood().clear();
         generateNewFood();
 
         this.running = true;
@@ -392,10 +248,6 @@ public class Game implements InputListener {
         return engineConfiguration;
     }
 
-    public List<Point> getBorderPoints() {
-        return borderPoints;
-    }
-
     public AtomicBoolean getPause() {
         return pause;
     }
@@ -404,9 +256,8 @@ public class Game implements InputListener {
         return effectTime;
     }
 
-
-    public void setEffectBarActive(boolean effectBarActive) {
-        this.effectBarActive = effectBarActive;
+    public long getEffectGiven() {
+        return effectGiven;
     }
 
     public void setEffectBarColor(Color effectBarColor) {
@@ -423,5 +274,13 @@ public class Game implements InputListener {
 
     public Snake getSnake() {
         return snake;
+    }
+
+    public Color getEffectBarColor() {
+        return effectBarColor;
+    }
+
+    public CustomMap getMapModel() {
+        return mapModel;
     }
 }

@@ -24,24 +24,24 @@ public class Border {
                     if (currentX >= game.getEngineConfiguration().getWidthInBlocks() - 3) {
                         moveForward = false;
                         for (int y = yStart; y < yEnd; y++) {
-                            game.getBorderPoints().remove(Point.of((currentX - 1), y));
+                            game.getMapModel().getBorderPoints().remove(Point.of((currentX - 1), y));
                         }
                     }
                     if (currentX == 2 && !moveForward) {
                         moveForward = true;
                         for (int y = yStart; y < yEnd; y++) {
-                            game.getBorderPoints().remove(Point.of((currentX + 1), y));
+                            game.getMapModel().getBorderPoints().remove(Point.of((currentX + 1), y));
                         }
                     }
 
                     for (int y = yStart; y < yEnd; y++) {
                         if (!moveForward)
-                            game.getBorderPoints().remove(Point.of((currentX + 1), y));
+                            game.getMapModel().getBorderPoints().remove(Point.of((currentX + 1), y));
                         else
-                            game.getBorderPoints().remove(Point.of((currentX - 1), y));
+                            game.getMapModel().getBorderPoints().remove(Point.of((currentX - 1), y));
                         movingBorder.add(Point.of(currentX, y));
                     }
-                    game.getBorderPoints().addAll(movingBorder);
+                    game.getMapModel().getBorderPoints().addAll(movingBorder);
                     if (!moveForward) {
                         currentX--;
                     }

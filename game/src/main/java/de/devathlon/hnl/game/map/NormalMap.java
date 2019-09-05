@@ -2,7 +2,7 @@ package de.devathlon.hnl.game.map;
 
 import de.devathlon.hnl.core.map.MapConfiguration;
 import de.devathlon.hnl.core.math.Point;
-import de.devathlon.hnl.game.food.Food;
+import de.devathlon.hnl.game.animation.Border;
 import de.devathlon.hnl.game.food.SpecialFood;
 import de.devathlon.hnl.game.food.foodtypes.*;
 import de.devathlon.hnl.game.snake.Game;
@@ -11,14 +11,9 @@ import java.awt.*;
 import java.util.Collection;
 import java.util.Random;
 
-/**
- * Class description.
- *
- * @author Paul2708
- */
-public class EasyMap extends CustomMap {
+public class NormalMap extends CustomMap {
 
-    public EasyMap(Game game) {
+    public NormalMap(Game game) {
         super(game);
     }
 
@@ -33,7 +28,7 @@ public class EasyMap extends CustomMap {
 
         SpecialFood special = null;
 
-        switch (random.nextInt(6)) {
+        switch (random.nextInt(20)) {
             case 1:
                 special = new SpeedFood(specialX, specialY, game); // green (speed)
                 break;
@@ -42,6 +37,9 @@ public class EasyMap extends CustomMap {
                 break;
             case 3:
                 special = new InvincibleFood(specialX, specialY, game); // blue (slowness)
+                break;
+            case 4:
+                special = new BadFood(specialX, specialY, game); // gray (half snake disappears)
                 break;
             case 5:
                 special = new DoublePointsFood(specialX, specialY, game); // magenta (double points)
@@ -55,19 +53,31 @@ public class EasyMap extends CustomMap {
 
     @Override
     protected void generateCustomBorder() {
+        for (int x = 5; x < 20; x++) {
+            for (int y = 15; y < 20; y++) {
+                this.borderPoints.add(Point.of(x, y));
+            }
+        }
+        for (int x = 15; x < 20; x++) {
+            for (int y = 15; y < 20; y++) {
+                this.borderPoints.add(Point.of(x, y));
+            }
+        }
+        for (int x = 25; x < 30; x++) {
+            for (int y = 15; y < 20; y++) {
+                this.borderPoints.add(Point.of(x, y));
+            }
+        }
 
+        Border.animateMovingBorder(0, 1000, getGame(), 25, 30);
+        Border.animateMovingBorder(5500, 1500, getGame(), 25, 30);
     }
 
     @Override
     public MapConfiguration getConfiguration() {
-        return new MapConfiguration("Test", new Dimension(35, 35), Point.of(10, 10));
+        return new MapConfiguration("Standard", new Dimension(35, 35), Point.of(10, 10));
     }
 
-    /**
-     * Get a collection of all border points.
-     *
-     * @return collection of points
-     */
     @Override
     public Collection<Point> getBorder() {
         return getBorderPoints();

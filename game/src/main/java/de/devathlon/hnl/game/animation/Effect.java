@@ -9,7 +9,6 @@ public class Effect {
 
     public static void animateTimer(Game game, int timePassed) {
         game.setEffectBarColor(Color.GREEN);
-        game.setEffectBarActive(true);
         int timeLeft = game.getEffectTime() - timePassed;
 
         if (timeLeft == game.getEffectTime()) {
