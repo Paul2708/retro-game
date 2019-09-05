@@ -34,13 +34,19 @@ public abstract class Overlay {
         this.onInitialize();
     }
 
+    public void render(Graphics2D graphics) {
+        if (isEnabled()) {
+            onRender(graphics);
+        }
+    }
+
     public void activate(boolean activate) {
         this.enabled = activate;
     }
 
     public abstract void onInitialize();
 
-    public abstract void render(Graphics2D graphics);
+    public abstract void onRender(Graphics2D graphics);
 
     protected MapModel getMap() {
         return engine.getMap();
