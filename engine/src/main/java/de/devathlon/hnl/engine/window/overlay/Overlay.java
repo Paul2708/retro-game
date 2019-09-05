@@ -34,8 +34,8 @@ public abstract class Overlay {
         this.onInitialize();
     }
 
-    public void activate() {
-        this.enabled = true;
+    public void activate(boolean activate) {
+        this.enabled = activate;
     }
 
     public abstract void onInitialize();

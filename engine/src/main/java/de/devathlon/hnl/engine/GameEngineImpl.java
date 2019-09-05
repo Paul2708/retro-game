@@ -168,6 +168,11 @@ final class GameEngineImpl implements GameEngine {
         return mapModel;
     }
 
+    @Override
+    public List<PauseItem> getPauseItems() {
+        return pauseItems;
+    }
+
     /**
      * Stop the engine.
      * The rendering stops and the window disappears.
