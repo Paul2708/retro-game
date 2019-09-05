@@ -6,10 +6,13 @@ import de.devathlon.hnl.core.MapModel;
 import de.devathlon.hnl.core.SnakeModel;
 import de.devathlon.hnl.core.math.Point;
 import de.devathlon.hnl.core.pause.PauseItem;
+import de.devathlon.hnl.engine.GameEngine;
 import de.devathlon.hnl.engine.listener.InputListener;
 import de.devathlon.hnl.engine.loop.GameLoop;
 import de.devathlon.hnl.engine.window.map.MapMenu;
 import de.devathlon.hnl.engine.window.map.MapMouseListener;
+import de.devathlon.hnl.engine.window.overlay.Overlay;
+import de.devathlon.hnl.engine.window.overlay.impl.BackgroundOverlay;
 import de.devathlon.hnl.engine.window.pause.PauseMenu;
 import de.devathlon.hnl.engine.window.pause.listener.PauseMouseListener;
 import de.devathlon.hnl.engine.window.score.Score;
@@ -67,13 +70,16 @@ public final class GameCanvas extends Canvas {
 
     private Map<Point, Color> colorMap;
 
+    private Overlay backgroundOverlay;
+
+
     /**
      * Create a new game canvas and read in the ground file.
      *
      * @param mapModel      model to get the current positions to draw
      * @param inputListener listener set to {@link CanvasKeyListener}
      */
-    public GameCanvas(List<MapModel> mapModels, List<PauseItem> pauseItems, Dimension dimension, MapModel mapModel, InputListener inputListener) {
+    public GameCanvas(GameEngine engine, List<MapModel> mapModels, List<PauseItem> pauseItems, Dimension dimension, MapModel mapModel, InputListener inputListener) {
         this.mapModel = mapModel;
         this.dimension = dimension;
 
@@ -100,24 +106,10 @@ public final class GameCanvas extends Canvas {
         this.effect = "kein Effekt";
         this.colorMap = new HashMap<>();
 
-        for (int i = 0; i < dimension.getWidth(); i += BLOCK_SIZE + GAP/2) {
-            for (int j = 0; j < dimension.getHeight(); j += BLOCK_SIZE + GAP/2) {
-                int random = new Random().nextInt(4);
-                Color color = null;
+        this.backgroundOverlay = new BackgroundOverlay();
 
-                if (random == 0) {
-                    color = new Color(102, 153, 51);
-                } else if (random == 1) {
-                    color = new Color(143, 197, 98);
-                } else if (random == 2) {
-                    color = new Color(72, 141, 29);
-                } else if (random == 3) {
-                    color = new Color(51, 153, 51);
-                }
-
-                this.colorMap.put(Point.of(i, j), color);
-            }
-        }
+        this.backgroundOverlay.initialize(engine, this);
+        this.backgroundOverlay.activate();
     }
 
     /**
@@ -141,10 +133,8 @@ public final class GameCanvas extends Canvas {
         // Draw ground
         // graphics.drawImage(image, 0, 0, (int) getSize().getWidth(), (int) getSize().getHeight(), this);
 
-        for (Map.Entry<Point, Color> entry : colorMap.entrySet()) {
-            graphics.setColor(entry.getValue());
-            graphics.fillRect(entry.getKey().getX(), entry.getKey().getY(), BLOCK_SIZE + GAP / 2, BLOCK_SIZE + GAP / 2);
-        }
+        backgroundOverlay.render((Graphics2D) graphics);
+
 
         // Draw border
         graphics.setColor(new Color(139, 69, 19));
@@ -254,5 +244,9 @@ public final class GameCanvas extends Canvas {
 
     public void setEffect(String effect) {
         this.effect = effect;
+    }
+
+    public Dimension getGameDimension() {
+        return dimension;
     }
 }
