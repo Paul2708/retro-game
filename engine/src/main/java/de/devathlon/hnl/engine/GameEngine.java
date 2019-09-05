@@ -5,6 +5,7 @@ import de.devathlon.hnl.core.pause.PauseItem;
 import de.devathlon.hnl.core.update.EngineUpdate;
 import de.devathlon.hnl.engine.configuration.EngineConfiguration;
 import de.devathlon.hnl.engine.listener.InputListener;
+import de.devathlon.hnl.engine.update.EffectInformation;
 import de.devathlon.hnl.engine.update.Score;
 
 import java.util.Collections;
@@ -90,9 +91,7 @@ public interface GameEngine {
 
     List<MapModel> getMapPool();
 
-    String getEffect1();
-
-    String getEffect2();
+    EffectInformation getEffectInformation();
 
     /**
      * Create the game engine implementation.
