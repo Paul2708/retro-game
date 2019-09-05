@@ -63,6 +63,7 @@ public final class GameCanvas extends Canvas {
     private final Dimension dimension;
 
     private Score score;
+    private String effect;
 
     private Map<Point, Color> colorMap;
 
@@ -96,6 +97,7 @@ public final class GameCanvas extends Canvas {
         setFocusable(true);
 
         this.score = new Score("High-Score: ", 0);
+        this.effect = "kein Effekt";
         this.colorMap = new HashMap<>();
 
         for (int i = 0; i < dimension.getWidth(); i += BLOCK_SIZE + GAP/2) {
@@ -213,6 +215,11 @@ public final class GameCanvas extends Canvas {
         graphics.drawString(score.getText() + " " + score.getScore(), (int) (dimension.getWidth() - 300), 30);
         graphics.drawString("Aktueller Score:" + score.getScore(), (int) (dimension.getWidth() - 300), 60);
 
+        // Draw effect
+        graphics.setColor(Color.BLACK);
+        graphics.setFont(font);
+        graphics.drawString(effect, (int) (dimension.getWidth() - 750), 30);
+
         graphics.dispose();
         bufferStrategy.show();
     }
@@ -243,5 +250,9 @@ public final class GameCanvas extends Canvas {
         int y = (int) getSize().getHeight() - BLOCK_SIZE - (BLOCK_SIZE + GAP) * (point.getY());
 
         return Point.of(x, y);
+    }
+
+    public void setEffect(String effect) {
+        this.effect = effect;
     }
 }
