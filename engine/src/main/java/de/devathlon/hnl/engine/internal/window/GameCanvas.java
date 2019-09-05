@@ -2,18 +2,10 @@ package de.devathlon.hnl.engine.internal.window;
 
 import de.devathlon.hnl.core.MapModel;
 import de.devathlon.hnl.engine.GameEngine;
+import de.devathlon.hnl.engine.internal.window.overlay.impl.*;
 import de.devathlon.hnl.engine.listener.InputListener;
 import de.devathlon.hnl.engine.internal.loop.GameLoop;
 import de.devathlon.hnl.engine.internal.window.overlay.Overlay;
-import de.devathlon.hnl.engine.internal.window.overlay.impl.BackgroundOverlay;
-import de.devathlon.hnl.engine.internal.window.overlay.impl.BorderOverlay;
-import de.devathlon.hnl.engine.internal.window.overlay.impl.EffectBarOverlay;
-import de.devathlon.hnl.engine.internal.window.overlay.impl.EffectInfoOverlay;
-import de.devathlon.hnl.engine.internal.window.overlay.impl.FoodOverlay;
-import de.devathlon.hnl.engine.internal.window.overlay.impl.GameSettingsOverlay;
-import de.devathlon.hnl.engine.internal.window.overlay.impl.MapSelectionOverlay;
-import de.devathlon.hnl.engine.internal.window.overlay.impl.ScoreOverlay;
-import de.devathlon.hnl.engine.internal.window.overlay.impl.SnakeOverlay;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
@@ -48,8 +40,9 @@ public final class GameCanvas extends Canvas {
     private static final Overlay[] OVERLAYS = new Overlay[] {
             new BackgroundOverlay(),
             new BorderOverlay(),
-            new SnakeOverlay(),
             new FoodOverlay(),
+            new DeathOverlay(),
+            new SnakeOverlay(),
             new EffectBarOverlay(),
             new ScoreOverlay(),
             new EffectInfoOverlay(),
@@ -75,8 +68,8 @@ public final class GameCanvas extends Canvas {
         setFocusable(true);
 
         // Initialize overlays
-        this.gameSettingsOverlay = (GameSettingsOverlay) GameCanvas.OVERLAYS[7];
-        this.mapSelectionOverlay = (MapSelectionOverlay) GameCanvas.OVERLAYS[8];
+        this.gameSettingsOverlay = (GameSettingsOverlay) GameCanvas.OVERLAYS[8];
+        this.mapSelectionOverlay = (MapSelectionOverlay) GameCanvas.OVERLAYS[9];
 
         for (Overlay overlay : GameCanvas.OVERLAYS) {
             overlay.initialize(engine, this);
