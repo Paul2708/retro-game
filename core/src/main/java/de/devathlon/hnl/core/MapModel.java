@@ -1,7 +1,9 @@
 package de.devathlon.hnl.core;
 
+import de.devathlon.hnl.core.map.MapConfiguration;
 import de.devathlon.hnl.core.math.Point;
 
+import java.awt.*;
 import java.util.Collection;
 
 /**
@@ -11,12 +13,7 @@ import java.util.Collection;
  */
 public interface MapModel {
 
-    /**
-     * Get the name of the map.
-     *
-     * @return map name
-     */
-    String getName();
+    MapConfiguration getConfiguration();
 
     /**
      * Get a collection of all border points.
