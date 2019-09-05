@@ -58,8 +58,7 @@ public final class MapMenu {
         // Init items
         this.itemMap = new HashMap<>();
 
-        for (int i = 0; i < items.size(); i++) {
-            MapModel item = items.get(i);
+        for (MapModel item : items) {
             itemMap.put(item, calculateBorder(item));
         }
     }
@@ -72,8 +71,7 @@ public final class MapMenu {
         graphics.setColor(Color.BLACK);
         graphics.setFont(font);
 
-        for (int i = 0; i < items.size(); i++) {
-            MapModel item = items.get(i);
+        for (MapModel item : items) {
             Rectangle rectangle = itemMap.get(item);
 
             drawItem(graphics, item);

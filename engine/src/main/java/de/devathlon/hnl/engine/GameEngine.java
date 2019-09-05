@@ -9,8 +9,6 @@ import de.devathlon.hnl.engine.window.score.Score;
 
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * This interface represents the actual game engine.

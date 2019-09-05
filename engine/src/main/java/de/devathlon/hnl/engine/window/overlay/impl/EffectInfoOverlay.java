@@ -1,7 +1,6 @@
 package de.devathlon.hnl.engine.window.overlay.impl;
 
 import de.devathlon.hnl.engine.window.overlay.Overlay;
-import de.devathlon.hnl.engine.window.score.Score;
 
 import java.awt.Color;
 import java.awt.Dimension;
