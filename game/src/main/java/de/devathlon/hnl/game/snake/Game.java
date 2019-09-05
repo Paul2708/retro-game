@@ -72,6 +72,11 @@ public class Game implements InputListener {
         gameEngine = GameEngine.create();
         MapModel mapModel = new MapModel() {
             @Override
+            public String getName() {
+                return null;
+            }
+
+            @Override
             public Collection<Point> getBorder() {
                 return borderPoints;
             }
