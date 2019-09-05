@@ -45,16 +45,21 @@ public final class GameCanvas extends Canvas {
      */
     public static final int GAP = 2;
 
+    private static final Overlay[] OVERLAYS = new Overlay[] {
+            new BackgroundOverlay(),
+            new BorderOverlay(),
+            new SnakeOverlay(),
+            new FoodOverlay(),
+            new EffectBarOverlay(),
+            new ScoreOverlay(),
+            new EffectInfoOverlay(),
+            new GameSettingsOverlay(),
+            new MapSelectionOverlay()
+    };
+
     private final Dimension dimension;
 
-    private Overlay backgroundOverlay;
-    private Overlay borderOverlay;
-    private Overlay snakeOverlay;
-    private Overlay foodOverlay;
-    private Overlay effectBarOverlay;
-    private Overlay scoreOverlay;
-    private Overlay effectInfoOverlay;
-    private Overlay gameSettingsOverlay;
+    private GameSettingsOverlay gameSettingsOverlay;
     private MapSelectionOverlay mapSelectionOverlay;
 
     /**
@@ -69,41 +74,17 @@ public final class GameCanvas extends Canvas {
         addKeyListener(new CanvasKeyListener(inputListener));
         setFocusable(true);
 
-        this.backgroundOverlay = new BackgroundOverlay();
-        this.backgroundOverlay.initialize(engine, this);
-        this.backgroundOverlay.activate(true);
+        // Initialize overlays
+        this.gameSettingsOverlay = (GameSettingsOverlay) GameCanvas.OVERLAYS[7];
+        this.mapSelectionOverlay = (MapSelectionOverlay) GameCanvas.OVERLAYS[8];
 
-        this.borderOverlay = new BorderOverlay();
-        this.borderOverlay.initialize(engine, this);
-        this.borderOverlay.activate(true);
+        for (Overlay overlay : GameCanvas.OVERLAYS) {
+            overlay.initialize(engine, this);
+            overlay.activate(true);
+        }
 
-        this.snakeOverlay = new SnakeOverlay();
-        this.snakeOverlay.initialize(engine, this);
-        this.snakeOverlay.activate(true);
-
-        this.foodOverlay = new FoodOverlay();
-        this.foodOverlay.initialize(engine, this);
-        this.foodOverlay.activate(true);
-
-        this.effectBarOverlay = new EffectBarOverlay();
-        this.effectBarOverlay.initialize(engine, this);
-        this.effectBarOverlay.activate(true);
-
-        this.scoreOverlay = new ScoreOverlay();
-        this.scoreOverlay.initialize(engine, this);
-        this.scoreOverlay.activate(true);
-
-        this.effectInfoOverlay = new EffectInfoOverlay();
-        this.effectInfoOverlay.initialize(engine, this);
-        this.effectInfoOverlay.activate(true);
-
-        this.gameSettingsOverlay = new GameSettingsOverlay();
-        this.gameSettingsOverlay.initialize(engine, this);
-        this.gameSettingsOverlay.activate(false);
-
-        this.mapSelectionOverlay = new MapSelectionOverlay();
-        this.mapSelectionOverlay.initialize(engine, this);
-        this.mapSelectionOverlay.activate(false);
+        gameSettingsOverlay.activate(false);
+        mapSelectionOverlay.activate(false);
     }
 
     /**
@@ -113,7 +94,6 @@ public final class GameCanvas extends Canvas {
      * @see GameLoop#run()
      */
     public void render() {
-        // TODO: Optimize me
         BufferStrategy bufferStrategy = getBufferStrategy();
         if (bufferStrategy == null) {
             createBufferStrategy(GameCanvas.BUFFERS);
@@ -122,35 +102,9 @@ public final class GameCanvas extends Canvas {
 
         Graphics graphics = bufferStrategy.getDrawGraphics();
 
-        backgroundOverlay.render((Graphics2D) graphics);
-
-
-        // Draw border
-        borderOverlay.render((Graphics2D) graphics);
-
-        // Draw snake
-        snakeOverlay.render((Graphics2D) graphics);
-
-        // Draw food
-        foodOverlay.render((Graphics2D) graphics);
-        
-        // Draw effect bar
-        effectBarOverlay.render((Graphics2D) graphics);
-
-        // Draw score overlay
-        scoreOverlay.render((Graphics2D) graphics);
-
-        effectInfoOverlay.render(((Graphics2D) graphics));
-
-        // Draw settings menu
-        gameSettingsOverlay.render((Graphics2D) graphics);
-
-        // Draw map menu
-        mapSelectionOverlay.render(((Graphics2D) graphics));
-
-        // Draw score
-
-        // Draw effect
+        for (Overlay overlay : GameCanvas.OVERLAYS) {
+            overlay.render((Graphics2D) graphics);
+        }
 
         graphics.dispose();
         bufferStrategy.show();
