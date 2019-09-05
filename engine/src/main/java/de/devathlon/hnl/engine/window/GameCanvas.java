@@ -16,6 +16,7 @@ import de.devathlon.hnl.engine.window.overlay.impl.BackgroundOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.BorderOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.EffectBarOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.FoodOverlay;
+import de.devathlon.hnl.engine.window.overlay.impl.GameSettingsOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.SnakeOverlay;
 import de.devathlon.hnl.engine.window.pause.PauseMenu;
 import de.devathlon.hnl.engine.window.pause.listener.PauseMouseListener;
@@ -79,6 +80,7 @@ public final class GameCanvas extends Canvas {
     private Overlay snakeOverlay;
     private Overlay foodOverlay;
     private Overlay effectBarOverlay;
+    private Overlay gameSettingsOverlay;
 
     /**
      * Create a new game canvas and read in the ground file.
@@ -116,23 +118,27 @@ public final class GameCanvas extends Canvas {
 
         this.backgroundOverlay = new BackgroundOverlay();
         this.backgroundOverlay.initialize(engine, this);
-        this.backgroundOverlay.activate();
+        this.backgroundOverlay.activate(true);
 
         this.borderOverlay = new BorderOverlay();
         this.borderOverlay.initialize(engine, this);
-        this.borderOverlay.activate();
+        this.borderOverlay.activate(true);
 
         this.snakeOverlay = new SnakeOverlay();
         this.snakeOverlay.initialize(engine, this);
-        this.snakeOverlay.activate();
+        this.snakeOverlay.activate(true);
 
         this.foodOverlay = new FoodOverlay();
         this.foodOverlay.initialize(engine, this);
-        this.foodOverlay.activate();
+        this.foodOverlay.activate(true);
 
         this.effectBarOverlay = new EffectBarOverlay();
         this.effectBarOverlay.initialize(engine, this);
-        this.effectBarOverlay.activate();
+        this.effectBarOverlay.activate(true);
+
+        this.gameSettingsOverlay = new GameSettingsOverlay();
+        this.gameSettingsOverlay.initialize(engine, this);
+        this.gameSettingsOverlay.activate(true);
     }
 
     /**
@@ -170,6 +176,8 @@ public final class GameCanvas extends Canvas {
         
         // Draw effect bar
         effectBarOverlay.render((Graphics2D) graphics);
+
+        gameSettingsOverlay.render((Graphics2D) graphics);
 
         // Draw settings menu
         Font font;

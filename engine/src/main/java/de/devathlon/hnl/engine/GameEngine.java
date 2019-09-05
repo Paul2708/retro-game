@@ -6,6 +6,7 @@ import de.devathlon.hnl.core.update.EngineUpdate;
 import de.devathlon.hnl.engine.configuration.EngineConfiguration;
 import de.devathlon.hnl.engine.listener.InputListener;
 
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -82,6 +83,8 @@ public interface GameEngine {
     void stop();
 
     MapModel getMap();
+
+    List<PauseItem> getPauseItems();
 
     /**
      * Create the game engine implementation.
