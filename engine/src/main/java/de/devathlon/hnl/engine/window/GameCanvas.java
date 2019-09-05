@@ -14,6 +14,8 @@ import de.devathlon.hnl.engine.window.map.MapMouseListener;
 import de.devathlon.hnl.engine.window.overlay.Overlay;
 import de.devathlon.hnl.engine.window.overlay.impl.BackgroundOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.BorderOverlay;
+import de.devathlon.hnl.engine.window.overlay.impl.EffectBarOverlay;
+import de.devathlon.hnl.engine.window.overlay.impl.FoodOverlay;
 import de.devathlon.hnl.engine.window.overlay.impl.SnakeOverlay;
 import de.devathlon.hnl.engine.window.pause.PauseMenu;
 import de.devathlon.hnl.engine.window.pause.listener.PauseMouseListener;
@@ -76,6 +78,7 @@ public final class GameCanvas extends Canvas {
     private Overlay borderOverlay;
     private Overlay snakeOverlay;
     private Overlay foodOverlay;
+    private Overlay effectBarOverlay;
 
     /**
      * Create a new game canvas and read in the ground file.
@@ -123,9 +126,13 @@ public final class GameCanvas extends Canvas {
         this.snakeOverlay.initialize(engine, this);
         this.snakeOverlay.activate();
 
-        this.foodOverlay = new SnakeOverlay();
+        this.foodOverlay = new FoodOverlay();
         this.foodOverlay.initialize(engine, this);
         this.foodOverlay.activate();
+
+        this.effectBarOverlay = new EffectBarOverlay();
+        this.effectBarOverlay.initialize(engine, this);
+        this.effectBarOverlay.activate();
     }
 
     /**
@@ -159,24 +166,10 @@ public final class GameCanvas extends Canvas {
         snakeOverlay.render((Graphics2D) graphics);
 
         // Draw food
-        for (FoodModel foodModel : mapModel.getFood()) {
-            Point transform = transform(foodModel.getLocation());
-
-            graphics.setColor(foodModel.getColor());
-            graphics.fillRect(transform.getX(), transform.getY(), BLOCK_SIZE, BLOCK_SIZE);
-        }
+        foodOverlay.render((Graphics2D) graphics);
         
         // Draw effect bar
-        EffectBarModel effectBarModel = mapModel.getEffectBar();
-
-        if (effectBarModel.isActive()) {
-            graphics.setColor(effectBarModel.getColor());
-
-            for (Point point : effectBarModel.getBar()) {
-                Point transform = transform(point);
-                graphics.fillRect(transform.getX(), transform.getY(), BLOCK_SIZE, BLOCK_SIZE);
-            }
-        }
+        effectBarOverlay.render((Graphics2D) graphics);
 
         // Draw settings menu
         Font font;
