@@ -10,7 +10,7 @@ import java.awt.*;
 public class BadFood extends SpecialFood {
 
     public BadFood(int x, int y, Game game) {
-        super(x, y, Color.GRAY, game, false);
+        super(x, y, new Color(139, 125, 107), game, false);
     }
 
     @Override

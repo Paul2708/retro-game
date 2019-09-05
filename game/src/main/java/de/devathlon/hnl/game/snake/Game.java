@@ -96,6 +96,7 @@ public class Game implements InputListener {
         new Thread(() -> {
             while (true) {
                 if (!pause.get() && currentDirection != null) {
+                    this.inputBlocked = false;
                     Point headPoint = snake.getHeadPoint();
 
                     int oldX = headPoint.getX();
@@ -150,8 +151,6 @@ public class Game implements InputListener {
 
                     snake.updateScore(gameEngine);
                 }
-
-                this.inputBlocked = true;
                 // sleep
                 try {
                     Thread.sleep(snake.getSpeed());
@@ -221,14 +220,14 @@ public class Game implements InputListener {
     @Override
     public void onInput(int keyCode) {
         if (keyCode != KeyEvent.VK_SPACE && keyCode != KeyEvent.VK_ESCAPE) {
-            if (!inputBlocked) return;
+            if (inputBlocked) return;
             Direction direction = Direction.getDirectionByKey(keyCode);
             if (direction != null) {
+                this.inputBlocked = true;
                 if (currentDirection == Direction.UP && direction == Direction.DOWN) return;
                 if (currentDirection == Direction.DOWN && direction == Direction.UP) return;
                 if (currentDirection == Direction.LEFT && direction == Direction.RIGHT) return;
                 if (currentDirection == Direction.RIGHT && direction == Direction.LEFT) return;
-                this.inputBlocked = true;
                 this.currentDirection = direction;
             }
         } else {
