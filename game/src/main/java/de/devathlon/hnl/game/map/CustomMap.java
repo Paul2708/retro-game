@@ -17,9 +17,10 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Class description.
+ * This class represents the abstract class CustomMap.
+ * All new maps will inherit from this class.
  *
- * @author Paul2708
+ * @author Leon
  */
 public abstract class CustomMap implements MapModel {
 
@@ -30,6 +31,13 @@ public abstract class CustomMap implements MapModel {
     protected final List<FoodModel> foodList;
     protected final List<Point> borderPoints;
 
+    /**
+     * Default constructor for all maps.
+     *
+     * @param name of the map
+     * @param spawnPoint of the snake
+     * @param game current game object
+     */
     public CustomMap(String name, Point spawnPoint, Game game) {
         this.game = game;
         this.foodList = new CopyOnWriteArrayList<>();
@@ -38,6 +46,10 @@ public abstract class CustomMap implements MapModel {
         this.mapConfiguration = new MapConfiguration(name, new Dimension(35, 35), spawnPoint);
     }
 
+    /**
+     * This method should only be called after the game engine registered the new map.
+     * It will stop all tasks from old maps and setups new content.
+     */
     public void setup() {
         game.getAnimatedBorders().forEach(Thread::stop);
         game.getAnimatedBorders().clear();
@@ -48,6 +60,9 @@ public abstract class CustomMap implements MapModel {
         updateFood();
     }
 
+    /**
+     * Removes food effect and special food after an period of time.
+     */
     private void startFoodTimer() {
         new Timer().schedule(new TimerTask() {
             @Override
@@ -76,22 +91,34 @@ public abstract class CustomMap implements MapModel {
         }, 0, 1000);
     }
 
+    /**
+     * Generates new food and special food items.
+     */
     public void updateFood() {
         generateFood();
         generateSpecialFood();
     }
 
+    /**
+     * Method examining the possibility that special food can spawn.
+     */
     protected abstract void generateSpecialFood();
 
+    /**
+     * Method which ads points to {@link #borderPoints}
+     */
     protected abstract void generateCustomBorder();
 
+    /**
+     * Adds {@link Food} objects to {@link #foodList} which random locations.
+     */
     protected void generateFood() {
         Random random = new Random();
 
         int x = random.nextInt(game.getEngineConfiguration().getWidthInBlocks() - 2) + 1;
         int y = random.nextInt(game.getEngineConfiguration().getHeightInBlocks() - 7) + 1;
 
-        Food food = new Food(x, y, new Color(238, 118, 000));
+        Food food = new Food(x, y, new Color(238, 118, 0));
 
         if (checkIfFoodIsInBorder(food)) {
             generateFood();
@@ -101,6 +128,13 @@ public abstract class CustomMap implements MapModel {
         foodList.add(food);
     }
 
+    /**
+     * Compares x and y with all border points to see whether food spawns
+     * in an border object.
+     *
+     * @param foodModel the new food object
+     * @return boolean whether food would spawn in an border point
+     */
     private boolean checkIfFoodIsInBorder(FoodModel foodModel) {
         for (Point borderPoint : this.borderPoints) {
             if (foodModel.getLocation().getX() == borderPoint.getX() && foodModel.getLocation().getY() == borderPoint.getY()) {
@@ -110,6 +144,9 @@ public abstract class CustomMap implements MapModel {
         return false;
     }
 
+    /**
+     * Adds the default rectangle border points.
+     */
     private void generateDefaultBorder() {
         for (int i = 0; i < 4; i++) {
             for (int x = 0; x < getGame().getEngineConfiguration().getWidthInBlocks(); x++) {
@@ -133,18 +170,34 @@ public abstract class CustomMap implements MapModel {
         return game.getSnake();
     }
 
+    /**
+     * Returns a list with all food models
+     *
+     * @return food list
+     */
     public List<FoodModel> getFood() {
         return foodList;
     }
 
+    /**
+     * @return game object
+     */
     public Game getGame() {
         return game;
     }
 
+    /**
+     * Returns a list with all border points
+     *
+     * @return border list
+     */
     public List<Point> getBorderPoints() {
         return borderPoints;
     }
 
+    /**
+     * @return an new EffectBarModel
+     */
     @Override
     public EffectBarModel getEffectBar() {
         return new EffectBarModel() {
@@ -165,6 +218,9 @@ public abstract class CustomMap implements MapModel {
         };
     }
 
+    /**
+     * @return the map configuration
+     */
     @Override
     public MapConfiguration getConfiguration() {
         return mapConfiguration;

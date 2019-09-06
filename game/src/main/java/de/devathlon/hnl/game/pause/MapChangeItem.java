@@ -4,31 +4,39 @@ import de.devathlon.hnl.core.pause.PauseItem;
 import de.devathlon.hnl.game.map.CustomMap;
 import de.devathlon.hnl.game.snake.Game;
 
-import java.util.function.Consumer;
-
 /**
- * Class description.
+ * This class represents the button in order to change a map.
  *
  * @author Paul2708
+ * @author Leon
  */
-public class MapPauseItem implements PauseItem {
+public class MapChangeItem implements PauseItem {
 
     private Game game;
 
-    public MapPauseItem(Game game) {
+    /**
+     * Creates an new map change item.
+     *
+     * @param game the running game
+     */
+    public MapChangeItem(Game game) {
         this.game = game;
     }
 
+    /**
+     * @return String with the button title
+     */
     @Override
     public String getTitle() {
         return "Karte auswählen";
     }
 
+    /**
+     * Sets a new map if the user clicked on a map name.
+     */
     @Override
     public void onSelect() {
         game.getGameEngine().openMapDialog(map -> {
-            System.out.println("Current map: " + map.getConfiguration().getName());
-
             game.getGameEngine().setModel(map);
             game.setMapModel((CustomMap) map);
             game.getMapModel().setup();

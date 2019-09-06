@@ -9,12 +9,27 @@ import de.devathlon.hnl.game.snake.Game;
 import java.util.Collection;
 import java.util.Random;
 
+/**
+ * This class represents the map called "empty map".
+ *
+ * @author Leon
+ */
 public class DifficultMap extends CustomMap {
 
+    /**
+     * Calls the constructor from {@link CustomMap} and passes map name, the spawn point and
+     * the current game object.
+     *
+     * @param game current game object
+     */
     public DifficultMap(Game game) {
         super("Schwer", Point.of(10, 2), game);
     }
 
+    /**
+     * Method in oder to generate special food.
+     * Picks the spawn point and examines the probability that such items will spawn.
+     */
     @Override
     public void generateSpecialFood() {
         // special food
@@ -54,6 +69,9 @@ public class DifficultMap extends CustomMap {
         }
     }
 
+    /**
+     * Generates a custom border.
+     */
     @Override
     protected void generateCustomBorder() {
         for (int x = 5; x < 10; x++) {
@@ -119,6 +137,11 @@ public class DifficultMap extends CustomMap {
         Border.animateMovingBorder(10250, 2750, getGame(), 5, 30);
     }
 
+    /**
+     * Get a collection of all border points.
+     *
+     * @return collection of points
+     */
     @Override
     public Collection<Point> getBorder() {
         return getBorderPoints();

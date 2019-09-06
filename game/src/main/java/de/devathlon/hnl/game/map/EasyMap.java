@@ -12,16 +12,26 @@ import java.util.Collection;
 import java.util.Random;
 
 /**
- * Class description.
+ * This class represents the map called "empty map".
  *
- * @author Paul2708
+ * @author Leon
  */
 public class EasyMap extends CustomMap {
 
+    /**
+     * Calls the constructor from {@link CustomMap} and passes map name, the spawn point and
+     * the current game object.
+     *
+     * @param game current game object
+     */
     public EasyMap(Game game) {
         super("Leicht", Point.of(10, 2), game);
     }
 
+    /**
+     * Method in oder to generate special food.
+     * Picks the spawn point and examines the probability that such items will spawn.
+     */
     @Override
     public void generateSpecialFood() {
         // special food
@@ -53,6 +63,9 @@ public class EasyMap extends CustomMap {
         }
     }
 
+    /**
+     * Generates a custom border. In this case nothing like this is needed.
+     */
     @Override
     protected void generateCustomBorder() {
     }
