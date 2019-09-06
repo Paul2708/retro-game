@@ -27,7 +27,7 @@ public abstract class SpecialFood extends Food {
      */
     public SpecialFood(int x, int y, Color color, Game game, boolean timer) {
         super(x, y, color);
-        this.timeAlive = 20;
+        this.timeAlive = 15;
         this.game = game;
         this.withTimer = timer;
     }

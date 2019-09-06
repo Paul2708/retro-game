@@ -120,12 +120,11 @@ public abstract class CustomMap implements MapModel {
 
         Food food = new Food(x, y, new Color(238, 118, 0));
 
-        if (checkIfFoodIsInBorder(food)) {
+        if (isFoodInBorder(food)) {
             generateFood();
-            return;
+        } else {
+            foodList.add(food);
         }
-
-        foodList.add(food);
     }
 
     /**
@@ -135,7 +134,7 @@ public abstract class CustomMap implements MapModel {
      * @param foodModel the new food object
      * @return boolean whether food would spawn in an border point
      */
-    private boolean checkIfFoodIsInBorder(FoodModel foodModel) {
+    public boolean isFoodInBorder(FoodModel foodModel) {
         for (Point borderPoint : this.borderPoints) {
             if (foodModel.getLocation().getX() == borderPoint.getX() && foodModel.getLocation().getY() == borderPoint.getY()) {
                 return true;
