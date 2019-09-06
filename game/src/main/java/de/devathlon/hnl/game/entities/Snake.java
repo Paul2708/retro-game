@@ -11,6 +11,11 @@ import de.devathlon.hnl.game.util.Messages;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is used to create a new snake.
+ *
+ * @author Leon
+ */
 public class Snake implements SnakeModel {
 
     private Point headPoint;
@@ -21,6 +26,12 @@ public class Snake implements SnakeModel {
 
     private int defaultLength;
 
+    /**
+     * Constructor to set the default values and in order to generate the {@link #headPoint}
+     * and to fill the {@link #bodyPoints} list with the {@link #defaultLength}
+     *
+     * @param game current game object
+     */
     public Snake(Game game) {
         this.speed = 100;
         this.invincible = false;
@@ -35,32 +46,58 @@ public class Snake implements SnakeModel {
         }
     }
 
+    /**
+     * @return the head {@link Point}
+     */
     @Override
     public Point getHeadPoint() {
         return headPoint;
     }
 
+    /**
+     * @return an {@link ArrayList} with {@link Point}s to show the snake body
+     */
     @Override
     public ArrayList<Point> getBodyPoints() {
         return bodyPoints;
     }
 
+    /**
+     * Sets the speed.
+     * Lower values result in a faster gameplay.
+     *
+     * @param speed integer
+     */
     public void setSpeed(long speed) {
         this.speed = speed;
     }
 
+    /**
+     * @return speed integer
+     */
     public long getSpeed() {
         return speed;
     }
 
+    /**
+     * Sets whether the snake is invincible
+     *
+     * @param invincible boolean
+     */
     public void setInvincible(boolean invincible) {
         this.invincible = invincible;
     }
 
+    /**
+     * @return if the snake is invincible
+     */
     public boolean isInvincible() {
         return invincible;
     }
 
+    /**
+     * @return boolean if the head collisions with a body point
+     */
     public boolean collisionWithBody() {
         if (isInvincible()) return false;
         for (Point point : bodyPoints) {
@@ -69,6 +106,10 @@ public class Snake implements SnakeModel {
         return false;
     }
 
+    /**
+     * @param borderPoints list of all border points
+     * @return boolean if the head collisions with a border point
+     */
     public boolean collisionWithBorder(List<Point> borderPoints) {
         for (Point borderPoint : borderPoints) {
             if (headPoint.getX() == borderPoint.getX() && headPoint.getY() == borderPoint.getY()) {
@@ -78,6 +119,13 @@ public class Snake implements SnakeModel {
         return false;
     }
 
+    /**
+     * Returns a food object if the snake's {@link #headPoint} has
+     * the same coordinates as the food model.
+     *
+     * @param foodList list of all food models
+     * @return FoodModel if the head contacts a food object
+     */
     public FoodModel contactWithFood(List<FoodModel> foodList) {
         for (FoodModel food : foodList) {
             if (food.getLocation().getX() == headPoint.getX() && food.getLocation().getY() == headPoint.getY())
@@ -87,6 +135,12 @@ public class Snake implements SnakeModel {
         return null;
     }
 
+    /**
+     * Moves all body points to match their locations with their predecessor.
+     *
+     * @param oldHeadX location x
+     * @param oldHeadY location y
+     */
     public void updateBody(int oldHeadX, int oldHeadY) {
         int x = oldHeadX;
         int y = oldHeadY;
@@ -99,11 +153,19 @@ public class Snake implements SnakeModel {
         }
     }
 
+    /**
+     * Updates score based on the body length.
+     *
+     * @param gameEngine game engine
+     */
     public void updateScore(GameEngine gameEngine) {
         // update score
         gameEngine.update(EngineUpdate.SCORE_UPDATE, Messages.SCORE_UPDATE, getBodyPoints().size() - this.defaultLength);
     }
 
+    /**
+     * @return default body length as an int
+     */
     public int getDefaultLength() {
         return defaultLength;
     }

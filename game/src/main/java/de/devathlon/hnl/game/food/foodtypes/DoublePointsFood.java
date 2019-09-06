@@ -1,19 +1,35 @@
 package de.devathlon.hnl.game.food.foodtypes;
 
 import de.devathlon.hnl.core.update.EngineUpdate;
-import de.devathlon.hnl.game.entities.Snake;
 import de.devathlon.hnl.game.food.SpecialFood;
 import de.devathlon.hnl.game.snake.Game;
 import de.devathlon.hnl.game.util.Messages;
 
 import java.awt.*;
 
+/**
+ * This class is used to create a food model
+ * with the capabilities to activate a double points effect
+ *
+ * @author Leon
+ */
 public class DoublePointsFood extends SpecialFood {
 
+    /**
+     * Default constructor which sets up the location, the color and whether
+     * the special effect is one time or needs to be removed after a specific time.
+     *
+     * @param x location
+     * @param y location
+     * @param game current game object
+     */
     public DoublePointsFood(int x, int y, Game game) {
         super(x, y, Color.PINK, game, true);
     }
 
+    /**
+     * Sets the new double points value and updates the view to show the new effect name.
+     */
     @Override
     protected void activateEffect() {
         getGame().setDoublePoints(true);

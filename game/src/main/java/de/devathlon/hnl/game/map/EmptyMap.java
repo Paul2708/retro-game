@@ -1,22 +1,34 @@
 package de.devathlon.hnl.game.map;
 
-import de.devathlon.hnl.core.map.MapConfiguration;
 import de.devathlon.hnl.core.math.Point;
-import de.devathlon.hnl.game.food.Food;
 import de.devathlon.hnl.game.food.SpecialFood;
 import de.devathlon.hnl.game.food.foodtypes.*;
 import de.devathlon.hnl.game.snake.Game;
 
-import java.awt.*;
 import java.util.Collection;
 import java.util.Random;
 
+/**
+ * This class represents the map called "empty map".
+ *
+ * @author Leon
+ */
 public class EmptyMap extends CustomMap {
 
+    /**
+     * Calls the constructor from {@link CustomMap} and passes map name, the spawn point and
+     * the current game object.
+     *
+     * @param game current game object
+     */
     public EmptyMap(Game game) {
         super("Leer", Point.of(10, 2), game);
     }
 
+    /**
+     * Method in oder to generate special food.
+     * Picks the spawn point and examines the probability that such items will spawn.
+     */
     @Override
     public void generateSpecialFood() {
         // special food
@@ -51,11 +63,19 @@ public class EmptyMap extends CustomMap {
         }
     }
 
+    /**
+     * Generates a custom border. In this case nothing like this is needed.
+     */
     @Override
     protected void generateCustomBorder() {
 
     }
 
+    /**
+     * Returns border points from class {@link Point}.
+     *
+     * @return a collection with points.
+     */
     @Override
     public Collection<Point> getBorder() {
         return getBorderPoints();
