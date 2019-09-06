@@ -40,7 +40,7 @@ public class EmptyMap extends CustomMap {
 
         SpecialFood special = null;
 
-        switch (random.nextInt(6)) {
+        switch (random.nextInt(20)) {
             case 1:
                 special = new SpeedFood(specialX, specialY, game); // green (speed)
                 break;
@@ -59,7 +59,11 @@ public class EmptyMap extends CustomMap {
         }
 
         if (special != null) {
-            getFood().add(special);
+            if(isFoodInBorder(special)) {
+                generateSpecialFood();
+            } else {
+                getFood().add(special);
+            }
         }
     }
 

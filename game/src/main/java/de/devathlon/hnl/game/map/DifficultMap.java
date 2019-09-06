@@ -32,40 +32,42 @@ public class DifficultMap extends CustomMap {
      */
     @Override
     public void generateSpecialFood() {
-        // special food
-        Random random = new Random();
-        Game game = getGame();
+        if(getGame().getSnake() != null && getGame().getSnake().calculateScore() > 17) {
+            // special food
+            Random random = new Random();
+            Game game = getGame();
 
-        int specialX = random.nextInt(game.getEngineConfiguration().getWidthInBlocks() - 2) + 1;
-        int specialY = random.nextInt(game.getEngineConfiguration().getHeightInBlocks() - 7) + 1;
+            int specialX = random.nextInt(game.getEngineConfiguration().getWidthInBlocks() - 2) + 1;
+            int specialY = random.nextInt(game.getEngineConfiguration().getHeightInBlocks() - 7) + 1;
 
-        SpecialFood special = null;
+            SpecialFood special = null;
 
-        switch (random.nextInt(30)) {
-            case 1:
-                special = new SpeedFood(specialX, specialY, game); // green (speed)
-                break;
-            case 2:
-            case 3:
-            case 4:
-                special = new SlowFood(specialX, specialY, game); // blue (slowness)
-                break;
-            case 10:
-                special = new InvincibleFood(specialX, specialY, game); // blue (slowness)
-                break;
-            case 11:
-            case 12:
-            case 13:
-            case 14:
-                special = new BadFood(specialX, specialY, game); // gray (half snake disappears)
-                break;
-            case 20:
-                special = new DoublePointsFood(specialX, specialY, game); // magenta (double points)
-                break;
-        }
+            switch (random.nextInt(30)) {
+                case 1:
+                    special = new SpeedFood(specialX, specialY, game); // green (speed)
+                    break;
+                case 2:
+                case 3:
+                case 4:
+                    special = new SlowFood(specialX, specialY, game); // blue (slowness)
+                    break;
+                case 10:
+                    special = new InvincibleFood(specialX, specialY, game); // blue (slowness)
+                    break;
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                    special = new BadFood(specialX, specialY, game); // gray (half snake disappears)
+                    break;
+                case 20:
+                    special = new DoublePointsFood(specialX, specialY, game); // magenta (double points)
+                    break;
+            }
 
-        if (special != null) {
-            getFood().add(special);
+            if (special != null) {
+                getFood().add(special);
+            }
         }
     }
 

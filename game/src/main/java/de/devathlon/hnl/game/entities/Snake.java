@@ -5,6 +5,7 @@ import de.devathlon.hnl.core.SnakeModel;
 import de.devathlon.hnl.core.math.Point;
 import de.devathlon.hnl.core.update.EngineUpdate;
 import de.devathlon.hnl.engine.GameEngine;
+import de.devathlon.hnl.game.Launcher;
 import de.devathlon.hnl.game.snake.Game;
 import de.devathlon.hnl.game.util.Messages;
 
@@ -26,6 +27,8 @@ public class Snake implements SnakeModel {
 
     private int defaultLength;
 
+    private int winSize;
+
     /**
      * Constructor to set the default values and in order to generate the {@link #headPoint}
      * and to fill the {@link #bodyPoints} list with the {@link #defaultLength}
@@ -36,6 +39,7 @@ public class Snake implements SnakeModel {
         this.speed = 100;
         this.invincible = false;
         this.defaultLength = 2;
+        this.winSize = 0;
 
         bodyPoints = new ArrayList<>();
         // generate snake at 10;10 with 4 body points
@@ -43,6 +47,15 @@ public class Snake implements SnakeModel {
 
         for (int i = 1; i <= defaultLength; i++) {
             bodyPoints.add(Point.of(headPoint.getX() + i, headPoint.getY()));
+        }
+
+        // calculate snake's win size
+        for (int x = 0; x < game.getEngineConfiguration().getWidthInBlocks(); x++) {
+            for (int y = 0; y < game.getEngineConfiguration().getHeightInBlocks() - 3; y++) {
+                if (!game.getMapModel().getBorderPoints().contains(Point.of(x, y))) {
+                    winSize++;
+                }
+            }
         }
     }
 
@@ -160,7 +173,23 @@ public class Snake implements SnakeModel {
      */
     public void updateScore(GameEngine gameEngine) {
         // update score
-        gameEngine.update(EngineUpdate.SCORE_UPDATE, Messages.SCORE_UPDATE, getBodyPoints().size() - this.defaultLength);
+        if ((getBodyPoints().size() + 1) >= winSize) {
+            gameEngine.update(EngineUpdate.EFFECT_UPDATE, "Du hast das", "Spiel besiegt!! :o");
+            gameEngine.update(EngineUpdate.SCORE_UPDATE, Messages.SCORE_UPDATE, 999999999);
+            Launcher.getGame().endGame(true);
+        } else {
+            gameEngine.update(EngineUpdate.SCORE_UPDATE, Messages.SCORE_UPDATE, calculateScore());
+        }
+    }
+
+
+    /**
+     * Calculates score based on all body points - default length
+     *
+     * @return current score
+     */
+    public int calculateScore() {
+        return getBodyPoints().size() - this.defaultLength;
     }
 
     /**

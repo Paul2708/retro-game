@@ -59,7 +59,11 @@ public class EasyMap extends CustomMap {
         }
 
         if (special != null) {
-            getFood().add(special);
+            if(isFoodInBorder(special)) {
+                generateSpecialFood();
+            } else {
+                getFood().add(special);
+            }
         }
     }
 
@@ -68,6 +72,11 @@ public class EasyMap extends CustomMap {
      */
     @Override
     protected void generateCustomBorder() {
+        for (int x = 15; x < 20; x++) {
+            for (int y = 15; y < 20; y++) {
+                this.borderPoints.add(Point.of(x, y));
+            }
+        }
     }
 
     /**

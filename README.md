@@ -39,8 +39,9 @@ Just run the jar `snake.jar` by double-click or `java -jar snake-jar`.
 The goal is to survive as long as you can!
 
 ### Special items
-You can collect special items by eating them.
+You can collect special items by eating them. 
 Every effect takes about 10 seconds before expiring.
+Pro tip: Be fast because special food items disappear after 15 seconds.
 
 | Color      | Effect                                    |
 |------------|-------------------------------------------|
@@ -49,6 +50,16 @@ Every effect takes about 10 seconds before expiring.
 | Red        | Invincibility against border and yourself |
 | Blue       | Slowness                                  |
 | Aquamarine | Speed                                     |
+
+### Maps
+In addition to that, you can switch between different maps.
+
+| Name      | Description                                    |
+|------------|-------------------------------------------|
+| Empty     | An empty map. Good for beginners. Special food spawns with an default probability.             |
+| Easy       | Also good for beginners and if you want to see special food items. There is a very high spawn chance.              |
+| Normal        | Normal special food spawn probability. However, special food spawns only after you exceed a score of 6 points. |
+| Difficult       | Very difficult map. Only for pro players. ;) Rare chance seeing a special item.                                  |
 
 ## Devathlon
 This project is a contribution for a devathlon by [Devathlon.eu](https://devathlon.eu).

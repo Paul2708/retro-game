@@ -80,7 +80,7 @@ public class Game implements InputListener {
 
         gameEngine = GameEngine.create();
 
-        this.mapModel = new EmptyMap(this);
+        this.mapModel = new NormalMap(this);
         gameEngine.setModel(mapModel);
         gameEngine.setMaps(Arrays.asList(new EmptyMap(this), new EasyMap(this), new NormalMap(this), new DifficultMap(this)));
         gameEngine.setPauseItems(new ContinueGameItem(this), new MapChangeItem(this), new EndGameItem(this));
@@ -160,7 +160,7 @@ public class Game implements InputListener {
                                 headPoint.setY(1);
                             }
                         } else {
-                            endGame();
+                            endGame(false);
                         }
                     }
                     // updated head, now update body
@@ -238,12 +238,13 @@ public class Game implements InputListener {
      * Changes {@link #running} attribute to false and {@link #pause} attribute to true.
      * Moreover, an EngineUpdate is set to load the death screen.
      */
-    private void endGame() {
+    public void endGame(boolean win) {
         running = false;
         pause = new AtomicBoolean(true);
 
-        // activate death screen
-        gameEngine.update(EngineUpdate.DEATH_SCREEN, true);
+        if(!win)
+            // activate death screen
+            gameEngine.update(EngineUpdate.DEATH_SCREEN, true);
     }
 
     /**
@@ -421,5 +422,12 @@ public class Game implements InputListener {
      */
     public Set<Thread> getAnimatedBorders() {
         return animatedBorders;
+    }
+
+    /**
+     * @param inputBlocked enables or disables keyboard input
+     */
+    public void setInputBlocked(boolean inputBlocked) {
+        this.inputBlocked = inputBlocked;
     }
 }
