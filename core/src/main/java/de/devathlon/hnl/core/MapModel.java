@@ -3,7 +3,6 @@ package de.devathlon.hnl.core;
 import de.devathlon.hnl.core.map.MapConfiguration;
 import de.devathlon.hnl.core.math.Point;
 
-import java.awt.*;
 import java.util.Collection;
 
 /**

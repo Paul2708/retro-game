@@ -6,6 +6,8 @@ import java.awt.Color;
 
 /**
  * This class models an appearing food item, that can be collected.
+ *
+ * @author Paul2708
  */
 public interface FoodModel {
 
