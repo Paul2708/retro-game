@@ -8,7 +8,7 @@ We decided to create a basic snake game with additional features and choices.
 You can either download the latest release or build it yourself.
 
 ### Download
-You can download the latest version [here](https://www.duden.de/rechtschreibung/To_do).
+You can download the latest version [here](https://github.com/devathlon-hnl/retro-game/releases/download/v1.0/snake.jar).
 
 ### Build (with Maven)
 1. Clone the repository `git clone https://github.com/devathlon-hnl/retro-game.git`.
@@ -21,7 +21,7 @@ Just run the jar `snake.jar` by double-click or `java -jar snake-jar`.
 ## Game information
 ### Features
 - retro look
-- simple to extend by using [Overlay](https://www.duden.de/rechtschreibung/To_do), [EngineUpdate](https://www.duden.de/rechtschreibung/To_do) and core module
+- simple to extend by using [Overlay](https://github.com/devathlon-hnl/retro-game/blob/master/engine/src/main/java/de/devathlon/hnl/engine/internal/window/overlay/Overlay.java), [EngineUpdate](https://github.com/devathlon-hnl/retro-game/blob/master/core/src/main/java/de/devathlon/hnl/core/update/EngineUpdate.java) and core module
 - custom map system
 - scary death screen
 
