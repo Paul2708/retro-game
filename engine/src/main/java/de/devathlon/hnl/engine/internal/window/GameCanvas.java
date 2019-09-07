@@ -113,6 +113,7 @@ public final class GameCanvas extends Canvas {
      */
     public void enablePause(boolean enabled) {
         gameSettingsOverlay.activate(enabled);
+        mapSelectionOverlay.activate(false);
     }
 
     /**
