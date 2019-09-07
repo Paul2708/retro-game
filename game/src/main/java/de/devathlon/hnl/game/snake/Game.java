@@ -8,6 +8,7 @@ import de.devathlon.hnl.engine.configuration.EngineConfiguration;
 import de.devathlon.hnl.engine.listener.InputListener;
 import de.devathlon.hnl.game.entities.Snake;
 import de.devathlon.hnl.game.food.SpecialFood;
+import de.devathlon.hnl.game.food.foodtypes.MapChangeFood;
 import de.devathlon.hnl.game.map.*;
 import de.devathlon.hnl.game.pause.ContinueGameItem;
 import de.devathlon.hnl.game.pause.EndGameItem;
@@ -59,6 +60,8 @@ public class Game implements InputListener {
     // effectbar
     private List<Point> effectBar;
     private Color effectBarColor;
+
+    private SpecialFood currentFood;
 
     /**
      * This constructor initialises the game engine, sets the default
@@ -173,6 +176,7 @@ public class Game implements InputListener {
                         if (food instanceof SpecialFood) {
                             SpecialFood specialFood = (SpecialFood) food;
                             specialFood.apply();
+                            currentFood = specialFood;
                         } else {
                             if (doublePoints)
                                 snake.getBodyPoints().add(Point.of(oldX, oldY));
@@ -200,6 +204,10 @@ public class Game implements InputListener {
     public void removeAllEffects() {
         this.snake.setSpeed(100);
         this.snake.setInvincible(false);
+
+        if (currentFood instanceof MapChangeFood) {
+            ((MapChangeFood) currentFood).setCancel(true);
+        }
 
         this.effectGiven = 0;
         this.doublePoints = false;
@@ -243,7 +251,7 @@ public class Game implements InputListener {
         running = false;
         pause = new AtomicBoolean(true);
 
-        if(!win)
+        if (!win)
             // activate death screen
             gameEngine.update(EngineUpdate.DEATH_SCREEN, true);
     }
@@ -393,7 +401,6 @@ public class Game implements InputListener {
     }
 
     /**
-     *
      * Returns the current color of the effect bar
      *
      * @return effectBarColor
