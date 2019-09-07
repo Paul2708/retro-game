@@ -17,7 +17,7 @@ public enum Direction {
     /**
      * Each direction-key variable can have different keys assigned.
      */
-    private Integer[] keys;
+    private final Integer[] keys;
 
     /**
      * Constructor for this class.
@@ -26,15 +26,6 @@ public enum Direction {
      */
     Direction(Integer[] keys) {
         this.keys = keys;
-    }
-
-    /**
-     * Returns all registered keys.
-     *
-     * @return Integer[] containing KeyEvents'.
-     */
-    public Integer[] getKeys() {
-        return keys;
     }
 
     /**

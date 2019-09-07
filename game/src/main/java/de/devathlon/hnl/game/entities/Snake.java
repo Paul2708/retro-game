@@ -25,7 +25,7 @@ public class Snake implements SnakeModel {
     private long speed;
     private boolean invincible;
 
-    private int defaultLength;
+    private final int defaultLength;
 
     private int winSize;
 

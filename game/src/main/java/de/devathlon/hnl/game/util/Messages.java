@@ -7,6 +7,6 @@ package de.devathlon.hnl.game.util;
  */
 public class Messages {
 
-    public static String SCORE_UPDATE = "Score: ";
-    public static String EFFECT_UPDATE = "Effekt: ";
+    public static final String SCORE_UPDATE = "Score: ";
+    public static final String EFFECT_UPDATE = "Effekt: ";
 }

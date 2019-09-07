@@ -38,8 +38,8 @@ public class BadFood extends SpecialFood {
         if (halfSize < snake.getDefaultLength()) {
             halfSize = snake.getDefaultLength();
         }
-        for (int i = snake.getBodyPoints().size() - 1; i > halfSize; i--) {
-            snake.getBodyPoints().remove(i);
+        if (snake.getBodyPoints().size() > halfSize + 1) {
+            snake.getBodyPoints().subList(halfSize + 1, snake.getBodyPoints().size()).clear();
         }
         getGame().getGameEngine().update(EngineUpdate.EFFECT_UPDATE, "Deine Schlange", "wurde verkürzt :(");
         snake.updateScore(getGame().getGameEngine());
