@@ -174,6 +174,9 @@ final class GameEngineImpl implements GameEngine {
             case DEATH_SCREEN:
                 state.setDead((Boolean) arguments[0]);
                 break;
+            case REFRESH_BACKGROUND:
+                gameCanvas.refreshBackground();
+                break;
             default:
                 break;
         }

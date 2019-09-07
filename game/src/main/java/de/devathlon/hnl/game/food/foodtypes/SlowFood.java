@@ -24,7 +24,7 @@ public class SlowFood extends SpecialFood {
      * @param game current game object
      */
     public SlowFood(int x, int y, Game game) {
-        super(x, y, new Color(024, 116, 205), game, true);
+        super(x, y, new Color(24, 116, 205), game, true);
 
     }
 

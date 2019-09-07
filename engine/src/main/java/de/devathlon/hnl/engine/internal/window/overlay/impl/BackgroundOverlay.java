@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -32,7 +33,7 @@ public class BackgroundOverlay extends Overlay {
      */
     @Override
     public void onInitialize() {
-        this.spreading = new HashMap<>();
+        this.spreading = new ConcurrentHashMap<>();
 
         Dimension dimension = getCanvas().getGameDimension();
         int blockSize = GameCanvas.BLOCK_SIZE;
@@ -60,6 +61,15 @@ public class BackgroundOverlay extends Overlay {
             graphics.fillRect(point.getX(), point.getY(), GameCanvas.BLOCK_SIZE + GameCanvas.GAP / 2,
                     GameCanvas.BLOCK_SIZE + GameCanvas.GAP / 2);
         }
+    }
+
+    /**
+     * Create a new background spreading.
+     */
+    public void refresh() {
+        spreading.clear();
+
+        onInitialize();
     }
 
     /**

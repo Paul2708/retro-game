@@ -35,10 +35,9 @@ public class ScoreOverlay extends Overlay {
         Dimension dimension = getCanvas().getGameDimension();
         Score score = getEngine().getGameState().getScore();
 
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(getEngine().getGameState().isDead() ? Color.WHITE : Color.BLACK);
         graphics.setFont(font);
 
-        graphics.drawString(score.getText() + " " + score.getScore(), (int) (dimension.getWidth() - 250), 30);
-        graphics.drawString("High-Score: tba", (int) (dimension.getWidth() - 250), 60);
+        graphics.drawString(score.getText() + " " + score.getScore(), (int) (dimension.getWidth() - 180), 40);
     }
 }

@@ -8,6 +8,7 @@ import de.devathlon.hnl.engine.configuration.EngineConfiguration;
 import de.devathlon.hnl.engine.listener.InputListener;
 import de.devathlon.hnl.game.entities.Snake;
 import de.devathlon.hnl.game.food.SpecialFood;
+import de.devathlon.hnl.game.food.foodtypes.MapChangeFood;
 import de.devathlon.hnl.game.map.*;
 import de.devathlon.hnl.game.pause.ContinueGameItem;
 import de.devathlon.hnl.game.pause.EndGameItem;
@@ -43,8 +44,8 @@ public class Game implements InputListener {
     private boolean inputBlocked;
 
     // gameEngine
-    private GameEngine gameEngine;
-    private EngineConfiguration engineConfiguration;
+    private final GameEngine gameEngine;
+    private final EngineConfiguration engineConfiguration;
 
     // mapModel
     private CustomMap mapModel;
@@ -59,6 +60,8 @@ public class Game implements InputListener {
     // effectbar
     private List<Point> effectBar;
     private Color effectBarColor;
+
+    private SpecialFood currentFood;
 
     /**
      * This constructor initialises the game engine, sets the default
@@ -87,10 +90,11 @@ public class Game implements InputListener {
         gameEngine.setInputListener(this);
         this.engineConfiguration = new EngineConfiguration(35, 35, 120);
         gameEngine.setUp(engineConfiguration);
-        gameEngine.start();
 
         mapModel.setup();
         setup();
+
+        gameEngine.start();
     }
 
     /**
@@ -172,6 +176,7 @@ public class Game implements InputListener {
                         if (food instanceof SpecialFood) {
                             SpecialFood specialFood = (SpecialFood) food;
                             specialFood.apply();
+                            currentFood = specialFood;
                         } else {
                             if (doublePoints)
                                 snake.getBodyPoints().add(Point.of(oldX, oldY));
@@ -199,6 +204,10 @@ public class Game implements InputListener {
     public void removeAllEffects() {
         this.snake.setSpeed(100);
         this.snake.setInvincible(false);
+
+        if (currentFood instanceof MapChangeFood) {
+            ((MapChangeFood) currentFood).setCancel(true);
+        }
 
         this.effectGiven = 0;
         this.doublePoints = false;
@@ -242,7 +251,7 @@ public class Game implements InputListener {
         running = false;
         pause = new AtomicBoolean(true);
 
-        if(!win)
+        if (!win)
             // activate death screen
             gameEngine.update(EngineUpdate.DEATH_SCREEN, true);
     }
@@ -269,6 +278,8 @@ public class Game implements InputListener {
         gameEngine.update(EngineUpdate.SCORE_UPDATE, Messages.SCORE_UPDATE, 0);
         // deactivate death screen
         gameEngine.update(EngineUpdate.DEATH_SCREEN, false);
+        // refresh background
+        gameEngine.update(EngineUpdate.REFRESH_BACKGROUND);
     }
 
     /**
@@ -390,7 +401,6 @@ public class Game implements InputListener {
     }
 
     /**
-     *
      * Returns the current color of the effect bar
      *
      * @return effectBarColor
@@ -422,12 +432,5 @@ public class Game implements InputListener {
      */
     public Set<Thread> getAnimatedBorders() {
         return animatedBorders;
-    }
-
-    /**
-     * @param inputBlocked enables or disables keyboard input
-     */
-    public void setInputBlocked(boolean inputBlocked) {
-        this.inputBlocked = inputBlocked;
     }
 }

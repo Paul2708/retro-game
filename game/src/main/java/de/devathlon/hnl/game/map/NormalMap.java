@@ -32,7 +32,7 @@ public class NormalMap extends CustomMap {
      */
     @Override
     public void generateSpecialFood() {
-        if(getGame().getSnake() != null && getGame().getSnake().calculateScore() > 5) {
+        if (getGame().getSnake() != null && getGame().getSnake().calculateScore() > 5) {
             // special food
             Random random = new Random();
             Game game = getGame();
@@ -44,19 +44,22 @@ public class NormalMap extends CustomMap {
 
             switch (random.nextInt(20)) {
                 case 1:
-                    special = new SpeedFood(specialX, specialY, game); // green (speed)
+                    special = new SpeedFood(specialX, specialY, game);
                     break;
                 case 2:
-                    special = new SlowFood(specialX, specialY, game); // blue (slowness)
+                    special = new SlowFood(specialX, specialY, game);
                     break;
                 case 3:
-                    special = new InvincibleFood(specialX, specialY, game); // blue (slowness)
+                    special = new InvincibleFood(specialX, specialY, game);
                     break;
                 case 4:
-                    special = new BadFood(specialX, specialY, game); // gray (half snake disappears)
+                    special = new BadFood(specialX, specialY, game);
                     break;
                 case 5:
-                    special = new DoublePointsFood(specialX, specialY, game); // magenta (double points)
+                    special = new DoublePointsFood(specialX, specialY, game);
+                    break;
+                case 6:
+                    special = new MapChangeFood(specialX, specialY, game);
                     break;
             }
 
@@ -77,12 +80,12 @@ public class NormalMap extends CustomMap {
     protected void generateCustomBorder() {
         for (int x = 5; x < 20; x++) {
             for (int y = 15; y < 20; y++) {
-                this.borderPoints.add(Point.of(x, y));
+                getBorderPoints().add(Point.of(x, y));
             }
         }
         for (int x = 25; x < 30; x++) {
             for (int y = 15; y < 20; y++) {
-                this.borderPoints.add(Point.of(x, y));
+                getBorderPoints().add(Point.of(x, y));
             }
         }
 
