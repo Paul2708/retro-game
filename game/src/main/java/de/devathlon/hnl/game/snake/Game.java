@@ -291,14 +291,14 @@ public class Game implements InputListener {
     @Override
     public void onInput(int keyCode) {
         if (keyCode != KeyEvent.VK_SPACE && keyCode != KeyEvent.VK_ESCAPE) {
-            if (inputBlocked) return;
             Direction direction = Direction.getDirectionByKey(keyCode);
             if (direction != null) {
-                this.inputBlocked = true;
                 if (currentDirection == Direction.UP && direction == Direction.DOWN) return;
                 if (currentDirection == Direction.DOWN && direction == Direction.UP) return;
                 if (currentDirection == Direction.LEFT && direction == Direction.RIGHT) return;
                 if (currentDirection == Direction.RIGHT && direction == Direction.LEFT) return;
+                if (inputBlocked) return;
+                this.inputBlocked = true;
                 this.currentDirection = direction;
             }
         } else {
