@@ -35,7 +35,7 @@ public class EffectInfoOverlay extends Overlay {
         Dimension dimension = getCanvas().getGameDimension();
         EffectInformation effect = getEngine().getGameState().getEffectInformation();
 
-        graphics.setColor(Color.BLACK);
+        graphics.setColor(getEngine().getGameState().isDead() ? Color.WHITE : Color.BLACK);
 
         graphics.setFont(font);
         graphics.drawString(effect.getDescription(), (int) (dimension.getWidth() - 750), 30);
