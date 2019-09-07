@@ -27,7 +27,7 @@ public class MapChangeFood extends SpecialFood {
      * @param game current game object
      */
     public MapChangeFood(int x, int y, Game game) {
-        super(x, y, new Color(123, 104, 238), game, false);
+        super(x, y, new Color(123, 104, 238), game, true);
         this.cancel = false;
     }
 
