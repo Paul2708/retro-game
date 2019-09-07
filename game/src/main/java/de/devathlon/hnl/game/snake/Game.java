@@ -87,10 +87,11 @@ public class Game implements InputListener {
         gameEngine.setInputListener(this);
         this.engineConfiguration = new EngineConfiguration(35, 35, 120);
         gameEngine.setUp(engineConfiguration);
-        gameEngine.start();
 
         mapModel.setup();
         setup();
+
+        gameEngine.start();
     }
 
     /**
