@@ -39,6 +39,5 @@ public class ScoreOverlay extends Overlay {
         graphics.setFont(font);
 
         graphics.drawString(score.getText() + " " + score.getScore(), (int) (dimension.getWidth() - 250), 30);
-        graphics.drawString("High-Score: tba", (int) (dimension.getWidth() - 250), 60);
     }
 }
