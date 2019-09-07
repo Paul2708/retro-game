@@ -14,7 +14,7 @@ You can download the latest version [here](https://www.duden.de/rechtschreibung/
 1. Clone the repository `git clone https://github.com/devathlon-hnl/retro-game.git`.
 2. Navigate into `retro-game`.
 3. Run `mvn clean build`.
-4. Navigate into `target`.
+4. Navigate into `game/target`.
 
 Just run the jar `snake.jar` by double-click or `java -jar snake-jar`.
 
