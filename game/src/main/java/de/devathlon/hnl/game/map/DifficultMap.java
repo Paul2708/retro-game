@@ -44,24 +44,27 @@ public class DifficultMap extends CustomMap {
 
             switch (random.nextInt(30)) {
                 case 1:
-                    special = new SpeedFood(specialX, specialY, game); // green (speed)
+                    special = new SpeedFood(specialX, specialY, game);
                     break;
                 case 2:
                 case 3:
                 case 4:
-                    special = new SlowFood(specialX, specialY, game); // blue (slowness)
+                    special = new SlowFood(specialX, specialY, game);
                     break;
                 case 10:
-                    special = new InvincibleFood(specialX, specialY, game); // blue (slowness)
+                    special = new InvincibleFood(specialX, specialY, game);
                     break;
                 case 11:
                 case 12:
                 case 13:
                 case 14:
-                    special = new BadFood(specialX, specialY, game); // gray (half snake disappears)
+                    special = new BadFood(specialX, specialY, game);
                     break;
                 case 20:
-                    special = new DoublePointsFood(specialX, specialY, game); // magenta (double points)
+                    special = new DoublePointsFood(specialX, specialY, game);
+                    break;
+                case 21:
+                    special = new MapChangeFood(specialX, specialY, game);
                     break;
             }
 
