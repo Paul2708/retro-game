@@ -46,7 +46,7 @@ final class GameEngineImpl implements GameEngine {
     }
 
     /**
-     * Set the underlying model to get the positions of snake, border and entites.
+     * Set the underlying model to get the positions of snake, border and entities.
      *
      * @param model map model implementation
      * @see MapModel

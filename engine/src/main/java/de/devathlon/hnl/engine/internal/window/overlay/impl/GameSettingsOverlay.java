@@ -26,8 +26,6 @@ import java.util.Map;
  */
 public class GameSettingsOverlay extends Overlay implements MouseListener {
 
-    // TODO: Center items (more) correctly
-
     private Font font;
 
     private List<PauseItem> items;

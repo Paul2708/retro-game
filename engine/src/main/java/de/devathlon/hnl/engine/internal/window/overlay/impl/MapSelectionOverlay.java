@@ -1,7 +1,6 @@
 package de.devathlon.hnl.engine.internal.window.overlay.impl;
 
 import de.devathlon.hnl.core.MapModel;
-import de.devathlon.hnl.core.pause.PauseItem;
 import de.devathlon.hnl.engine.internal.window.overlay.Overlay;
 
 import java.awt.Color;
@@ -27,8 +26,6 @@ import java.util.function.Consumer;
  * @author Paul2708
  */
 public class MapSelectionOverlay extends Overlay implements MouseListener {
-
-    // TODO: Center items (more) correctly
 
     private Font font;
 

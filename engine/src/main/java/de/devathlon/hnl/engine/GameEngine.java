@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 public interface GameEngine {
 
     /**
-     * Set the underlying model to get the positions of snake, border and entites.
+     * Set the underlying model to get the positions of snake, border and entities.
      *
      * @param model map model implementation
      * @see MapModel
