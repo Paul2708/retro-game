@@ -270,6 +270,8 @@ public class Game implements InputListener {
         gameEngine.update(EngineUpdate.SCORE_UPDATE, Messages.SCORE_UPDATE, 0);
         // deactivate death screen
         gameEngine.update(EngineUpdate.DEATH_SCREEN, false);
+        // refresh background
+        gameEngine.update(EngineUpdate.REFRESH_BACKGROUND);
     }
 
     /**

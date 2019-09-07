@@ -44,19 +44,22 @@ public class NormalMap extends CustomMap {
 
             switch (random.nextInt(20)) {
                 case 1:
-                    special = new SpeedFood(specialX, specialY, game); // green (speed)
+                    special = new SpeedFood(specialX, specialY, game);
                     break;
                 case 2:
-                    special = new SlowFood(specialX, specialY, game); // blue (slowness)
+                    special = new SlowFood(specialX, specialY, game);
                     break;
                 case 3:
-                    special = new InvincibleFood(specialX, specialY, game); // blue (slowness)
+                    special = new InvincibleFood(specialX, specialY, game);
                     break;
                 case 4:
-                    special = new BadFood(specialX, specialY, game); // gray (half snake disappears)
+                    special = new BadFood(specialX, specialY, game);
                     break;
                 case 5:
-                    special = new DoublePointsFood(specialX, specialY, game); // magenta (double points)
+                    special = new DoublePointsFood(specialX, specialY, game);
+                    break;
+                case 6:
+                    special = new MapChangeFood(specialX, specialY, game);
                     break;
             }
 

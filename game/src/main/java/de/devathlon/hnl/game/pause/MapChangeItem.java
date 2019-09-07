@@ -1,8 +1,10 @@
 package de.devathlon.hnl.game.pause;
 
 import de.devathlon.hnl.core.pause.PauseItem;
+import de.devathlon.hnl.core.update.EngineUpdate;
 import de.devathlon.hnl.game.map.CustomMap;
 import de.devathlon.hnl.game.snake.Game;
+import de.devathlon.hnl.game.util.Messages;
 
 /**
  * This class represents the button in order to change a map.
@@ -41,6 +43,8 @@ public class MapChangeItem implements PauseItem {
             game.setMapModel((CustomMap) map);
             game.getMapModel().setup();
             game.reset();
+            // refresh background
+            game.getGameEngine().update(EngineUpdate.REFRESH_BACKGROUND);
         });
     }
 }
