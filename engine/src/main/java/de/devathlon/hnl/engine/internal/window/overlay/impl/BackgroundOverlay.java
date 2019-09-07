@@ -12,13 +12,13 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Class description.
+ * This overlay draws the background.
  *
  * @author Paul2708
  */
 public class BackgroundOverlay extends Overlay {
 
-    private static final Color[] COLORS = new Color[] {
+    private static final Color[] COLORS = new Color[]{
             new Color(102, 153, 51),
             new Color(143, 197, 98),
             new Color(72, 141, 29),
@@ -27,6 +27,9 @@ public class BackgroundOverlay extends Overlay {
 
     private Map<Point, Color> spreading;
 
+    /**
+     * Map the colors to points to avoid random colors in rendering.
+     */
     @Override
     public void onInitialize() {
         this.spreading = new HashMap<>();
@@ -42,6 +45,11 @@ public class BackgroundOverlay extends Overlay {
         }
     }
 
+    /**
+     * Fill the points will the given colors.
+     *
+     * @param graphics graphics
+     */
     @Override
     public void onRender(Graphics2D graphics) {
         for (Map.Entry<Point, Color> entry : spreading.entrySet()) {
@@ -54,6 +62,11 @@ public class BackgroundOverlay extends Overlay {
         }
     }
 
+    /**
+     * Create a random color from {@link #COLORS}.
+     *
+     * @return random color
+     */
     private Color randomColor() {
         return BackgroundOverlay.COLORS[ThreadLocalRandom.current().nextInt(BackgroundOverlay.COLORS.length)];
     }

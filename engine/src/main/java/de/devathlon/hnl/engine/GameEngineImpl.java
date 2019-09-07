@@ -67,11 +67,22 @@ final class GameEngineImpl implements GameEngine {
         pauseItems.addAll(Arrays.asList(items));
     }
 
+    /**
+     * Set a list of all maps that represent the map pool.
+     * The maps will be displayed if the user wants to change the map.
+     *
+     * @param mapPool list of maps
+     */
     @Override
     public void setMaps(List<MapModel> mapPool) {
         state.setMapPool(mapPool);
     }
 
+    /**
+     * Open the map selection dialog and consume the selected map.
+     *
+     * @param mapConsumer consumer that consumes the selected map model
+     */
     @Override
     public void openMapDialog(Consumer<MapModel> mapConsumer) {
         gameCanvas.enableMapSelection(true, mapConsumer);
@@ -117,11 +128,17 @@ final class GameEngineImpl implements GameEngine {
         loopThread.start();
     }
 
+    /**
+     * Pause the game.
+     */
     @Override
     public void pause() {
         gameCanvas.enablePause(true);
     }
 
+    /**
+     * Unpause the game.
+     */
     @Override
     public void unpause() {
         gameCanvas.enablePause(false);
@@ -162,11 +179,24 @@ final class GameEngineImpl implements GameEngine {
         }
     }
 
+    /**
+     * Get a list of all pause items.
+     * They will displayed if the users pauses the game.
+     *
+     * @return list of pause items
+     */
     @Override
     public List<PauseItem> getPauseItems() {
         return pauseItems;
     }
 
+    /**
+     * Get the internal game state.
+     * This method shouln't be called outside the engine module!
+     * It's for internal purposes only.
+     *
+     * @return internal game state
+     */
     @Override
     public GameState getGameState() {
         return state;

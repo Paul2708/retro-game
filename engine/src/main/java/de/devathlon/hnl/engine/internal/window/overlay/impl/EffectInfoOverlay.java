@@ -9,7 +9,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 
 /**
- * Class description.
+ * This overlay draws the effect bar information.
  *
  * @author Paul2708
  */
@@ -17,11 +17,19 @@ public class EffectInfoOverlay extends Overlay {
 
     private Font font;
 
+    /**
+     * Adjust the font.
+     */
     @Override
     public void onInitialize() {
         this.font = getFont().deriveFont(15f).deriveFont(Font.BOLD);
     }
 
+    /**
+     * Draw the information as string to the screen.
+     *
+     * @param graphics graphics
+     */
     @Override
     public void onRender(Graphics2D graphics) {
         Dimension dimension = getCanvas().getGameDimension();

@@ -34,8 +34,19 @@ public interface GameEngine {
      */
     void setPauseItems(PauseItem... items);
 
+    /**
+     * Set a list of all maps that represent the map pool.
+     * The maps will be displayed if the user wants to change the map.
+     *
+     * @param mapPool list of maps
+     */
     void setMaps(List<MapModel> mapPool);
 
+    /**
+     * Open the map selection dialog and consume the selected map.
+     *
+     * @param mapConsumer consumer that consumes the selected map model
+     */
     void openMapDialog(Consumer<MapModel> mapConsumer);
 
     /**
@@ -60,8 +71,14 @@ public interface GameEngine {
      */
     void start();
 
+    /**
+     * Pause the game.
+     */
     void pause();
 
+    /**
+     * Unpause the game.
+     */
     void unpause();
 
     /**
@@ -81,8 +98,21 @@ public interface GameEngine {
      */
     void stop();
 
+    /**
+     * Get a list of all pause items.
+     * They will displayed if the users pauses the game.
+     *
+     * @return list of pause items
+     */
     List<PauseItem> getPauseItems();
 
+    /**
+     * Get the internal game state.
+     * This method shouln't be called outside the engine module!
+     * It's for internal purposes only.
+     *
+     * @return internal game state
+     */
     GameState getGameState();
 
     /**

@@ -37,7 +37,7 @@ public final class GameCanvas extends Canvas {
      */
     public static final int GAP = 2;
 
-    private static final Overlay[] OVERLAYS = new Overlay[] {
+    private static final Overlay[] OVERLAYS = new Overlay[]{
             new BackgroundOverlay(),
             new BorderOverlay(),
             new FoodOverlay(),
@@ -56,8 +56,10 @@ public final class GameCanvas extends Canvas {
     private final MapSelectionOverlay mapSelectionOverlay;
 
     /**
-     * Create a new game canvas and read in the ground file.
+     * Create a new game canvas and initialize all overlays.
      *
+     * @param engine        game engine
+     * @param dimension     game size in absolute size
      * @param inputListener listener set to {@link CanvasKeyListener}
      */
     public GameCanvas(GameEngine engine, Dimension dimension, InputListener inputListener) {
@@ -82,8 +84,9 @@ public final class GameCanvas extends Canvas {
 
     /**
      * Render the game.
-     * It includes border, snake, items and scores.
+     * It includes all given overlays.
      *
+     * @see Overlay#render(Graphics2D)
      * @see GameLoop#run()
      */
     public void render() {
@@ -103,10 +106,21 @@ public final class GameCanvas extends Canvas {
         bufferStrategy.show();
     }
 
+    /**
+     * Enables or disables the pause screen.
+     *
+     * @param enabled true to enable, false to disable
+     */
     public void enablePause(boolean enabled) {
         gameSettingsOverlay.activate(enabled);
     }
 
+    /**
+     * Enables or disables the map selection screen.
+     *
+     * @param enabled  true to enable, false to disable
+     * @param consumer consumer that consumes a map model if the map got selected
+     */
     public void enableMapSelection(boolean enabled, Consumer<MapModel> consumer) {
         mapSelectionOverlay.setConsumer(consumer);
 
@@ -115,6 +129,11 @@ public final class GameCanvas extends Canvas {
         mapSelectionOverlay.activate(enabled);
     }
 
+    /**
+     * Get the game dimension in absolute coordinates.
+     *
+     * @return dimension
+     */
     public Dimension getGameDimension() {
         return dimension;
     }

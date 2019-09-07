@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Class description.
+ * Pure data class that holds information about the game state.
  *
  * @author Paul2708
  */
@@ -22,6 +22,9 @@ public class GameState {
 
     private Boolean running;
 
+    /**
+     * Create a new game state with default values.
+     */
     public GameState() {
         this.mapModel = null;
         this.mapPool = new LinkedList<>();
