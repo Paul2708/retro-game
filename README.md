@@ -38,6 +38,9 @@ Just run the jar `snake.jar` by double-click or `java -jar snake-jar`.
 ### Goal
 The goal is to survive as long as you can!
 
+Can you beat the [current high score](https://twitter.com/L_LeonDE/status/1170280978067185665)? :D
+(Score: 142, Map: Einfach)
+
 ### Special items
 You can collect special items by eating them. 
 Every effect takes about 10 seconds before expiring.
