@@ -12,8 +12,8 @@ import java.awt.*;
  */
 public class Food implements FoodModel {
 
-    private Point location;
-    private Color color;
+    private final Point location;
+    private final Color color;
 
     /**
      * @param x location

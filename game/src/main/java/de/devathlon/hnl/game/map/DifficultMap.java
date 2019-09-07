@@ -78,60 +78,60 @@ public class DifficultMap extends CustomMap {
     protected void generateCustomBorder() {
         for (int x = 5; x < 10; x++) {
             for (int y = 15; y < 20; y++) {
-                this.borderPoints.add(Point.of(x, y));
+                getBorderPoints().add(Point.of(x, y));
             }
         }
         for (int x = 15; x < 20; x++) {
             for (int y = 15; y < 20; y++) {
-                this.borderPoints.add(Point.of(x, y));
+                getBorderPoints().add(Point.of(x, y));
             }
         }
         for (int x = 25; x < 30; x++) {
             for (int y = 15; y < 20; y++) {
-                this.borderPoints.add(Point.of(x, y));
+                getBorderPoints().add(Point.of(x, y));
             }
         }
         for (int x = 5; x < 10; x++) {
             for (int y = 25; y < 30; y++) {
-                this.borderPoints.add(Point.of(x, y));
+                getBorderPoints().add(Point.of(x, y));
             }
         }
         for (int x = 15; x < 20; x++) {
             for (int y = 25; y < 30; y++) {
-                this.borderPoints.add(Point.of(x, y));
+                getBorderPoints().add(Point.of(x, y));
             }
         }
         for (int x = 25; x < 30; x++) {
             for (int y = 25; y < 30; y++) {
-                this.borderPoints.add(Point.of(x, y));
+                getBorderPoints().add(Point.of(x, y));
             }
         }
         for (int x = 5; x < 10; x++) {
             for (int y = 5; y < 10; y++) {
-                this.borderPoints.add(Point.of(x, y));
+                getBorderPoints().add(Point.of(x, y));
             }
         }
         for (int x = 15; x < 20; x++) {
             for (int y = 5; y < 10; y++) {
-                this.borderPoints.add(Point.of(x, y));
+                getBorderPoints().add(Point.of(x, y));
             }
         }
         for (int x = 25; x < 30; x++) {
             for (int y = 5; y < 10; y++) {
-                this.borderPoints.add(Point.of(x, y));
+                getBorderPoints().add(Point.of(x, y));
             }
         }
         for (int y = 20; y < 30; y++) {
-            this.borderPoints.add(Point.of(7, y));
+            getBorderPoints().add(Point.of(7, y));
         }
         for (int y = 20; y < 30; y++) {
-            this.borderPoints.add(Point.of(7, y));
+            getBorderPoints().add(Point.of(7, y));
         }
         for (int x = 10; x < 30; x++) {
-            this.borderPoints.add(Point.of(x, 17));
+            getBorderPoints().add(Point.of(x, 17));
         }
         for (int y = 10; y < 20; y++) {
-            this.borderPoints.add(Point.of(27, y));
+            getBorderPoints().add(Point.of(27, y));
         }
 
         Border.animateMovingBorder(0, 1000, getGame(), 5, 30);

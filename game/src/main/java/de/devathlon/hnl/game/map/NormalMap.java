@@ -32,7 +32,7 @@ public class NormalMap extends CustomMap {
      */
     @Override
     public void generateSpecialFood() {
-        if(getGame().getSnake() != null && getGame().getSnake().calculateScore() > 5) {
+        if (getGame().getSnake() != null && getGame().getSnake().calculateScore() > 5) {
             // special food
             Random random = new Random();
             Game game = getGame();
@@ -77,12 +77,12 @@ public class NormalMap extends CustomMap {
     protected void generateCustomBorder() {
         for (int x = 5; x < 20; x++) {
             for (int y = 15; y < 20; y++) {
-                this.borderPoints.add(Point.of(x, y));
+                getBorderPoints().add(Point.of(x, y));
             }
         }
         for (int x = 25; x < 30; x++) {
             for (int y = 15; y < 20; y++) {
-                this.borderPoints.add(Point.of(x, y));
+                getBorderPoints().add(Point.of(x, y));
             }
         }
 

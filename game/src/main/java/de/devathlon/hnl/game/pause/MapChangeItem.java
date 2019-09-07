@@ -12,7 +12,7 @@ import de.devathlon.hnl.game.snake.Game;
  */
 public class MapChangeItem implements PauseItem {
 
-    private Game game;
+    private final Game game;
 
     /**
      * Creates an new map change item.

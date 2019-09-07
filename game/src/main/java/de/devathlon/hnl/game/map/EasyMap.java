@@ -1,13 +1,10 @@
 package de.devathlon.hnl.game.map;
 
-import de.devathlon.hnl.core.map.MapConfiguration;
 import de.devathlon.hnl.core.math.Point;
-import de.devathlon.hnl.game.food.Food;
 import de.devathlon.hnl.game.food.SpecialFood;
 import de.devathlon.hnl.game.food.foodtypes.*;
 import de.devathlon.hnl.game.snake.Game;
 
-import java.awt.*;
 import java.util.Collection;
 import java.util.Random;
 
@@ -74,7 +71,7 @@ public class EasyMap extends CustomMap {
     protected void generateCustomBorder() {
         for (int x = 15; x < 20; x++) {
             for (int y = 15; y < 20; y++) {
-                this.borderPoints.add(Point.of(x, y));
+                getBorderPoints().add(Point.of(x, y));
             }
         }
     }

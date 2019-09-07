@@ -13,8 +13,8 @@ import java.awt.*;
 public abstract class SpecialFood extends Food {
 
     private int timeAlive;
-    private Game game;
-    private boolean withTimer;
+    private final Game game;
+    private final boolean withTimer;
 
     /**
      * Default constructor for an new special food object.

@@ -43,8 +43,8 @@ public class Game implements InputListener {
     private boolean inputBlocked;
 
     // gameEngine
-    private GameEngine gameEngine;
-    private EngineConfiguration engineConfiguration;
+    private final GameEngine gameEngine;
+    private final EngineConfiguration engineConfiguration;
 
     // mapModel
     private CustomMap mapModel;
@@ -423,12 +423,5 @@ public class Game implements InputListener {
      */
     public Set<Thread> getAnimatedBorders() {
         return animatedBorders;
-    }
-
-    /**
-     * @param inputBlocked enables or disables keyboard input
-     */
-    public void setInputBlocked(boolean inputBlocked) {
-        this.inputBlocked = inputBlocked;
     }
 }
