@@ -6,7 +6,10 @@ import de.devathlon.hnl.engine.internal.window.overlay.Overlay;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
@@ -72,6 +75,8 @@ public class DeathOverlay extends Overlay {
             graphics.fillRect(transformed.getX(), transformed.getY(), GameCanvas.BLOCK_SIZE + GameCanvas.GAP / 2,
                     GameCanvas.BLOCK_SIZE + GameCanvas.GAP / 2);
         }
+
+        drawText("You died.", graphics);
     }
 
     /**
@@ -82,6 +87,30 @@ public class DeathOverlay extends Overlay {
     @Override
     public boolean isEnabled() {
         return getEngine().getGameState().isDead();
+    }
+
+    /**
+     * Draw the text in the center to the screen.
+     *
+     * @param text     text to draw
+     * @param graphics graphics
+     */
+    private void drawText(String text, Graphics2D graphics) {
+        graphics.setColor(Color.WHITE);
+
+        Font font = getFont().deriveFont(30f).deriveFont(Font.BOLD);
+
+        graphics.setFont(font);
+
+        FontRenderContext renderContext = new FontRenderContext(null, true, true);
+        Rectangle2D bounds = font.getStringBounds(text, renderContext);
+
+        Dimension dimension = getCanvas().getGameDimension();
+
+        int x = (int) ((dimension.getWidth() / 2) - (bounds.getWidth() / 2) - bounds.getX());
+        int y = (int) ((dimension.getHeight() / 2) - (bounds.getHeight() / 2) - bounds.getY());
+
+        graphics.drawString(text, x, y);
     }
 
     /**
