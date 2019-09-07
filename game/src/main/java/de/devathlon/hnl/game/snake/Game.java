@@ -297,6 +297,7 @@ public class Game implements InputListener {
                 if (currentDirection == Direction.DOWN && direction == Direction.UP) return;
                 if (currentDirection == Direction.LEFT && direction == Direction.RIGHT) return;
                 if (currentDirection == Direction.RIGHT && direction == Direction.LEFT) return;
+                if (currentDirection == direction) return;
                 if (inputBlocked) return;
                 this.inputBlocked = true;
                 this.currentDirection = direction;
