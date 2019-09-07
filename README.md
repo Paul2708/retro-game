@@ -63,13 +63,10 @@ In addition to that, you can switch between different maps.
 
 ## Devathlon
 This project is a contribution for a devathlon by [Devathlon.eu](https://devathlon.eu).
-It's split up in 3 rounds.
+It's split up into 3 rounds.
 This one is the first.
 
 The task is to create a retro game - with no more restrictions.
-
-## Screenshots
-Coming soon.
 
 ## Development
 As we are a team of two persons, we split up the project into 2 main modules:
@@ -83,5 +80,5 @@ Game uses the engine to implement the logical code base for the game.
 It holds information like entities and map management.
 
 There is also a third module, `core`, that allows to use common classes that are used by both modules.
-The `game` can sent engine updates, that are processed by the engine.
+The `game` can send engine updates, that are processed by the engine.
 It follows the Observer pattern with specified update parameters.
