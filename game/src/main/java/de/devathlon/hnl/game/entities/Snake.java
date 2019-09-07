@@ -11,6 +11,7 @@ import de.devathlon.hnl.game.util.Messages;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * This class is used to create a new snake.
@@ -20,7 +21,7 @@ import java.util.List;
 public class Snake implements SnakeModel {
 
     private Point headPoint;
-    private ArrayList<Point> bodyPoints;
+    private List<Point> bodyPoints;
 
     private long speed;
     private boolean invincible;
@@ -41,7 +42,7 @@ public class Snake implements SnakeModel {
         this.defaultLength = 2;
         this.winSize = 0;
 
-        bodyPoints = new ArrayList<>();
+        bodyPoints = new CopyOnWriteArrayList<>();
         // generate snake at 10;10 with 4 body points
         headPoint = game.getMapModel().getConfiguration().getSpawnPoint().clone();
 
@@ -71,7 +72,7 @@ public class Snake implements SnakeModel {
      * @return an {@link ArrayList} with {@link Point}s to show the snake body
      */
     @Override
-    public ArrayList<Point> getBodyPoints() {
+    public List<Point> getBodyPoints() {
         return bodyPoints;
     }
 
