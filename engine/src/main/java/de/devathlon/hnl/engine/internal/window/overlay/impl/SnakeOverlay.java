@@ -9,7 +9,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 /**
- * Class description.
+ * This overlay draws the snake entity.
  *
  * @author Paul2708
  */
@@ -19,11 +19,19 @@ public class SnakeOverlay extends Overlay {
 
     private static final Color BODY_COLOR = Color.WHITE;
 
+    /**
+     * Nothing to do here.
+     */
     @Override
     public void onInitialize() {
-
+        // Not needed
     }
 
+    /**
+     * Get the snake model and render body and head.
+     *
+     * @param graphics graphics
+     */
     @Override
     public void onRender(Graphics2D graphics) {
         SnakeModel snakeModel = getMap().getSnake();

@@ -12,13 +12,13 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Class description.
+ * This overlay draws the death screen, if the player dies.
  *
  * @author Paul2708
  */
 public class DeathOverlay extends Overlay {
 
-    private static final Color[] COLORS = new Color[] {
+    private static final Color[] COLORS = new Color[]{
             new Color(205, 55, 0),
             new Color(139, 37, 0),
             new Color(84, 84, 84),
@@ -31,6 +31,9 @@ public class DeathOverlay extends Overlay {
 
     private Map<Point, Color> spreading;
 
+    /**
+     * Map all points to a color.
+     */
     @Override
     public void onInitialize() {
         this.spreading = new HashMap<>();
@@ -46,6 +49,11 @@ public class DeathOverlay extends Overlay {
         }
     }
 
+    /**
+     * Fill the points with the given color and change the border color.
+     *
+     * @param graphics graphics
+     */
     @Override
     public void onRender(Graphics2D graphics) {
         for (Map.Entry<Point, Color> entry : spreading.entrySet()) {
@@ -66,11 +74,21 @@ public class DeathOverlay extends Overlay {
         }
     }
 
+    /**
+     * The overlay is enabled if the game state states, that the player is dead.
+     *
+     * @return true if the player is dead, otherwise false
+     */
     @Override
     public boolean isEnabled() {
         return getEngine().getGameState().isDead();
     }
 
+    /**
+     * Create a random color from {@link #COLORS}.
+     *
+     * @return random color
+     */
     private Color randomColor() {
         return DeathOverlay.COLORS[ThreadLocalRandom.current().nextInt(DeathOverlay.COLORS.length)];
     }

@@ -14,6 +14,8 @@ import java.awt.Dimension;
  */
 public class EngineConfiguration {
 
+    // TODO: Use map size instead
+
     private final int widthInBlocks;
     private final int heightInBlocks;
 

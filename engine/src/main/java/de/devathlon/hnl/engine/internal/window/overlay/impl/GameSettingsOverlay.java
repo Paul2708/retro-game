@@ -19,7 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class description.
+ * This overlay represents the pause or game settings overlay.
+ * It holds {@link PauseItem}s that are displayed.
  *
  * @author Paul2708
  */
@@ -32,6 +33,9 @@ public class GameSettingsOverlay extends Overlay implements MouseListener {
     private List<PauseItem> items;
     private Map<PauseItem, Rectangle> rectangles;
 
+    /**
+     * Adjust the font, get all pause items and calculate the clickable borders for them.
+     */
     @Override
     public void onInitialize() {
         this.font = getFont().deriveFont(25f).deriveFont(Font.BOLD);
@@ -45,6 +49,12 @@ public class GameSettingsOverlay extends Overlay implements MouseListener {
         }
     }
 
+    /**
+     * Draw the items.
+     *
+     * @param graphics graphics
+     * @see #drawItem(Graphics2D, PauseItem)
+     */
     @Override
     public void onRender(Graphics2D graphics) {
         graphics.setColor(Color.BLACK);
@@ -55,6 +65,12 @@ public class GameSettingsOverlay extends Overlay implements MouseListener {
         }
     }
 
+    /**
+     * If the overlay got activated, the current listener wil be removed.
+     * Otherwise the listener will be added to be active.
+     *
+     * @param activate activate or disable this overlay
+     */
     @Override
     public void activate(boolean activate) {
         super.activate(activate);
@@ -66,6 +82,12 @@ public class GameSettingsOverlay extends Overlay implements MouseListener {
         }
     }
 
+    /**
+     * Get the item by point.
+     *
+     * @param point clicked point
+     * @return pause item or null if none was found
+     */
     private PauseItem getItemByPoint(Point point) {
         for (Map.Entry<PauseItem, Rectangle> entry : rectangles.entrySet()) {
             if (entry.getValue().contains(point)) {
@@ -76,6 +98,12 @@ public class GameSettingsOverlay extends Overlay implements MouseListener {
         return null;
     }
 
+    /**
+     * Calculate the border a given pause item.
+     *
+     * @param item pause item
+     * @return clickable rectangle area
+     */
     private Rectangle calculateBorder(PauseItem item) {
         FontRenderContext renderContext = new FontRenderContext(null, true, true);
         Rectangle2D bounds = font.getStringBounds(item.getTitle(), renderContext);
@@ -89,6 +117,12 @@ public class GameSettingsOverlay extends Overlay implements MouseListener {
                 (int) bounds.getWidth(), (int) bounds.getHeight());
     }
 
+    /**
+     * Draw the item to the screen.
+     *
+     * @param graphics graphics
+     * @param item     pause item
+     */
     private void drawItem(Graphics2D graphics, PauseItem item) {
         Rectangle rectangle = rectangles.get(item);
 
@@ -96,6 +130,11 @@ public class GameSettingsOverlay extends Overlay implements MouseListener {
                 + (int) rectangle.getHeight());
     }
 
+    /**
+     * Check if the player clicked a pause item.
+     *
+     * @param event mouse event
+     */
     @Override
     public void mouseClicked(MouseEvent event) {
         PauseItem item = getItemByPoint(event.getPoint());
@@ -105,21 +144,33 @@ public class GameSettingsOverlay extends Overlay implements MouseListener {
         }
     }
 
+    /**
+     * Not used.
+     */
     @Override
     public void mousePressed(MouseEvent e) {
 
     }
 
+    /**
+     * Not used.
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
 
     }
 
+    /**
+     * Not used.
+     */
     @Override
     public void mouseEntered(MouseEvent e) {
 
     }
 
+    /**
+     * Not used.
+     */
     @Override
     public void mouseExited(MouseEvent e) {
 

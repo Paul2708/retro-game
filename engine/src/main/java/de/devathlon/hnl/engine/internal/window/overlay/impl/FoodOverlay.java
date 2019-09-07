@@ -8,17 +8,25 @@ import de.devathlon.hnl.engine.internal.window.overlay.Overlay;
 import java.awt.Graphics2D;
 
 /**
- * Class description.
+ * This overlay draws the food items.
  *
  * @author Paul2708
  */
 public class FoodOverlay extends Overlay {
 
+    /**
+     * Nothing to do here.
+     */
     @Override
     public void onInitialize() {
-
+        // Not needed
     }
 
+    /**
+     * Get the food items, set the correct color and draw them.
+     *
+     * @param graphics graphics
+     */
     @Override
     public void onRender(Graphics2D graphics) {
         for (FoodModel food : getMap().getFood()) {

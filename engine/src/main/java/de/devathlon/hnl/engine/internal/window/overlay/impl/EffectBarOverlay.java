@@ -8,7 +8,7 @@ import de.devathlon.hnl.engine.internal.window.overlay.Overlay;
 import java.awt.Graphics2D;
 
 /**
- * Class description.
+ * This overlay draws the effect bar.
  *
  * @author Paul2708
  */
@@ -16,11 +16,19 @@ public class EffectBarOverlay extends Overlay {
 
     private EffectBarModel effectBar;
 
+    /**
+     * Get the current effect bar model.
+     */
     @Override
     public void onInitialize() {
         this.effectBar = getMap().getEffectBar();
     }
 
+    /**
+     * Draw the effect bar.
+     *
+     * @param graphics graphics
+     */
     @Override
     public void onRender(Graphics2D graphics) {
         graphics.setColor(effectBar.getColor());
@@ -32,6 +40,11 @@ public class EffectBarOverlay extends Overlay {
         }
     }
 
+    /**
+     * The overlay is as long active as the effect bar is active.
+     *
+     * @return true if the effect bar is active, otherwise false
+     */
     @Override
     public boolean isEnabled() {
         return effectBar.isActive();

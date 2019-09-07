@@ -8,7 +8,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 /**
- * Class description.
+ * This overlay draws the map border.
  *
  * @author Paul2708
  */
@@ -16,11 +16,19 @@ public class BorderOverlay extends Overlay {
 
     private static final Color COLOR = new Color(139, 69, 19);
 
+    /**
+     * Nothing to do here.
+     */
     @Override
     public void onInitialize() {
-
+        // Not needed
     }
 
+    /**
+     * Draw the border points.
+     *
+     * @param graphics graphics
+     */
     @Override
     public void onRender(Graphics2D graphics) {
         graphics.setColor(BorderOverlay.COLOR);

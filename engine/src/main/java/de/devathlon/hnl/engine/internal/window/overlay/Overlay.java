@@ -13,7 +13,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Class description.
+ * This abstract class represents an overlay.
+ * An overlay can draw to the screen.
  *
  * @author Paul2708
  */
@@ -28,6 +29,12 @@ public abstract class Overlay {
 
     private boolean enabled;
 
+    /**
+     * Initialize the overlay by setting engine and canvas and calling {@link #onInitialize()}.
+     *
+     * @param engine game engine
+     * @param canvas game canvas
+     */
     public void initialize(GameEngine engine, GameCanvas canvas) {
         this.engine = engine;
         this.canvas = canvas;
@@ -37,24 +44,56 @@ public abstract class Overlay {
         this.onInitialize();
     }
 
+    /**
+     * Render the overlay if it's active.
+     *
+     * @param graphics graphics
+     */
     public void render(Graphics2D graphics) {
         if (isEnabled()) {
             onRender(graphics);
         }
     }
 
+    /**
+     * Enable or disable the overlay.
+     * It indicates if the overlay will be drawn or not.
+     *
+     * @param activate activate or disable
+     */
     public void activate(boolean activate) {
         this.enabled = activate;
     }
 
+    /**
+     * Initialize the overlay.
+     * This got called once.
+     */
     protected abstract void onInitialize();
 
+    /**
+     * Render the overlay to the screen.
+     * It got called every render-tick.
+     *
+     * @param graphics graphics
+     */
     protected abstract void onRender(Graphics2D graphics);
 
+    /**
+     * Get the current map.
+     *
+     * @return map model
+     */
     protected MapModel getMap() {
         return engine.getGameState().getMapModel();
     }
 
+    /**
+     * Get the used font.
+     * If the font is not used yet, an instance will be created and the font got leaded.
+     *
+     * @return pixel font
+     */
     protected Font getFont() {
         if (Overlay.font == null) {
             GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -84,14 +123,29 @@ public abstract class Overlay {
         return Point.of(x, y);
     }
 
+    /**
+     * Check if the overlay is enabled or not.
+     *
+     * @return enabled status
+     */
     protected boolean isEnabled() {
         return enabled;
     }
 
+    /**
+     * Get the game engine.
+     *
+     * @return game engine
+     */
     protected GameEngine getEngine() {
         return engine;
     }
 
+    /**
+     * Get the game canvas.
+     *
+     * @return game canvas
+     */
     protected GameCanvas getCanvas() {
         return canvas;
     }

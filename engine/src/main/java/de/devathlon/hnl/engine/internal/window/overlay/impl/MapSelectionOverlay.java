@@ -1,6 +1,7 @@
 package de.devathlon.hnl.engine.internal.window.overlay.impl;
 
 import de.devathlon.hnl.core.MapModel;
+import de.devathlon.hnl.core.pause.PauseItem;
 import de.devathlon.hnl.engine.internal.window.overlay.Overlay;
 
 import java.awt.Color;
@@ -20,7 +21,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /**
- * Class description.
+ * This overlay represents the map selection overlay.
+ * It holds {@link MapModel}s that are displayed.
  *
  * @author Paul2708
  */
@@ -35,6 +37,9 @@ public class MapSelectionOverlay extends Overlay implements MouseListener {
 
     private Consumer<MapModel> consumer;
 
+    /**
+     * Adjust the font, get all map models and calculate the clickable borders for them.
+     */
     @Override
     public void onInitialize() {
         this.font = getFont().deriveFont(25f).deriveFont(Font.BOLD);
@@ -48,10 +53,12 @@ public class MapSelectionOverlay extends Overlay implements MouseListener {
         }
     }
 
-    public void setConsumer(Consumer<MapModel> consumer) {
-        this.consumer = consumer;
-    }
-
+    /**
+     * Draw the items.
+     *
+     * @param graphics graphics
+     * @see #drawItem(Graphics2D, MapModel)
+     */
     @Override
     public void onRender(Graphics2D graphics) {
         graphics.setColor(Color.BLACK);
@@ -62,6 +69,12 @@ public class MapSelectionOverlay extends Overlay implements MouseListener {
         }
     }
 
+    /**
+     * If the overlay got activated, the current listener wil be removed.
+     * Otherwise the listener will be added to be active.
+     *
+     * @param activate activate or disable this overlay
+     */
     @Override
     public void activate(boolean activate) {
         super.activate(activate);
@@ -73,6 +86,21 @@ public class MapSelectionOverlay extends Overlay implements MouseListener {
         }
     }
 
+    /**
+     * Set the consumer that will be used if a player clicks a map model.
+     *
+     * @param consumer consumer that consumes a map model an map selection
+     */
+    public void setConsumer(Consumer<MapModel> consumer) {
+        this.consumer = consumer;
+    }
+
+    /**
+     * Get the map model by point.
+     *
+     * @param point clicked point
+     * @return map model or null if none was found
+     */
     private MapModel getItemByPoint(Point point) {
         for (Map.Entry<MapModel, Rectangle> entry : rectangles.entrySet()) {
             if (entry.getValue().contains(point)) {
@@ -83,6 +111,12 @@ public class MapSelectionOverlay extends Overlay implements MouseListener {
         return null;
     }
 
+    /**
+     * Calculate the border a given map model.
+     *
+     * @param item map model item
+     * @return clickable rectangle area
+     */
     private Rectangle calculateBorder(MapModel item) {
         FontRenderContext renderContext = new FontRenderContext(null, true, true);
         Rectangle2D bounds = font.getStringBounds(item.getConfiguration().getName(), renderContext);
@@ -96,6 +130,12 @@ public class MapSelectionOverlay extends Overlay implements MouseListener {
                 (int) bounds.getWidth(), (int) bounds.getHeight());
     }
 
+    /**
+     * Draw the item to the screen.
+     *
+     * @param graphics graphics
+     * @param item     pause item
+     */
     private void drawItem(Graphics2D graphics, MapModel item) {
         Rectangle rectangle = rectangles.get(item);
 
@@ -103,6 +143,12 @@ public class MapSelectionOverlay extends Overlay implements MouseListener {
                 + (int) rectangle.getHeight());
     }
 
+    /**
+     * Check if the player selected a map item.
+     * If so, the consumer consumes the selected map.
+     *
+     * @param event mouse event
+     */
     @Override
     public void mouseClicked(MouseEvent event) {
         MapModel item = getItemByPoint(event.getPoint());
@@ -113,21 +159,33 @@ public class MapSelectionOverlay extends Overlay implements MouseListener {
         }
     }
 
+    /**
+     * Not used.
+     */
     @Override
     public void mousePressed(MouseEvent e) {
 
     }
 
+    /**
+     * Not used.
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
 
     }
 
+    /**
+     * Not used.
+     */
     @Override
     public void mouseEntered(MouseEvent e) {
 
     }
 
+    /**
+     * Not used.
+     */
     @Override
     public void mouseExited(MouseEvent e) {
 
