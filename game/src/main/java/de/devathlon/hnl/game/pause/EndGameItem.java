@@ -11,7 +11,7 @@ import de.devathlon.hnl.game.snake.Game;
  */
 public class EndGameItem implements PauseItem {
 
-    private Game game;
+    private final Game game;
 
     /**
      * Creates an new end game item.

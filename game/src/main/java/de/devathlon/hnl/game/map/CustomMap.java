@@ -26,10 +26,10 @@ public abstract class CustomMap implements MapModel {
 
     private final Game game;
 
-    private MapConfiguration mapConfiguration;
+    private final MapConfiguration mapConfiguration;
 
-    protected final List<FoodModel> foodList;
-    protected final List<Point> borderPoints;
+    private List<FoodModel> foodList;
+    private List<Point> borderPoints;
 
     /**
      * Default constructor for all maps.
@@ -38,7 +38,7 @@ public abstract class CustomMap implements MapModel {
      * @param spawnPoint of the snake
      * @param game current game object
      */
-    public CustomMap(String name, Point spawnPoint, Game game) {
+    CustomMap(String name, Point spawnPoint, Game game) {
         this.game = game;
         this.foodList = new CopyOnWriteArrayList<>();
         this.borderPoints = new CopyOnWriteArrayList<>();
@@ -112,7 +112,7 @@ public abstract class CustomMap implements MapModel {
     /**
      * Adds {@link Food} objects to {@link #foodList} which random locations.
      */
-    protected void generateFood() {
+    private void generateFood() {
         Random random = new Random();
 
         int x = random.nextInt(game.getEngineConfiguration().getWidthInBlocks() - 2) + 1;
@@ -134,7 +134,7 @@ public abstract class CustomMap implements MapModel {
      * @param foodModel the new food object
      * @return boolean whether food would spawn in an border point
      */
-    public boolean isFoodInBorder(FoodModel foodModel) {
+    boolean isFoodInBorder(FoodModel foodModel) {
         for (Point borderPoint : this.borderPoints) {
             if (foodModel.getLocation().getX() == borderPoint.getX() && foodModel.getLocation().getY() == borderPoint.getY()) {
                 return true;

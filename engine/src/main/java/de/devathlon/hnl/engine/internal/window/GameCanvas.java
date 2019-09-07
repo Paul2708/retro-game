@@ -52,6 +52,7 @@ public final class GameCanvas extends Canvas {
 
     private final Dimension dimension;
 
+    private final BackgroundOverlay backgroundOverlay;
     private final GameSettingsOverlay gameSettingsOverlay;
     private final MapSelectionOverlay mapSelectionOverlay;
 
@@ -70,6 +71,7 @@ public final class GameCanvas extends Canvas {
         setFocusable(true);
 
         // Initialize overlays
+        this.backgroundOverlay = (BackgroundOverlay) GameCanvas.OVERLAYS[0];
         this.gameSettingsOverlay = (GameSettingsOverlay) GameCanvas.OVERLAYS[8];
         this.mapSelectionOverlay = (MapSelectionOverlay) GameCanvas.OVERLAYS[9];
 
@@ -113,6 +115,7 @@ public final class GameCanvas extends Canvas {
      */
     public void enablePause(boolean enabled) {
         gameSettingsOverlay.activate(enabled);
+        mapSelectionOverlay.activate(false);
     }
 
     /**
@@ -127,6 +130,13 @@ public final class GameCanvas extends Canvas {
         gameSettingsOverlay.activate(false);
 
         mapSelectionOverlay.activate(enabled);
+    }
+
+    /**
+     * Refresh the background.
+     */
+    public void refreshBackground() {
+        backgroundOverlay.refresh();
     }
 
     /**

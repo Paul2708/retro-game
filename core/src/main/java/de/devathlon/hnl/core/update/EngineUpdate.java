@@ -30,7 +30,12 @@ public enum EngineUpdate {
      * The player is dead.
      * Arguments: Boolean if screen is active.
      */
-    DEATH_SCREEN(Boolean.class);
+    DEATH_SCREEN(Boolean.class),
+
+    /**
+     * Request to refresh the background.
+     */
+    REFRESH_BACKGROUND();
 
     private final Class<?>[] classes;
 
