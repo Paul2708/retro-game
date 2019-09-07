@@ -41,7 +41,7 @@ public class MapChangeFood extends SpecialFood {
 
             @Override
             public void run() {
-                if (timer <= 10 && !cancel) {
+                if (timer <= 10 && !cancel && !getGame().getPause().get()) {
                     if (timer % 2 == 0) {
                         // refresh background
                         getGame().getGameEngine().update(EngineUpdate.REFRESH_BACKGROUND);
