@@ -38,6 +38,6 @@ public class ScoreOverlay extends Overlay {
         graphics.setColor(Color.BLACK);
         graphics.setFont(font);
 
-        graphics.drawString(score.getText() + " " + score.getScore(), (int) (dimension.getWidth() - 250), 30);
+        graphics.drawString(score.getText() + " " + score.getScore(), (int) (dimension.getWidth() - 180), 40);
     }
 }
