@@ -34,9 +34,9 @@ public abstract class CustomMap implements MapModel {
     /**
      * Default constructor for all maps.
      *
-     * @param name of the map
+     * @param name       of the map
      * @param spawnPoint of the snake
-     * @param game current game object
+     * @param game       current game object
      */
     CustomMap(String name, Point spawnPoint, Game game) {
         this.game = game;
@@ -137,6 +137,11 @@ public abstract class CustomMap implements MapModel {
     boolean isFoodInBorder(FoodModel foodModel) {
         for (Point borderPoint : this.borderPoints) {
             if (foodModel.getLocation().getX() == borderPoint.getX() && foodModel.getLocation().getY() == borderPoint.getY()) {
+                return true;
+            }
+        }
+        for (FoodModel food : foodList) {
+            if (foodModel.getLocation().getX() == food.getLocation().getX() && foodModel.getLocation().getY() == food.getLocation().getY()) {
                 return true;
             }
         }
